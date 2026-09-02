@@ -1,0 +1,2276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>张阿莱商家服务站</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+td:nth-child(2) { text-align:left; word-break:break-all; line-height:1.6; }
+td:first-child { text-align:center; white-space:nowrap; width:50px; }
+th:first-child { text-align:center; width:50px; }
+body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; background:#f5f5f5; margin:0; }
+* { box-sizing:border-box; }
+
+/* Sidebar */
+.sidebar {
+  position:fixed; left:0; top:0; width:220px; height:100vh;
+  background:#fff; border-right:1px solid #e0e0e0; z-index:100;
+  display:flex; flex-direction:column; overflow-y:auto;
+}
+.logo {
+  padding:20px; display:flex; align-items:center; gap:10px;
+  border-bottom:1px solid #f0f0f0;
+}
+.logo-icon {
+  width:40px; height:40px; background:#FB7701; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:bold; font-size:18px;
+}
+.logo-text { font-size:15px; font-weight:700; color:#333; }
+.nav { flex:1; padding:10px 0; }
+.nav-item {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 20px; cursor:pointer; color:#666; font-size:14px;
+  transition:all 0.2s; text-decoration:none; border-left:3px solid transparent;
+}
+.nav-item:hover { background:#FFF5EB; color:#FB7701; }
+.nav-item.active { background:#FFF5EB; color:#FB7701; border-left-color:#FB7701; font-weight:600; }
+.nav-icon { font-size:18px; width:24px; text-align:center; }
+
+/* Main content - scrollable */
+.main { margin-left:220px; overflow-x:hidden; max-width:calc(100vw - 220px); }
+.section {
+  min-height:auto; padding:40px; border-bottom:1px solid #eee;
+  scroll-margin-top:0;
+  max-width:100%; overflow-x:hidden;
+}
+.section-title {
+  font-size:24px; font-weight:700; color:#333; margin-bottom:24px;
+  display:flex; align-items:center; gap:10px;
+}
+.section-title::before {
+  content:''; width:4px; height:24px; background:#FB7701; border-radius:2px;
+}
+
+/* Cards */
+.card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; }
+.card {
+  background:#fff; border-radius:12px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  transition:transform 0.2s;
+}
+.card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.1); }
+.card h3 { color:#333; font-size:16px; margin-bottom:12px; }
+.card p { color:#666; font-size:14px; line-height:1.8; }
+
+/* Image gallery */
+.gallery-grid {
+  display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-bottom:24px;
+}
+.gallery-item {
+  border-radius:8px; overflow:hidden; aspect-ratio:1; background:#f5f5f5;
+  border:1px solid #eee;
+}
+.gallery-item img { width:100%; height:100%; object-fit:cover; cursor:pointer; transition:transform 0.2s; }
+.gallery-item img:hover { transform:scale(1.05); }
+
+/* Element section */
+.element-section { margin-bottom:32px; }
+.element-title {
+  font-size:18px; font-weight:600; color:#333; margin-bottom:16px;
+  padding-left:12px; border-left:4px solid #FB7701;
+}
+
+/* Table */
+table { width:100%; border-collapse:collapse; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+th { background:#FB7701; color:#fff; padding:12px 16px; text-align:left; font-size:14px; }
+td { padding:12px 16px; border-bottom:1px solid #f0f0f0; font-size:14px; color:#555; }
+tr:hover td { background:#FFF5EB; }
+
+/* Badge */
+.badge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:600; }
+.badge-orange { background:#FFE8D6; color:#FB7701; }
+.badge-green { background:#E6F7E6; color:#52C41A; }
+.badge-blue { background:#E6F7FF; color:#1890FF; }
+
+/* Banner */
+.banner {
+  background:linear-gradient(135deg,#FB7701,#FF9933); border-radius:16px;
+  padding:40px; color:#fff; margin-bottom:32px;
+}
+.banner h1 { font-size:28px; margin-bottom:10px; }
+.banner p { font-size:16px; opacity:0.9; }
+
+/* Tabs */
+.tabs { display:flex; gap:0; margin-bottom:24px; border-bottom:2px solid #f0f0f0; }
+.tab {
+  padding:12px 24px; cursor:pointer; font-size:14px; color:#999;
+  border-bottom:2px solid transparent; margin-bottom:-2px; transition:all 0.2s;
+}
+.tab.active { color:#FB7701; border-bottom-color:#FB7701; font-weight:600; }
+.tab:hover { color:#FB7701; }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+
+/* Placeholder */
+.placeholder {
+  text-align:center; padding:60px 20px; color:#999; font-size:16px;
+  background:#fff; border-radius:12px; border:2px dashed #e0e0e0;
+}
+
+/* Responsive */
+@media (max-width:1200px) { .gallery-grid { grid-template-columns:repeat(4,1fr); } }
+@media (max-width:768px) {
+  .sidebar { width:60px; } .logo-text,.nav-item span { display:none; }
+  .main { margin-left:60px; } .gallery-grid { grid-template-columns:repeat(2,1fr); }
+}
+
+/* Marketing table - uniform column widths */
+.marketing-table th, .marketing-table td { width:auto; padding-left:0.5cm; }
+.marketing-table th:nth-child(1), .marketing-table td:nth-child(1) { width:8%; white-space:nowrap; }
+.marketing-table th:nth-child(2), .marketing-table td:nth-child(2) { width:15%; }
+.marketing-table th:nth-child(3), .marketing-table td:nth-child(3) { width:12%; white-space:nowrap; }
+.marketing-table th:nth-child(4), .marketing-table td:nth-child(4) { width:auto; }
+
+
+/* Region festival table - uniform column widths */
+.region-table th, .region-table td { width:auto; padding-left:0.5cm; }
+.region-table th:nth-child(1), .region-table td:nth-child(1) { width:5%; white-space:nowrap; }
+.region-table th:nth-child(2), .region-table td:nth-child(2) { width:12%; }
+.region-table th:nth-child(3), .region-table td:nth-child(3) { width:12%; }
+.region-table th:nth-child(4), .region-table td:nth-child(4) { width:10%; }
+.region-table th:nth-child(5), .region-table td:nth-child(5) { width:auto; }
+
+/* Category path copy */
+.cat-path-table { border-collapse:collapse; width:100%; }
+.cat-path-table td:first-child, .cat-path-table th:first-child { white-space:nowrap; width:50px; }
+.cat-path-table td:nth-child(2) {
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+.cat-path-table td:nth-child(2):hover {
+  background: #FFF5EB;
+  color: #FB7701;
+}
+.cat-path-table td:nth-child(2):hover::after {
+  content: '📋 单击复制路径';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #FB7701;
+  background: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #FB7701;
+  white-space: nowrap;
+}
+.copy-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #FB7701;
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  animation: fadeInOut 2s ease;
+}
+@keyframes fadeInOut {
+  0% { opacity: 0; top: 0; }
+  15% { opacity: 1; top: 20px; }
+  85% { opacity: 1; top: 20px; }
+  100% { opacity: 0; top: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">T</div>
+    <div class="logo-text">张阿莱<br><span style="font-size:11px;color:#999">商家服务站</span></div>
+  </div>
+  <div class="nav">
+    <a class="nav-item active" onclick="navTo('dashboard')"><span class="nav-icon">🏠</span><span>工作台</span></a>
+    <a class="nav-item" onclick="navTo('category')"><span class="nav-icon">📋</span><span>类目指引</span></a>
+    <a class="nav-item" onclick="navTo('scarcity')"><span class="nav-icon">⭐</span><span>稀缺版型</span></a>
+    <a class="nav-item" onclick="navTo('sizing')"><span class="nav-icon">📏</span><span>尺码信息</span></a>
+    <a class="nav-item" onclick="navTo('title')"><span class="nav-icon">📝</span><span>标题优化</span></a>
+    <a class="nav-item" onclick="navTo('visual')"><span class="nav-icon">🎨</span><span>视觉优化</span></a>
+    <a class="nav-item" onclick="navTo('marketing')"><span class="nav-icon">📅</span><span>营销节点</span></a>
+    <a class="nav-item" onclick="navTo('hotsale')"><span class="nav-icon">🔥</span><span>热销元素</span></a>
+    <a class="nav-item" onclick="navTo('compliance')"><span class="nav-icon">🛡️</span><span>店铺合规</span></a>
+    <a class="nav-item" onclick="navTo('news')"><span class="nav-icon">📰</span><span>近期资讯</span></a>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- 1. 工作台 -->
+<div class="section" id="dashboard">
+  <div class="banner">
+    <h1>张阿莱商家服务站</h1>
+    <p>TEMU印花男装运营 · 微信号：Alai3er</p>
+  </div>
+  <div class="section-title">本周运营重点</div>
+  <div class="card-grid">
+    <div class="card" style="cursor:pointer" onclick="navTo('hotsale')"><h3>🔥 万圣节元素上新</h3><p>当前正值万圣节上新关键节点，建议尽快上架万圣节相关元素商品。具体热销元素可参考节日专场板块。</p></div>
+    <div class="card" style="cursor:pointer" onclick="navTo('scarcity')"><h3>⭐ 稀缺版型招品</h3><p>亚麻系列是目前最热招的稀缺版型，请优先打版开款，稀缺版型中有对应货盘的老板请联系【张阿莱】。</p></div>
+
+  </div>
+  <div style="margin-top:24px">
+    <div class="section-title">常用工具</div>
+    <div class="card-grid">
+      <div class="card" style="text-align:center;cursor:pointer" onclick="navTo('scarcity')"><h3 style="color:#FB7701">⭐ 稀缺版型</h3><p>查看热招稀缺版型</p></div>
+      <div class="card" style="text-align:center;cursor:pointer" onclick="navTo('hotsale')"><h3 style="color:#FB7701">🔥 热销元素</h3><p>热销印花 & 节日专场</p></div>
+      <div class="card" style="text-align:center;cursor:pointer" onclick="navTo('title')"><h3 style="color:#FB7701">📝 标题公式</h3><p>各品类标题优化模板</p></div>
+      <div class="card" style="text-align:center;cursor:pointer" onclick="navTo('visual')"><h3 style="color:#FB7701">🎨 视觉优化</h3><p>主图类型推荐&AI生图指南</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. 类目指引 -->
+<div class="section" id="category">
+  <div class="section-title">类目指引</div>
+  <p style="color:#666;margin-bottom:24px">以下为【张阿莱】负责类目的完整上新路径，上架时选择正确的类目路径才能对接。</p>
+
+  <div class="element-section">
+    <div class="element-title" id="cat-tshirt">T恤</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 男士户外服饰 > 男士户外衬衫 > T恤</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 新奇物品 > 新奇服装和产品 > 新奇服装 > 男士新奇服装 > 男士新奇T恤、衬衫、polo衫 > 男士新奇T恤</td></tr>
+      <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 骑行服 > 男士骑行服 > T恤</td></tr>
+      <tr><td>4</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 跑步服 > 男士跑步服 > 男士跑步T恤 > T恤</td></tr>
+      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 男士骑行服 > T恤</td></tr>
+      <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 男士跑步T恤 > T恤</td></tr>
+      <tr><td>7</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士休闲运动衫、T恤 > 男士休闲运动T恤</td></tr>
+      <tr><td>8</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 男士户外衬衫 > T恤</td></tr>
+      <tr><td>9</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 男士运动休闲衬衫和Polo衫 > T恤</td></tr>
+    </table>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">足球服</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 团队运动 > 足球用品 > 服装 > 男士足球服 > T恤</td></tr>
+    </table>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">POLO</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 高尔夫用品 > 服装 > 男士高尔夫服 > 男士高尔夫T恤 > T恤</td></tr>
+    </table>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title" id="cat-hoodie">卫衣</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 攀岩用品 > 服装 > 男士户外服饰 > 卫衣</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 卫衣</td></tr>
+      <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 瑜伽用品 > 服装 > 男士瑜伽服 > 连帽衫</td></tr>
+      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士卫衣</td></tr>
+      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士连帽运动衫</td></tr>
+    </table>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">防晒衣</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 男士运动休闲泳装、冲浪装和潜水服 > 防晒衣</td></tr>
+    </table>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title" id="cat-fitness-top">健身服上衣</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 跑步服 > 男士跑步服 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 跑步 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>7</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 贴身衣和压缩衣 > 男士运动上衣</td></tr>
+    </table>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">健身服裤子</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 跑步服 > 男士跑步服 > 打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
+      <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
+      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 跑步 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
+      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
+    </table>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">健身服套装</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士贴身运动衣 > 男士贴身套装</td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
+    <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 健身服类目面料要求：</b>健身服类目要求面料氨纶含量 ≥ 8%，提报时请确保面料成分符合此标准，否则将影响审核通过率。</p>
+  </div>
+</div>
+
+<!-- 3. 稀缺版型 -->
+<div class="section" id="scarcity">
+  <div class="section-title">稀缺版型</div>
+  <p style="color:#666;margin-bottom:24px">以下为近期热招的稀缺版型，包含底板说明和参考图片。⭐亚麻系列的开款优先级最高，建议优先打版。</p>
+
+  <!-- 版型1: T恤 -->
+  <div class="element-section">
+    <div class="element-title">T恤/Polo</div>
+    <div class="card" style="margin-bottom:16px;background:#FFF5EB;border-left:4px solid #FB7701">
+      <div style="font-size:14px;color:#333;line-height:2"><b>底板描述：</b><br>• 版型名称：短袖T恤<br>• 面料克重：180g/m²<br>• 季节：春/秋<br>• 风格：休闲<br>• 印花类型：定位印花<br>• 成分：棉/华夫格/牛奶丝/速干面料<br>• 领型：圆领/V领/亨利</div>
+      <a onclick="navToCat('cat-tshirt')" style="display:inline-block;margin-top:8px;padding:6px 16px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:13px;cursor:pointer">📋 查看类目指引 →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0001.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0002.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0003.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0004.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <!-- 版型2: 卫衣/连帽衫 -->
+  <div class="element-section">
+    <div class="element-title">卫衣/连帽衫</div>
+    <div class="card" style="margin-bottom:16px;background:#FFF5EB;border-left:4px solid #FB7701">
+      <div style="font-size:14px;color:#333;line-height:2"><b>底板描述：</b><br>• 版型名称：卫衣/连帽衫<br>• 面料克重：220g/m²<br>• 季节：春/秋<br>• 风格：休闲<br>• 印花类型：烫画/数码印<br>• 成分：仿棉/牛奶丝/棉麻/空气层/健康布/直贡呢/摇粒绒/150D高弹<br>• 领型：连帽/翻领/立领</div>
+      <a onclick="navToCat('cat-hoodie')" style="display:inline-block;margin-top:8px;padding:6px 16px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:13px;cursor:pointer">📋 查看类目指引 →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0005.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0006.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0007.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0008.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0009.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0010.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0011.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0012.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0013.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <!-- 版型3: 稀缺面料-亚麻 -->
+  <div class="element-section">
+    <div class="element-title" id="cat-linen">稀缺面料-亚麻 ⭐最高优先级</div>
+    <div class="card" style="margin-bottom:16px;background:#FFF5EB;border-left:4px solid #FB7701">
+      <div style="font-size:14px;color:#333;line-height:2"><b>底板描述：</b><br>• 版型名称：连帽衫/亨利衫<br>• 面料克重：140g/m²<br>• 季节：春/秋<br>• 风格：休闲<br>• 印花工艺：烫画<br>• 面料：亚麻/棉麻<br>• 衣领型：连帽/半开襟<br><span style="color:#FB7701;font-weight:600">⭐ 开款优先级最高，建议优先打版，抢占市场先机。</span></div>
+      <a onclick="navTo('category')" style="display:inline-block;margin-top:8px;padding:6px 16px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:13px;cursor:pointer">📋 查看类目指引 →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0014.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0015.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0016.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0017.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0018.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0019.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0020.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0021.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0022.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0023.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <!-- 版型4: 类目招品-健身服 -->
+  <div class="element-section">
+    <div class="element-title" id="cat-fitness">类目招品-健身服</div>
+    <div class="card" style="margin-bottom:16px;background:#FFF5EB;border-left:4px solid #FB7701">
+      <div style="font-size:14px;color:#333;line-height:2"><b>底板描述：</b><br>• 版型名称：单件/套装<br>• 面料克重：180g/m²<br>• 季节：春/秋<br>• 风格：运动<br>• 印花类型：定位印花<br>• 成分：牛奶丝（含8%氨纶）<br>• 版型：紧身<br><span style="color:#e74c3c;font-weight:600">⚠️ 面料必须含8%及以上的氨纶</span></div>
+      <a onclick="navToCat('cat-fitness-top')" style="display:inline-block;margin-top:8px;padding:6px 16px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:13px;cursor:pointer">📋 查看类目指引 →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0024.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0025.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0026.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0027.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0028.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0029.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0030.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0031.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0032.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0033.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0034.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.5 尺码信息 -->
+<div class="section" id="sizing">
+  <div class="section-title">尺码信息</div>
+
+  <!-- 面料弹性 -->
+  <div class="element-section">
+    <div class="element-title">面料弹性</div>
+    <div class="card">
+      <p style="font-size:14px;color:#333;line-height:2">手指捏住10CM距离的双层面料，用15N（1.5L水的重量）的力拉伸面料，所达到的拉伸值，计算得到拉伸率。</p>
+      <p style="font-size:14px;color:#333;line-height:2">（弹性表述横向、纵向需分开，如：横向高弹，纵向低弹）。</p>
+      <div style="margin-top:12px;padding:12px 16px;background:#f9f9f9;border-radius:8px">
+        <p style="font-size:14px;color:#333;margin:0"><b>拉伸值计算：</b>拉伸率 = 拉伸值 ÷ 原长（10CM）× 100%</p>
+      </div>
+      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>举例：</b>原始长度10CM，用15N的力拉到了15CM，拉伸值为5CM，则拉伸率为50%，面料弹性选中弹。</p>
+    </div>
+  </div>
+
+  <!-- 面料克重 -->
+  <div class="element-section">
+    <div class="element-title">面料克重</div>
+    <div class="card">
+      <p style="font-size:14px;color:#333;line-height:2">选择品类和面料，即可查询面料克重要求。查不到的面料请联系对接运营张阿莱。</p>
+      <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <select id="fabricCategory" onchange="updateFabricOptions()" style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;min-width:140px">
+          <option value="">选择品类</option>
+          <option value="衬衫">衬衫</option>
+          <option value="上衣">上衣</option>
+          <option value="裤子">裤子</option>
+          <option value="套装">套装</option>
+          <option value="卫衣">卫衣</option>
+          <option value="西装">西装</option>
+        </select>
+        <select id="fabricName" style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;flex:1;min-width:200px">
+          <option value="">请先选择品类</option>
+        </select>
+        <button onclick="queryFabricWeight()" style="padding:10px 24px;background:#FB7701;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer">🔍 查询</button>
+      </div>
+      <div id="fabricResult" style="display:none;margin-top:16px"></div>
+      <div style="margin-top:16px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px dashed #FB7701">
+        <p style="font-size:13px;color:#333;margin:0"><b>💡 不认识这种面料？</b></p>
+        <p style="font-size:13px;color:#333;margin-top:8px">点击复制面料名称关键词，去谷歌图片搜索查看面料样式：</p>
+        <button onclick="copyAndSearchFabric()" style="margin-top:8px;padding:6px 16px;background:#FB7701;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer">📋 复制并搜索面料图片 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 男装尺码 -->
+  <div class="element-section">
+    <div class="element-title">男装尺码</div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(event, 'tab-eu-size')">🌍 欧美码</div>
+      <div class="tab" onclick="switchTab(event, 'tab-asia-size')">🌏 亚洲码</div>
+    </div>
+
+    <!-- Tab 1: 欧美码 -->
+    <div class="tab-content active" id="tab-eu-size">
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">欧美码男装详细尺码信息及行业惯例分享，点击下方链接查看或下载。</p>
+        <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+          <a href="https://qr61.cn/opdkFI/qZNNgNb" target="_blank" style="display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px">📊 详细尺码信息 →</a>
+          <a href="https://qr61.cn/opdkFI/qGOnU0Z" target="_blank" style="display:inline-block;padding:8px 20px;background:#fff;color:#FB7701;border:1px solid #FB7701;border-radius:6px;text-decoration:none;font-size:14px">📋 标码男装行业惯例分享 →</a>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;background:#FFF5EB;border-left:4px solid #FB7701">
+        <p style="font-size:14px;color:#333;line-height:2;margin:0"><b>⚠️ 尺码提示：</b></p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:8px">• 束脚裤裤长短于100CM需标注为9分裤。</p>
+        <p style="font-size:14px;color:#333;line-height:2">• 直筒裤裤长短于102CM需标注为9分裤。</p>
+        <p style="font-size:14px;color:#333;line-height:2">• 腰抽绳长度不短于140cm。</p>
+      </div>
+    </div>
+
+    <!-- Tab 2: 亚洲码 -->
+    <div class="tab-content" id="tab-asia-size">
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">亚洲码男装详细尺码信息及行业惯例分享，点击下方链接查看或下载。</p>
+        <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+          <a href="https://qr61.cn/opdkFI/qAW5cwz" target="_blank" style="display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px">📊 详细尺码信息 →</a>
+          <a href="https://qr61.cn/opdkFI/qCsogVd" target="_blank" style="display:inline-block;padding:8px 20px;background:#fff;color:#FB7701;border:1px solid #FB7701;border-radius:6px;text-decoration:none;font-size:14px">📋 Asian男装行业惯例分享 →</a>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;background:#FFF5EB;border-left:4px solid #FB7701">
+        <p style="font-size:14px;color:#333;line-height:2;margin:0"><b>⚠️ 尺码提示：</b></p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:8px">• 束脚裤裤长短于98CM需标注为九分裤。</p>
+        <p style="font-size:14px;color:#333;line-height:2">• 直筒裤裤长短于100CM需标注为九分裤。</p>
+        <p style="font-size:14px;color:#333;line-height:2">• 腰抽绳长度不短于140cm。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. 标题优化 -->
+<div class="section" id="title">
+  <div class="section-title">标题优化</div>
+
+  <div class="card" style="margin-bottom:24px">
+    <p>我们对前端热销商品的标题进行分析，进一步拆解标题涉及的维度，并按照点击率表现进行排序，最终总结出各类目通用的标题公式。</p>
+  </div>
+
+  <div class="element-title">各品类标题公式</div>
+  <div class="card-grid" style="margin-bottom:24px">
+    <div class="card" style="cursor:pointer" onclick="copyFormula(this)" title="点击复制此公式">
+      <h3>T恤</h3>
+      <p style="font-size:13px;color:#FB7701;line-height:2">【节日】+【人群】+【图案/花色】+【领型】+【袖长】+【场景】+【风格】+【功能特性】+【季节】+【面料/材质】+【颜色】+【版型】+【细节】+【规格】+【热搜词】</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="copyFormula(this)" title="点击复制此公式">
+      <h3>卫衣</h3>
+      <p style="font-size:13px;color:#FB7701;line-height:2">【节日】+【品类】+【人群】+【领型】+【场景】+【风格】+【袖长】+【季节】+【功能特性】+【图案/花色】+【面料/材质】+【颜色】+【版型】+【细节】+【闭合】+【热搜词】</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="copyFormula(this)" title="点击复制此公式">
+      <h3>POLO</h3>
+      <p style="font-size:13px;color:#FB7701;line-height:2">【节日】+【品类】+【人群】+【领型】+【门襟】+【图案/花色】+【场景】+【风格】+【功能特性】+【季节】+【袖长】+【面料/材质】+【颜色】+【版型】+【细节】+【规格】+【热搜词】</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="copyFormula(this)" title="点击复制此公式">
+      <h3>打底压缩</h3>
+      <p style="font-size:13px;color:#FB7701;line-height:2">【节日】+【品类】+【人群】+【功能特性】+【场景】+【领型】+【袖长】+【季节】+【风格】+【面料/材质】+【颜色】+【图案/花色】+【版型】+【细节】+【规格】+【热搜词】</p>
+    </div>
+    <div class="card" style="border:2px solid #FB7701;cursor:pointer" onclick="copyFormula(this)" title="点击复制此公式">
+      <h3>防晒服 ⭐</h3>
+      <p style="font-size:13px;color:#FB7701;line-height:2">【节日】+【品类】+【人群】+【场景】+【功能特性】+【领型】+【袖长】+【季节】+【风格】+【面料/材质】+【颜色】+【图案/花色】+【版型】+【细节】+【规格】+【热搜词】</p>
+      <p style="font-size:12px;color:#e74c3c;margin-top:8px;line-height:1.6">⚠️ 特别说明：如果无防晒资质，请勿添加【功能特性】维度的描述（如UPF50+、UV Protection等），否则可能面临合规风险。</p>
+    </div>
+  </div>
+
+  <!-- Online Title Generator -->
+  <div class="card" style="margin-top:24px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:2px solid #FB7701">
+    <h3 style="color:#FB7701">🤖 在线标题生成器</h3>
+    <p>选择品类，从各维度下拉菜单中选择关键词，系统将根据公式自动生成英文标题，并附带标题内容拆解。所有维度均支持“以上都不是”选项（非必填）。<b style="color:#FB7701">此标题仅供参考体验，请核实无误后使用</b>，不可直接用于上架。</p>
+    <div style="margin-top:16px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px dashed #FB7701">
+      <p style="font-size:13px;color:#333;margin:0">⚠️ <b>使用说明：</b>系统无法看到您的商品图案内容，如选择"以上都不是"需手动补充明确的图案信息，请确保描述真实准确。</p>
+    </div>
+    <div style="margin-top:16px">
+      <label style="font-size:14px;color:#333;font-weight:600">选择品类：</label>
+      <select id="onlineTitleCat" style="margin-left:8px;padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:14px" onchange="updateOnlineTitle()">
+        <option value="tshirt">T恤</option>
+        <option value="hoodie">卫衣</option>
+        <option value="polo">POLO</option>
+        <option value="compression">打底压缩</option>
+        <option value="sunshirt">防晒服</option>
+      </select>
+      <div id="sunProtectionOnline" style="display:none;margin-top:12px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px solid #FB7701">
+        <label style="font-size:14px;color:#333;font-weight:600">是否具有防晒资质？</label>
+        <select id="onlineHasSunProtection" style="margin-left:8px;padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:14px">
+          <option value="yes">是，具有防晒资质</option>
+          <option value="no">否，无防晒资质</option>
+        </select>
+        <p style="font-size:12px;color:#e74c3c;margin-top:6px">⚠️ 无防晒资质时，系统将自动跳过功能特性维度。</p>
+      </div>
+    </div>
+    <div id="onlineTitleInputs" style="margin-top:16px;display:grid;grid-template-columns:1fr;gap:10px;max-width:600px">
+      <!-- Dropdowns will be generated by JS -->
+    </div>
+    <div style="margin-top:16px">
+      <button onclick="generateOnlineTitle()" style="padding:10px 24px;background:#FB7701;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px">生成标题</button>
+      <button onclick="clearOnlineTitle()" style="padding:10px 24px;background:#fff;color:#FB7701;border:1px solid #FB7701;border-radius:8px;cursor:pointer;font-size:14px;margin-left:8px">清空</button>
+    </div>
+    <div id="onlineTitleResult" style="margin-top:16px;display:none;padding:16px;background:#f9f9f9;border-radius:8px">
+      <p style="font-size:13px;color:#999;margin-bottom:8px">⚠️ 此标题仅为给用户提供标题生成体验，标题需自行核实无误后使用。系统无法看到您的商品图案内容，请核实图案/花色维度描述的真实性。</p>
+      <p style="font-size:14px;color:#333;line-height:1.8"><b>🇬🇧 英文标题：</b><br><span id="onlineTitleEn" style="color:#FB7701;font-weight:600"></span></p>
+      <p style="font-size:14px;color:#333;line-height:1.8;margin-top:8px"><b>📝 内容拆解：</b><br><span id="onlineTitleBreakdown" style="color:#333;font-size:13px"></span></p>
+      <p style="font-size:13px;color:#666;margin-top:8px"><b>英文字符数：</b><span id="onlineTitleCount"></span> | <b>撰写逻辑：</b><span id="onlineTitleLogic"></span></p>
+    </div>
+  </div>
+
+  <div style="margin:40px 0 24px;padding:16px 20px;background:linear-gradient(90deg,#FFF5EB,#fff);border-left:4px solid #FB7701;border-radius:8px">
+    <p style="font-size:14px;color:#333;line-height:1.8;margin:0">💡 <b>下方为AI标题生成工具</b>：如果您希望由AI自动生成标题，请使用下方工具。需要<b>同时提供关键词表格和商品图片</b>给豆包，AI将根据公式和图片特征自动撰写标题。</p>
+  </div>
+
+  <div class="element-title">标题生成工具</div>
+  <div class="card" style="margin-bottom:24px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:2px solid #FB7701">
+    <h3 style="color:#FB7701">🤖 AI标题生成工具</h3>
+    <p>选择品类，复制下方提示词到豆包APP。<b style="color:#FB7701">需要同时提供关键词表格和商品图片</b>给豆包，才能生成精准标题。</p>
+    <div style="margin-top:12px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px dashed #FB7701">
+      <p style="font-size:13px;color:#333;margin:0"><b>📋 关键词表格下载：</b>请先下载关键词枚举表格，在豆包中<b>同时上传</b>关键词表格和商品图片，再粘贴提示词。<br>
+      <a href="https://qr61.cn/opdkFI/qhlSMXC" target="_blank" onclick="showDownloadHint()" style="display:inline-block;margin-top:8px;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:13px">⬇️ 点击下载关键词表格</a></p>
+      <p style="font-size:12px;color:#999;margin-top:6px;margin-bottom:0">💡 点击按钮后将打开下载页面，请在页面中点击下载按钮保存表格文件，然后在豆包中上传该文件。</p>
+    </div>
+    <div style="margin-top:16px">
+      <label style="font-size:14px;color:#333;font-weight:600">选择品类：</label>
+      <select id="titleCategory" style="margin-left:8px;padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:14px" onchange="updateTitlePrompt()">
+        <option value="tshirt">T恤</option>
+        <option value="hoodie">卫衣</option>
+        <option value="polo">POLO</option>
+        <option value="compression">打底压缩</option>
+        <option value="sunshirt">防晒服</option>
+      </select>
+      <div id="sunProtectionOption" style="display:none;margin-top:12px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px solid #FB7701">
+        <label style="font-size:14px;color:#333;font-weight:600">是否具有防晒资质？</label>
+        <select id="hasSunProtection" style="margin-left:8px;padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:14px" onchange="updateTitlePrompt()">
+          <option value="yes">是，具有防晒资质（可添加UPF50+等功能特性）</option>
+          <option value="no">否，无防晒资质（请勿添加功能特性维度）</option>
+        </select>
+        <p style="font-size:12px;color:#e74c3c;margin-top:6px">⚠️ 如果无防晒资质，请勿在标题中添加UPF50+、UV Protection等功能特性描述，否则可能面临合规风险。</p>
+      </div>
+    </div>
+    <div id="titlePromptBox" style="margin-top:16px;padding:16px;background:#f9f9f9;border-radius:8px;font-size:13px;color:#555;line-height:1.8;position:relative">
+      <b>角色：</b>你是一位精通TEMU平台算法与欧美消费习惯的跨境电商运营专家<br>
+      <b>任务：</b>请结合上传的【商品图片】和【标题关键词枚举表格】，严格按照T恤标题公式【节日 + 人群 + 图案/花色 + 领型 + 袖长 + 场景 + 风格 + 功能特性 + 季节 + 面料/材质 + 颜色 + 版型 + 细节 + 规格 + 热搜词】为该商品撰写符合TEMU规范的英文标题<br>
+      <b>TEMU商品标题硬性要求：</b><br>
+      1. 中文标题控制在100字符，英文标题控制在250字符，前70字符放置最核心卖点<br>
+      2. 严禁出现任何促销词（如Sale, Free Shipping, Best Seller）、无意义堆砌词及品牌侵权词<br>
+      3. 若枚举表中的词无法精准覆盖图片的特征（如特定的图案/印花细节、面料视觉效果等），请结合图片本身的视觉特征，自动补充最贴切、最地道的英文词汇填充到对应位置<br>
+      4. 英文标题每个实词首字母大写，半角标点，阅读自然顺畅<br>
+      <b>输出格式：</b>请分别输出中文和英文的商品标题，标明标题占用的字符数和标题撰写逻辑
+      <button onclick="copyTitlePrompt()" style="position:absolute;top:8px;right:8px;padding:4px 12px;background:#FB7701;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px">复制提示词</button>
+    </div>
+    <p style="margin-top:12px;color:#999;font-size:13px">点击"复制提示词"后，系统将自动复制提示词并打开豆包网页。请在豆包中粘贴提示词，<b style="color:#FB7701">同时上传关键词表格和商品图片</b>即可生成标题。</p>
+  </div>
+
+  <div class="element-title">实操举例</div>
+  <div style="margin-bottom:24px">
+    <div class="card">
+      <h3>公式套用举例——钓鱼服</h3>
+      <div class="gallery-grid">
+        <div class="gallery-item" style="width:200px;aspect-ratio:unset"><img src="scarce_s16_img1.png" loading="lazy" onclick="openModal(this.src,false)" style="height:200px;object-fit:cover"></div>
+        <div class="gallery-item" style="width:200px;aspect-ratio:unset"><img src="scarce_s16_img2.png" loading="lazy" onclick="openModal(this.src,false)" style="height:200px;object-fit:cover"></div>
+      </div>
+      <p style="font-size:13px;color:#333;line-height:1.8"><b>进阶公式：</b>节日 + 品类 + 人群 + 场景 + 功能特性 + 领型 + 袖长 + 季节 + 风格 + 面料/材质 + 颜色 + 图案/花色 + 版型 + 细节 + 规格 + 热搜词</p>
+      <p style="font-size:13px;color:#FB7701;line-height:1.8;margin-top:8px"><b>进阶标题：</b>Fishing Season Sun Shirt Men's Fishing UPF50+ Sun Protection Hooded Long Sleeve Summer Outdoor Polyester White Printed Slim Fit Ribbed Cuff Pullover 1pc Mens Long Sleeve Sun Shirts</p>
+    </div>
+  </div>
+
+  <div class="element-title">重点关注的节日关键词</div>
+  <div class="card" style="margin-bottom:24px">
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="scarce_s17_img1.png" loading="lazy" onclick="openModal(this.src,false)"></div>
+    </div>
+    <p style="color:#FB7701;font-weight:600">⚠️ 需提前2个月就把节日关键词添加到标题中</p>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ 标题优化注意事项</h3>
+    <p>• 活动节日、利益点等的前置，效果最明显<br>
+    • 建议只加关键词，而不是大批量替换原标题<br>
+    • 避免堆砌关键词或出现促销词，如 free shipping, best seller, sale等</p>
+  </div>
+</div>
+
+<!-- 5. 视觉优化 -->
+<div class="section" id="visual">
+  <div class="section-title">视觉优化</div>
+
+  <div class="card" style="margin-bottom:24px">
+    <p>以下是各类视觉风格的参考示例，商家可参照这些风格进行商品主图拍摄和制作。选择最适合自己商品的风格类型，提升点击率和转化率。</p>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">立体感</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">衣服呈现立体效果，有填充或支撑感</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0035.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0036.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0037.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0038.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">海报体+功能icon</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">衣服挂在衣架或挂钩上拍摄，配合功能icon说明</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0039.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0040.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0041.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0042.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">半平铺半人模</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">上衣平铺搭配裤子人模展示</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0043.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0044.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">折叠</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">衣服折叠后拍摄</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0045.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0046.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0047.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">人台</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">使用人台/假人模特展示</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0048.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0049.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">礼盒</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">商品以礼盒形式包装展示</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="scarce_s5_img5.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="scarce_s5_img6.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">杂志风</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">真人模特穿着展示，杂志风格拍摄</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0050.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0051.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">海拔拼接</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">多张图片拼接展示不同角度和细节</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0052.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">摆拍</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">产品搭配道具摆拍</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0053.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0054.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0055.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0056.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">SET拆分展示</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">套装各单品拆开展示</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0057.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0058.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0059.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0060.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">俯拍</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">俯视角度拍摄主图，配合文字说明</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0061.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0062.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0063.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">OOTD</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">OOTD（Outfit of the Day）日常穿搭展示，模特搭配帽子/项链/口罩等配饰</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0064.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0065.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0066.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">摆造型</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">模特摆造型展示整体穿搭效果</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0067.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0068.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0069.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0070.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">户外场景</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">户外真实场景拍摄</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0071.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0072.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0073.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0074.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">运动场景</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">运动场景拍摄，展现运动服饰功能性和活力</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0075.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0076.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0077.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">健身房场景</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">健身房内拍摄，突出运动服饰专业感</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0078.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0079.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0080.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">节日元素</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">融入节日主题元素的拍摄风格</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0081.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0082.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0083.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0084.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">黑人街潮</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">黑人模特街头潮流风格拍摄</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0085.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0086.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0087.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0088.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">城市街道</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">城市街道背景拍摄，都市潮流风格</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0089.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0090.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0091.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0092.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+  <div class="element-section">
+    <div class="element-title">视觉风格优化指南</div>
+    <p style="color:#666;margin-bottom:12px;font-size:14px">以下是各类视觉风格的参考示例汇总，商家可参照这些风格进行商品主图拍摄和制作。</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0035.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0036.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0039.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0040.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0045.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0046.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0053.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0054.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0048.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0049.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+  </div>
+
+    <div class="element-title">视觉风格优化指南</div>
+
+  <div class="card" style="margin-bottom:24px">
+    <h3>步骤一：生成视觉风格图片</h3>
+    <p style="font-size:13px;line-height:1.8"><b>准备工作：</b><br>1. 目标生成视觉风格的图片2-5张<br>2. 豆包APP</p>
+    <div style="margin-top:12px;padding:12px;background:#f9f9f9;border-radius:8px;font-size:13px;color:#555;line-height:1.8">
+      <b>AI生成提示词举例：</b><br>
+      <b>任务：</b>请参照视觉参考图，裂变出10张高级、时尚的黑色连帽卫衣上身效果图<br>
+      <b>核心要求：</b><br>
+      1. 必须严格按照给出的效果图版型生成，严禁改为其他版型<br>
+      2. 需要呈现不同的背景场景、不同的动作姿态，避免雷同<br>
+      3. 统一采用俯拍/高角度俯视视觉，不露出模特的脸且能完整看到衣服正面<br>
+      <b>输出格式：</b>宽高比3:4，宽>1340px，高>1785px，小于2M，使用时去掉水印
+    </div>
+    <div style="display:flex;gap:40px;margin-top:12px;flex-wrap:wrap">
+      <div style="flex:0 0 auto">
+        <p style="font-size:13px;color:#FB7701;font-weight:600;margin-bottom:8px">📷 视觉参考图</p>
+        <div class="gallery-item" style="width:200px"><img src="step1_ref.png" loading="lazy" onclick="openModal(this.src,false)" style="height:200px;object-fit:cover;border-radius:8px"></div>
+      </div>
+      <div style="flex:1;min-width:300px">
+        <p style="font-size:13px;color:#FB7701;font-weight:600;margin-bottom:8px">🎨 AI生成效果（5张）</p>
+        <div class="gallery-grid">
+          <div class="gallery-item"><img src="step1_gen1.jpg" loading="lazy" onclick="openModal(this.src,false)"></div>
+          <div class="gallery-item"><img src="step1_gen2.jpg" loading="lazy" onclick="openModal(this.src,false)"></div>
+          <div class="gallery-item"><img src="step1_gen3.jpg" loading="lazy" onclick="openModal(this.src,false)"></div>
+          <div class="gallery-item"><img src="step1_gen4.png" loading="lazy" onclick="openModal(this.src,false)"></div>
+          <div class="gallery-item"><img src="step1_gen5.jpg" loading="lazy" onclick="openModal(this.src,false)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px">
+    <h3>步骤二：替换为商家自己的版型</h3>
+    <p style="font-size:13px;line-height:1.8"><b>准备工作：</b><br>1. 已经生成的样机图片<br>2. 商家自己的版型图片<br>3. 豆包APP</p>
+    <div style="margin-top:12px;padding:12px;background:#f9f9f9;border-radius:8px;font-size:13px;color:#555;line-height:1.8">
+      <b>AI生成提示词举例：</b><br>
+      <b>任务：</b>请将这件卫衣替换到已生成的五张效果图中<br>
+      <b>核心要求：</b><br>
+      1. 待替换卫衣有拉链，版型需要严格保持一致<br>
+      2. 正面有两个小印花，帽子和背面无印花，不要随意编造细节<br>
+      3. 只替换卫衣即可，其他保持不动<br>
+      <b>输出格式：</b>宽高比3:4，宽>1340px，高>1785px，小于2M，使用时去掉水印
+    </div>
+    <div style="display:flex;gap:40px;margin-top:12px;flex-wrap:wrap">
+      <div style="flex:0 0 auto">
+        <p style="font-size:13px;color:#FB7701;font-weight:600;margin-bottom:8px">📷 版型参考图</p>
+        <div class="gallery-item" style="width:200px"><img src="step2_ref.jpg" loading="lazy" onclick="openModal(this.src,false)" style="height:200px;object-fit:cover;border-radius:8px"></div>
+      </div>
+      <div style="flex:1;min-width:300px">
+        <p style="font-size:13px;color:#FB7701;font-weight:600;margin-bottom:8px">🎨 替换后效果（5张）</p>
+        <div class="gallery-grid">
+          <div class="gallery-item"><img src="step2_gen1.jpg" loading="lazy" onclick="openModal(this.src,false)"></div>
+          <div class="gallery-item"><img src="step2_gen2.jpg" loading="lazy" onclick="openModal(this.src,false)"></div>
+          <div class="gallery-item"><img src="step2_gen3.jpg" loading="lazy" onclick="openModal(this.src,false)"></div>
+          <div class="gallery-item"><img src="step2_gen4.jpg" loading="lazy" onclick="openModal(this.src,false)"></div>
+          <div class="gallery-item"><img src="step2_gen5.jpg" loading="lazy" onclick="openModal(this.src,false)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px">
+    <h3>📷 轮播图上传建议</h3>
+    <p>1. 最好上传7-10张，分别为正面图、背面图、动作图、场景图、工艺细节图、面料细节图<br>
+    2. 准备多种场景的图片分别上传，例如健身服适配健身场景、骑行场景、跑步场景等<br>
+    3. 请注意面料细节图的美观度，使用AI工具美化一下实拍图，但不要改变面料细节<br>
+    4. 热销品建议上传商品详情图，可以做一套漂亮的模板重复使用<br>
+    <span style="color:#FB7701;font-weight:600">轮播图数量越多越好</span></p>
+  </div>
+
+  <div class="card" style="margin-bottom:24px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:2px solid #FB7701">
+    <h3 style="color:#FB7701">🎨 视觉转化工具</h3>
+    <p>选择一种视觉风格类型，上传您的商品图片，复制下方提示词到豆包APP即可生成对应视觉效果。</p>
+    <div style="margin-top:16px">
+      <label style="font-size:14px;color:#333;font-weight:600">选择视觉风格：</label>
+      <select id="visualType" style="margin-left:8px;padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:14px" onchange="updateVisualPrompt()">
+        <option value="">请选择...</option>
+        <option value="立体感">立体感</option>
+        <option value="海报体+功能icon">海报体+功能icon</option>
+        <option value="半平铺半人模">半平铺半人模</option>
+        <option value="折叠">折叠</option>
+        <option value="人台">人台</option>
+        <option value="礼盒">礼盒</option>
+        <option value="杂志风">杂志风</option>
+        <option value="SET拆分展示">SET拆分展示</option>
+        <option value="俯拍">俯拍</option>
+        <option value="OOTD">OOTD</option>
+        <option value="摆造型">摆造型</option>
+        <option value="户外场景">户外场景</option>
+      </select>
+      <div id="visualPromptBox" style="margin-top:16px;padding:16px;background:#f9f9f9;border-radius:8px;font-size:13px;color:#555;line-height:1.8;position:relative">
+        <b>任务：</b>请参照所选视觉风格，将上传的商品图片转化为该风格的效果图<br>
+        <b>核心要求：</b><br>
+        1. 必须严格按照给出的商品版型生成，严禁改为其他版型<br>
+        2. 需要呈现不同的背景场景、不同的动作姿态，避免雷同<br>
+        3. 衣服细节不可改变（拉链头颜色、口袋、印花图案等需完整保留）<br>
+        <b>输出格式：</b>宽高比3:4，宽>1340px，高>1785px，小于2M
+        <button onclick="copyVisualPrompt()" style="position:absolute;top:8px;right:8px;padding:4px 12px;background:#FB7701;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px">复制提示词</button>
+      </div>
+      <p style="margin-top:12px;color:#999;font-size:13px">点击"复制提示词"后，系统将自动复制提示词并打开豆包网页。</p>
+      <div style="margin-top:12px;padding:12px 16px;background:#fff3e0;border-radius:8px;border-left:4px solid #FB7701">
+        <p style="font-size:13px;color:#FB7701;margin:0"><b>⚠️ 使用说明：</b>跳转到豆包后，需同时上传以下内容：<br>
+        ① 上方对应风格的示例图（请先在网页上右键保存参考图片）<br>
+        ② 您自己的商品版型图片<br>
+        将提示词和两张图片一起发给豆包，AI才能准确生成对应的视觉效果。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 7. 营销节点 -->
+<div class="section" id="marketing">
+  <div class="section-title">营销节点</div>
+
+  <div class="card" style="margin-bottom:24px">
+    <p>以下是近一年的重要营销节点，商家可根据节点提前规划印花元素和视觉风格。</p>
+  </div>
+
+  <table class="marketing-table" style="margin-bottom:32px">
+    <tr><th>月份</th><th>节日/节点</th><th>日期</th><th>热销印花元素</th></tr>
+    <tr><td>8月</td><td>啤酒节(Oktoberfest)</td><td>8月中-10月初</td><td>啤酒杯/巴伐利亚纹饰印花</td></tr>
+    <tr><td>9月</td><td>开学季</td><td>9月初</td><td>校园字母/书本元素印花</td></tr>
+    <tr><td>10月</td><td><b>万圣节</b></td><td>10月31日</td><td>骷髅/南瓜/蜘蛛网/蝙蝠印花</td></tr>
+    <tr><td>10月</td><td>亡灵节(Día de Muertos)</td><td>11月1-2日</td><td>墨西哥骷髅/万寿菊/玫瑰花印花</td></tr>
+    <tr><td>11月</td><td><b>黑色星期五</b></td><td>11月27日</td><td>折扣/促销主题印花</td></tr>
+    <tr><td>11月</td><td>网络星期一</td><td>11月30日</td><td>科技/数字元素印花</td></tr>
+    <tr><td>12月</td><td><b>圣诞节</b></td><td>12月25日</td><td>圣诞树/雪花/驯鹿/圣诞老人印花</td></tr>
+    <tr><td>12月</td><td>跨年夜</td><td>12月31日</td><td>烟花/倒数数字/金色金属元素印花</td></tr>
+    <tr><td>1月</td><td>新年</td><td>1月1日</td><td>新年生肖/福字/烟花印花</td></tr>
+    <tr><td>1月</td><td>三王节</td><td>1月6日</td><td>三王/星星/礼物盒印花</td></tr>
+    <tr><td>2月</td><td>狂欢节</td><td>2月(变动)</td><td>面具/彩带/羽毛元素印花</td></tr>
+    <tr><td>2月</td><td>情人节</td><td>2月14日</td><td>爱心/Cupid/玫瑰花印花</td></tr>
+    <tr><td>3月</td><td>圣帕特里克节</td><td>3月17日</td><td>三叶草/小矮人/金币元素印花</td></tr>
+    <tr><td>4月</td><td>复活节</td><td>4月(变动)</td><td>彩蛋/兔子/春花元素印花</td></tr>
+    <tr><td>5月</td><td>母亲节/父亲节预热</td><td>5月-6月</td><td>家庭/感恩/领带/工具元素印花</td></tr>
+  </table>
+
+  <!-- Global Festival Calendar -->
+  <div class="element-title">🌍 各洲国家节庆日历</div>
+
+  <div class="card" style="margin-bottom:20px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:1px solid #FB7701">
+    <h3 style="color:#FB7701">📖 长尾节日 vs 短尾节日</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:12px">
+      <div>
+        <p style="font-weight:600;color:#333">🔴 短尾节日（Short-tail）</p>
+        <p style="font-size:13px;color:#555;line-height:1.8;margin-top:4px">搜索量集中在节前1-2周，节后迅速回落。如情人节、万圣节、圣诞节等。<b>特点：</b>爆发性强、窗口期短、转化率高。<b>策略：</b>提前30-45天规划印花元素，节前2周加大广告投入。</p>
+      </div>
+      <div>
+        <p style="font-weight:600;color:#333">🔵 长尾节日（Long-tail）</p>
+        <p style="font-size:13px;color:#555;line-height:1.8;margin-top:4px">搜索量全年维持在较低水平，节前有小幅上升但不会暴增。如国旗日、劳动节、独立日等。<b>特点：</b>稳定但量小、窗口期长、竞争少。<b>策略：</b>常备少量库存，标题提前加入节日关键词即可。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Region Tabs -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <button class="region-tab active" onclick="switchRegion(event,'euroam')" style="padding:8px 16px;border:1px solid #FB7701;background:#FB7701;color:#fff;border-radius:6px;cursor:pointer;font-size:13px">欧美</button>
+    <button class="region-tab" onclick="switchRegion(event,'mideast')" style="padding:8px 16px;border:1px solid #ddd;background:#fff;color:#666;border-radius:6px;cursor:pointer;font-size:13px">中东</button>
+    <button class="region-tab" onclick="switchRegion(event,'jpkor')" style="padding:8px 16px;border:1px solid #ddd;background:#fff;color:#666;border-radius:6px;cursor:pointer;font-size:13px">日韩</button>
+    <button class="region-tab" onclick="switchRegion(event,'latam')" style="padding:8px 16px;border:1px solid #ddd;background:#fff;color:#666;border-radius:6px;cursor:pointer;font-size:13px">拉美</button>
+  </div>
+
+  <!-- 欧美 (Europe + North America) -->
+  <div id="euroam" class="region-content" style="display:block">
+    <table class="region-table">
+      <tr><th>日期</th><th>国家</th><th>节日</th><th>类型</th><th>热销印花元素</th></tr>
+      <tr><td>1月1日</td><td>欧美各国</td><td><a href="javascript:void(0)" onclick="showFestival('newyear')" style="color:#FB7701">新年</a></td><td><span class="badge badge-orange">短尾</span></td><td>烟花图案、年份数字、"Happy New Year"标语、金色亮片印花</td></tr>
+      <tr><td>1月6日</td><td>西班牙/意大利/德国</td><td>主显节/三王节</td><td><span class="badge badge-blue">长尾</span></td><td>皇冠、星星、骆驼图案、"Día de Reyes"标语</td></tr>
+      <tr><td>1月第3个周一</td><td>美国</td><td>马丁路德金日</td><td><span class="badge badge-blue">长尾</span></td><td>MLK名言标语、平等主题、黑白配色印花</td></tr>
+      <tr><td>2月14日</td><td>欧美各国</td><td><a href="javascript:void(0)" onclick="showFestival('valentine')" style="color:#FB7701">情人节</a></td><td><span class="badge badge-orange">短尾</span></td><td>爱心、玫瑰、丘比特、"Love"标语、红粉色系印花</td></tr>
+      <tr><td>2月中-3月初</td><td>法国/意大利/德国</td><td><a href="javascript:void(0)" onclick="showFestival('carnival')" style="color:#FB7701">狂欢节</a></td><td><span class="badge badge-orange">短尾</span></td><td>面具、羽毛头饰、亮片、金绿紫三色印花</td></tr>
+      <tr><td>2月第3个周一</td><td>美国</td><td>总统日</td><td><span class="badge badge-blue">长尾</span></td><td>星条旗、总统主题、红白蓝配色</td></tr>
+      <tr><td>3月17日</td><td>爱尔兰/英国/美国</td><td><a href="javascript:void(0)" onclick="showFestival('stpatrick')" style="color:#FB7701">圣帕特里克节</a></td><td><span class="badge badge-orange">短尾</span></td><td>三叶草、小妖精、"Lucky"标语、绿色系印花</td></tr>
+      <tr><td>3-4月(变动)</td><td>欧美各国</td><td><a href="javascript:void(0)" onclick="showFestival('easter')" style="color:#FB7701">复活节</a></td><td><span class="badge badge-orange">短尾</span></td><td>彩蛋、复活节兔子、小鸡、粉色/黄色系印花</td></tr>
+      <tr><td>4月23日</td><td>西班牙</td><td>圣乔治节</td><td><span class="badge badge-blue">长尾</span></td><td>玫瑰图案、书本元素、红黄条纹</td></tr>
+      <tr><td>5月1日</td><td>欧美各国</td><td>劳动节</td><td><span class="badge badge-blue">长尾</span></td><td>工具图案、劳动主题标语、红色系</td></tr>
+      <tr><td>5月第2个周日</td><td>美国/英国/法国/德国</td><td><a href="javascript:void(0)" onclick="showFestival('motherday')" style="color:#FB7701">母亲节</a></td><td><span class="badge badge-orange">短尾</span></td><td>康乃馨、"Best Mom"标语、花卉印花、粉色系</td></tr>
+      <tr><td>5月最后一个周一</td><td>美国</td><td>阵亡将士纪念日</td><td><span class="badge badge-blue">长尾</span></td><td>星条旗、红白蓝三色、烟花图案</td></tr>
+      <tr><td>6月第3个周日</td><td>美国/英国/法国</td><td><a href="javascript:void(0)" onclick="showFestival('fatherday')" style="color:#FB7701">父亲节</a></td><td><span class="badge badge-orange">短尾</span></td><td>领带、啤酒、"Best Dad"标语、蓝色系印花</td></tr>
+      <tr><td>7月1日</td><td>加拿大</td><td>加拿大日</td><td><span class="badge badge-blue">长尾</span></td><td>枫叶、红白色、"Canada"标语</td></tr>
+      <tr><td>7月4日</td><td>美国</td><td><a href="javascript:void(0)" onclick="showFestival('independenceday')" style="color:#FB7701">独立日</a></td><td><span class="badge badge-orange">短尾</span></td><td>星条旗、烟花、"USA"标语、红白蓝印花</td></tr>
+      <tr><td>8月中旬</td><td>意大利/西班牙/葡萄牙</td><td>八月节(Ferragosto)</td><td><span class="badge badge-blue">长尾</span></td><td>太阳、海滩、冰淇淋、热带印花</td></tr>
+      <tr><td>9月第1个周一</td><td>美国/加拿大</td><td>劳动节</td><td><span class="badge badge-blue">长尾</span></td><td>工具图案、劳动节标语</td></tr>
+      <tr><td>9月-10月初</td><td>德国</td><td><a href="javascript:void(0)" onclick="showFestival('oktoberfest')" style="color:#FB7701">啤酒节</a></td><td><span class="badge badge-orange">短尾</span></td><td>啤酒杯、巴伐利亚格纹、"Prost"标语、蓝白格子</td></tr>
+      <tr><td>10月第2个周一</td><td>加拿大</td><td>感恩节(加)</td><td><span class="badge badge-blue">长尾</span></td><td>火鸡、秋叶、感恩标语、棕色/橙色系</td></tr>
+      <tr><td>10月31日</td><td>美国/英国/爱尔兰</td><td><a href="javascript:void(0)" onclick="showFestival('halloween')" style="color:#FB7701">万圣节</a></td><td><span class="badge badge-orange">短尾</span></td><td>骷髅、南瓜、蝙蝠、"Boo"标语、黑橙配色</td></tr>
+      <tr><td>11月第2个周日</td><td>英国/法国</td><td>阵亡将士纪念日</td><td><span class="badge badge-blue">长尾</span></td><td>罂粟花图案、纪念标语、红色系</td></tr>
+      <tr><td>11月第4个周四</td><td>美国</td><td><a href="javascript:void(0)" onclick="showFestival('thanksgiving')" style="color:#FB7701">感恩节</a></td><td><span class="badge badge-orange">短尾</span></td><td>火鸡、秋叶、家庭主题印花</td></tr>
+      <tr><td>11月第4个周五</td><td>欧美各国</td><td><a href="javascript:void(0)" onclick="showFestival('blackfriday')" style="color:#FB7701">黑色星期五</a></td><td><span class="badge badge-orange">短尾</span></td><td>打折标签、"Black Friday"标语、购物车图案</td></tr>
+      <tr><td>12月6日</td><td>荷兰/比利时/德国</td><td>圣尼古拉斯节</td><td><span class="badge badge-blue">长尾</span></td><td>圣尼古拉斯、礼物、"Sinterklaas"标语</td></tr>
+      <tr><td>12月13日</td><td>瑞典/挪威</td><td>圣露西亚节</td><td><span class="badge badge-blue">长尾</span></td><td>蜡烛、白色长袍、光明主题、星星图案</td></tr>
+      <tr><td>12月25日</td><td>欧美各国</td><td><a href="javascript:void(0)" onclick="showFestival('christmas')" style="color:#FB7701">圣诞节</a></td><td><span class="badge badge-orange">短尾</span></td><td>圣诞树、驯鹿、雪花、"Merry Christmas"标语</td></tr>
+      <tr><td>12月26日</td><td>英国/爱尔兰</td><td>节礼日</td><td><span class="badge badge-orange">短尾</span></td><td>打折标签、"Boxing Day"标语、礼盒图案</td></tr>
+      <tr><td>12月31日</td><td>欧美各国</td><td>跨年夜</td><td><span class="badge badge-orange">短尾</span></td><td>烟花图案、年份数字、金色亮片印花</td></tr>
+    </table>
+  </div>
+
+  <!-- 中东 (Middle East) -->
+  <div id="mideast" class="region-content" style="display:none">
+    <table class="region-table">
+      <tr><th>日期</th><th>国家</th><th>节日</th><th>类型</th><th>热销印花元素</th></tr>
+      <tr><td>1月1日</td><td>中东各国</td><td><a href="javascript:void(0)" onclick="showFestival('newyear')" style="color:#FB7701">新年（公历）</a></td><td><span class="badge badge-orange">短尾</span></td><td>烟花图案、新月星星、金色系</td></tr>
+      <tr><td>1月7日</td><td>埃及/埃塞俄比亚</td><td>东正教圣诞节</td><td><span class="badge badge-blue">长尾</span></td><td>十字架、科普特纹样、金色系</td></tr>
+      <tr><td>1月19日</td><td>埃及</td><td>科普特主显节</td><td><span class="badge badge-blue">长尾</span></td><td>水纹、尼罗河元素、蓝色系</td></tr>
+      <tr><td>2月14日</td><td>阿联酋/沙特/土耳其</td><td><a href="javascript:void(0)" onclick="showFestival('valentine')" style="color:#FB7701">情人节</a></td><td><span class="badge badge-orange">短尾</span></td><td>爱心、玫瑰、"Love"标语、红粉色系印花</td></tr>
+      <tr><td>3-4月(变动)</td><td>土耳其/黎巴嫩</td><td><a href="javascript:void(0)" onclick="showFestival('easter')" style="color:#FB7701">复活节</a></td><td><span class="badge badge-orange">短尾</span></td><td>十字架、彩蛋、春装清新印花</td></tr>
+      <tr><td>3月18日</td><td>土耳其</td><td>胜利日</td><td><span class="badge badge-blue">长尾</span></td><td>土耳其国旗、新月星星、红白色</td></tr>
+      <tr><td>4月23日</td><td>土耳其</td><td>国家主权与儿童节</td><td><span class="badge badge-blue">长尾</span></td><td>儿童主题、土耳其国旗色、彩色气球</td></tr>
+      <tr><td>5月1日</td><td>土耳其/黎巴嫩</td><td>劳动节</td><td><span class="badge badge-blue">长尾</span></td><td>工人权利</td></tr>
+      <tr><td>5月19日</td><td>土耳其</td><td>青年与体育节</td><td><span class="badge badge-blue">长尾</span></td><td>Ataturk头像、青年主题、红白色</td></tr>
+      <tr><td>5-6月(伊斯兰历)</td><td>沙特/阿联酋/埃及/土耳其</td><td><a href="javascript:void(0)" onclick="showFestival('ramadan')" style="color:#FB7701">斋月</a></td><td><span class="badge badge-orange">短尾</span></td><td>新月、星星、伊斯兰几何纹样、"Ramadan Kareem"标语、绿色金色系</td></tr>
+      <tr><td>6-7月(变动)</td><td>沙特/阿联酋/埃及/土耳其</td><td><a href="javascript:void(0)" onclick="showFestival('eid')" style="color:#FB7701">开斋节</a></td><td><span class="badge badge-orange">短尾</span></td><td>新月、阿拉伯纹样、"Eid Mubarak"标语、金色绿色系、礼盒</td></tr>
+      <tr><td>7月15日</td><td>土耳其</td><td>民主日</td><td><span class="badge badge-blue">长尾</span></td><td>土耳其国旗、民主主题、红白色</td></tr>
+      <tr><td>8月30日</td><td>土耳其</td><td>胜利日</td><td><span class="badge badge-blue">长尾</span></td><td>土耳其国旗、军事主题、红白色</td></tr>
+      <tr><td>9-10月(变动)</td><td>沙特/阿联酋/埃及</td><td>伊斯兰新年</td><td><span class="badge badge-blue">长尾</span></td><td>新月、伊斯兰历、绿色金色系</td></tr>
+      <tr><td>10月29日</td><td>土耳其</td><td>共和国日</td><td><span class="badge badge-orange">短尾</span></td><td>土耳其国旗、新月星星、"Cumhuriyet"标语、红白色</td></tr>
+      <tr><td>11月第4个周五</td><td>阿联酋/沙特/土耳其</td><td><a href="javascript:void(0)" onclick="showFestival('blackfriday')" style="color:#FB7701">白色星期五</a></td><td><span class="badge badge-orange">短尾</span></td><td>打折标签、"White Friday"标语、阿拉伯纹样</td></tr>
+      <tr><td>12月1日</td><td>阿联酋</td><td>国庆日</td><td><span class="badge badge-orange">短尾</span></td><td>阿联酋国旗、红绿黑白四色、鹰徽图案</td></tr>
+      <tr><td>12月18日</td><td>卡塔尔</td><td>国庆日</td><td><span class="badge badge-blue">长尾</span></td><td>卡塔尔国旗、栗白色、国徽图案</td></tr>
+      <tr><td>12月25日</td><td>黎巴嫩/土耳其/埃及</td><td><a href="javascript:void(0)" onclick="showFestival('christmas')" style="color:#FB7701">圣诞节</a></td><td><span class="badge badge-blue">长尾</span></td><td>圣诞树、十字架、教堂图案</td></tr>
+      <tr><td>12月31日</td><td>阿联酋/土耳其</td><td>跨年夜</td><td><span class="badge badge-orange">短尾</span></td><td>烟花、跨年派对（迪拜等）</td></tr>
+    </table>
+  </div>
+
+  <!-- 日韩 (Japan & Korea) -->
+  <div id="jpkor" class="region-content" style="display:none">
+    <table class="region-table">
+      <tr><th>日期</th><th>国家</th><th>节日</th><th>类型</th><th>热销印花元素</th></tr>
+      <tr><td>1月1日</td><td>日本/韩国</td><td><a href="javascript:void(0)" onclick="showFestival('newyear')" style="color:#FB7701">新年</a></td><td><span class="badge badge-orange">短尾</span></td><td>日出、富士山、年贺状图案、红白色系</td></tr>
+      <tr><td>1月第2个周一</td><td>日本</td><td>成人之日</td><td><span class="badge badge-blue">长尾</span></td><td>和服图案、樱花、"成人おめでとう"标语</td></tr>
+      <tr><td>2月3-4日</td><td>日本</td><td>节分/惠方卷</td><td><span class="badge badge-blue">长尾</span></td><td>鬼面具、豆子、惠方卷图案</td></tr>
+      <tr><td>2月11日</td><td>日本</td><td>建国纪念日</td><td><span class="badge badge-blue">长尾</span></td><td>日本国旗、红白色、"建国記念"标语</td></tr>
+      <tr><td>2月14日</td><td>日本/韩国</td><td><a href="javascript:void(0)" onclick="showFestival('valentine')" style="color:#FB7701">情人节</a></td><td><span class="badge badge-orange">短尾</span></td><td>爱心、巧克力、"Valentine"标语、粉色系</td></tr>
+      <tr><td>2-3月(农历)</td><td>韩国</td><td>韩国新年(seollal)</td><td><span class="badge badge-orange">短尾</span></td><td>韩服图案、年糕、韩国传统纹样</td></tr>
+      <tr><td>3月1日</td><td>韩国</td><td>三一节</td><td><span class="badge badge-blue">长尾</span></td><td>韩国国旗、太极图、三一运动标语</td></tr>
+      <tr><td>3月3日</td><td>日本</td><td>女儿节/雏祭</td><td><span class="badge badge-blue">长尾</span></td><td>雏人偶、桃花、粉色系</td></tr>
+      <tr><td>3月14日</td><td>日本/韩国</td><td>白色情人节</td><td><span class="badge badge-blue">长尾</span></td><td>白色巧克力、糖果、"White Day"标语</td></tr>
+      <tr><td>4月底-5月初</td><td>日本</td><td>黄金周</td><td><span class="badge badge-orange">短尾</span></td><td>鲤鱼旗、新绿、黄金周标语</td></tr>
+      <tr><td>5月1日</td><td>韩国</td><td>劳动节</td><td><span class="badge badge-blue">长尾</span></td><td>工具图案、劳动节标语</td></tr>
+      <tr><td>5月5日</td><td>日本/韩国</td><td>儿童节</td><td><span class="badge badge-orange">短尾</span></td><td>鲤鱼旗、兜盔、五月人形图案</td></tr>
+      <tr><td>5月第2个周日</td><td>日本/韩国</td><td><a href="javascript:void(0)" onclick="showFestival('motherday')" style="color:#FB7701">母亲节</a></td><td><span class="badge badge-orange">短尾</span></td><td>康乃馨、"Best Mom"标语、花卉印花、粉色系</td></tr>
+      <tr><td>6月第3个周日</td><td>日本/韩国</td><td><a href="javascript:void(0)" onclick="showFestival('fatherday')" style="color:#FB7701">父亲节</a></td><td><span class="badge badge-orange">短尾</span></td><td>领带、"Best Dad"标语、蓝色系</td></tr>
+      <tr><td>6月6日</td><td>韩国</td><td>显忠日</td><td><span class="badge badge-blue">长尾</span></td><td>韩国国旗、纪念标语、白黄色</td></tr>
+      <tr><td>7月7日</td><td>日本</td><td>七夕节</td><td><span class="badge badge-blue">长尾</span></td><td>短册、竹枝、星空、织女牛郎图案</td></tr>
+      <tr><td>8月15日</td><td>韩国</td><td>光复节</td><td><span class="badge badge-blue">长尾</span></td><td>韩国国旗、太极图、独立标语</td></tr>
+      <tr><td>8月13-16日</td><td>日本</td><td>盂兰盆节</td><td><span class="badge badge-blue">长尾</span></td><td>盆踊、灯笼、祖先主题、紫色橙色系</td></tr>
+      <tr><td>9-10月(农历)</td><td>韩国</td><td>秋夕(chuseok)</td><td><span class="badge badge-orange">短尾</span></td><td>松饼、满月、韩国传统纹样</td></tr>
+      <tr><td>10月3日</td><td>韩国</td><td>开天节</td><td><span class="badge badge-blue">长尾</span></td><td>檀君画像、韩国国旗、开国主题</td></tr>
+      <tr><td>10月9日</td><td>韩国</td><td>韩文日</td><td><span class="badge badge-blue">长尾</span></td><td>韩文字母图案、训民正音主题</td></tr>
+      <tr><td>10月31日</td><td>日本/韩国</td><td><a href="javascript:void(0)" onclick="showFestival('halloween')" style="color:#FB7701">万圣节</a></td><td><span class="badge badge-orange">短尾</span></td><td>骷髅、南瓜、"Boo"标语、黑橙配色</td></tr>
+      <tr><td>11月第3个周一</td><td>日本</td><td>七五三节</td><td><span class="badge badge-blue">长尾</span></td><td>和服、千岁饴、七五三图案</td></tr>
+      <tr><td>11月第4个周五</td><td>日本/韩国</td><td><a href="javascript:void(0)" onclick="showFestival('blackfriday')" style="color:#FB7701">黑色星期五</a></td><td><span class="badge badge-orange">短尾</span></td><td>打折标签、"Black Friday"标语、购物车图案</td></tr>
+      <tr><td>12月23日</td><td>日本</td><td>天皇诞生日</td><td><span class="badge badge-blue">长尾</span></td><td>日本国旗、菊花纹章、红白色</td></tr>
+      <tr><td>12月25日</td><td>日本/韩国</td><td><a href="javascript:void(0)" onclick="showFestival('christmas')" style="color:#FB7701">圣诞节</a></td><td><span class="badge badge-orange">短尾</span></td><td>圣诞树、蛋糕、灯饰、浪漫主题</td></tr>
+      <tr><td>12月31日</td><td>日本/韩国</td><td>跨年夜</td><td><span class="badge badge-orange">短尾</span></td><td>寺庙钟声、日出、年越しそば图案</td></tr>
+    </table>
+  </div>
+
+  <!-- 拉美 (Latin America) -->
+  <div id="latam" class="region-content" style="display:none">
+    <table class="region-table">
+      <tr><th>日期</th><th>国家</th><th>节日</th><th>类型</th><th>热销印花元素</th></tr>
+      <tr><td>1月1日</td><td>拉美各国</td><td><a href="javascript:void(0)" onclick="showFestival('newyear')" style="color:#FB7701">新年</a></td><td><span class="badge badge-orange">短尾</span></td><td>烟花、海滩、白色服装、巴西国旗色</td></tr>
+      <tr><td>1月6日</td><td>墨西哥/中美洲/南美</td><td><a href="javascript:void(0)" onclick="showFestival('threekings')" style="color:#FB7701">三王节</a></td><td><span class="badge badge-blue">长尾</span></td><td>皇冠、星星、"Rosca de Reyes"图案</td></tr>
+      <tr><td>2月5-10日</td><td>巴西</td><td><a href="javascript:void(0)" onclick="showFestival('carnival')" style="color:#FB7701">里约狂欢节</a></td><td><span class="badge badge-orange">短尾</span></td><td>面具、羽毛头饰、亮片、金绿紫三色印花</td></tr>
+      <tr><td>2月8-13日</td><td>南美/中美洲</td><td>狂欢节(Carnaval)</td><td><span class="badge badge-orange">短尾</span></td><td>面具、彩带、亮片、热带印花</td></tr>
+      <tr><td>2月14日</td><td>拉美各国</td><td><a href="javascript:void(0)" onclick="showFestival('valentine')" style="color:#FB7701">情人节</a></td><td><span class="badge badge-orange">短尾</span></td><td>爱心、玫瑰、丘比特、"Love"标语、红粉色系印花</td></tr>
+      <tr><td>2月27日</td><td>多米尼加</td><td>独立日</td><td><span class="badge badge-blue">长尾</span></td><td>多米尼加国旗、蓝红色、独立标语</td></tr>
+      <tr><td>3-4月(变动)</td><td>拉美各国</td><td><a href="javascript:void(0)" onclick="showFestival('easter')" style="color:#FB7701">复活节/圣周</a></td><td><span class="badge badge-orange">短尾</span></td><td>十字架、圣周图案、紫色白色系</td></tr>
+      <tr><td>3月19日</td><td>洪都拉斯</td><td>圣何塞日/父亲节</td><td><span class="badge badge-blue">长尾</span></td><td>圣何塞画像、工具图案、父亲主题</td></tr>
+      <tr><td>5月1日</td><td>拉美各国</td><td>劳动节</td><td><span class="badge badge-blue">长尾</span></td><td>工人权利</td></tr>
+      <tr><td>5月5日</td><td>墨西哥</td><td>五月五日节(Cinco de Mayo)</td><td><span class="badge badge-blue">长尾</span></td><td>墨西哥国旗、仙人掌、"Cinco de Mayo"标语</td></tr>
+      <tr><td>5月8日</td><td>巴西</td><td>母亲节</td><td><span class="badge badge-orange">短尾</span></td><td>康乃馨、"Best Mom"标语、花卉印花</td></tr>
+      <tr><td>5月10日</td><td>墨西哥/中美洲</td><td>母亲节(固定日期)</td><td><span class="badge badge-orange">短尾</span></td><td>康乃馨、母亲主题、"Día de la Madre"标语</td></tr>
+      <tr><td>6月12日</td><td>巴西</td><td>情人节(Dia dos Namorados)</td><td><span class="badge badge-orange">短尾</span></td><td>爱心、情侣、"Dia dos Namorados"标语</td></tr>
+      <tr><td>6月第3个周日</td><td>中美洲/南美各国</td><td><a href="javascript:void(0)" onclick="showFestival('fatherday')" style="color:#FB7701">父亲节</a></td><td><span class="badge badge-orange">短尾</span></td><td>领带、"Best Dad"标语、烧烤图案</td></tr>
+      <tr><td>6月23-24日</td><td>巴西</td><td>圣若昂节(Sao Joao)</td><td><span class="badge badge-blue">长尾</span></td><td>营火、玉米、圣若昂旗帜、黄绿色系</td></tr>
+      <tr><td>7月9日</td><td>阿根廷</td><td>独立日</td><td><span class="badge badge-blue">长尾</span></td><td>阿根廷国旗、浅蓝白色、五月太阳图案</td></tr>
+      <tr><td>7月20日</td><td>哥伦比亚</td><td>独立日</td><td><span class="badge badge-blue">长尾</span></td><td>哥伦比亚国旗、黄蓝红三色、独立标语</td></tr>
+      <tr><td>7月28-29日</td><td>秘鲁</td><td>国庆(Fiestas Patrias)</td><td><span class="badge badge-blue">长尾</span></td><td>秘鲁国旗、红白色、国徽图案</td></tr>
+      <tr><td>9月7日</td><td>巴西</td><td>独立日</td><td><span class="badge badge-blue">长尾</span></td><td>巴西国旗、绿黄色、"Brasil"标语</td></tr>
+      <tr><td>9月16日</td><td>墨西哥</td><td>独立日</td><td><span class="badge badge-orange">短尾</span></td><td>墨西哥国旗、绿白红三色、"Viva México"标语</td></tr>
+      <tr><td>9月18日</td><td>智利</td><td>国庆日(Fiestas Patrias)</td><td><span class="badge badge-orange">短尾</span></td><td>智利国旗、蓝白红、风筝图案</td></tr>
+      <tr><td>10月12日</td><td>拉美各国</td><td>哥伦布日/Dia de la Raza</td><td><span class="badge badge-blue">长尾</span></td><td>哥伦布主题、原住民文化图案、秋叶</td></tr>
+      <tr><td>10月18日</td><td>阿根廷</td><td>母亲节(Dia de la Madre)</td><td><span class="badge badge-orange">短尾</span></td><td>康乃馨、母亲主题、花卉印花</td></tr>
+      <tr><td>10月31日</td><td>墨西哥/巴西/阿根廷</td><td><a href="javascript:void(0)" onclick="showFestival('halloween')" style="color:#FB7701">万圣节/Noche de Brujas</a></td><td><span class="badge badge-orange">短尾</span></td><td>骷髅、南瓜、女巫、"Boo"标语、黑橙配色</td></tr>
+      <tr><td>11月2日</td><td>墨西哥/中美洲/南美</td><td><a href="javascript:void(0)" onclick="showFestival('dayofdead')" style="color:#FB7701">亡灵节(Dia de los Muertos)</a></td><td><span class="badge badge-orange">短尾</span></td><td>糖骷髅、万寿菊、卡特里娜面具、彩色骷髅印花</td></tr>
+      <tr><td>11月第4个周五</td><td>拉美各国</td><td><a href="javascript:void(0)" onclick="showFestival('blackfriday')" style="color:#FB7701">黑色星期五</a></td><td><span class="badge badge-orange">短尾</span></td><td>打折标签、"Black Friday"标语、购物车图案</td></tr>
+      <tr><td>12月24-25日</td><td>拉美各国</td><td><a href="javascript:void(0)" onclick="showFestival('christmas')" style="color:#FB7701">平安夜/圣诞节</a></td><td><span class="badge badge-orange">短尾</span></td><td>圣诞树、星星、"Feliz Navidad"标语</td></tr>
+      <tr><td>12月25-1月5日</td><td>巴西</td><td>巴西夏季节日季</td><td><span class="badge badge-blue">长尾</span></td><td>太阳、海滩、热带印花、音乐元素</td></tr>
+      <tr><td>12月31日</td><td>拉美各国</td><td>跨年夜</td><td><span class="badge badge-orange">短尾</span></td><td>烟花图案、白色服装、巴西国旗色</td></tr>
+    </table>
+  </div>
+
+<!-- Festival Search Entry -->
+  <div class="card" style="margin-top:24px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:2px solid #FB7701">
+    <h3 style="color:#FB7701">🔍 节日自助查询</h3>
+    <p>如果上方没有列出您想了解的节日，可以在这里自行查询。输入节日名称，获取节日介绍和相关服装印花元素建议。</p>
+    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+      <input type="text" id="festivalSearch" placeholder="输入节日名称，如：感恩节、啤酒节、泼水节..." style="flex:1;min-width:300px;padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px">
+      <button onclick="searchFestival()" style="padding:10px 30px;background:#FB7701;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600">查询</button>
+    </div>
+    <div id="festivalResult" style="display:none;margin-top:16px"></div>
+  </div>
+
+</div>
+
+<!-- 8. 热销元素 -->
+<div class="section" id="hotsale">
+  <div class="section-title">热销元素</div>
+
+  <div class="card" style="margin-bottom:20px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:1px solid #FB7701">
+    <h3 style="color:#FB7701">⚠️ 运营补充</h3>
+    <p style="font-size:14px;line-height:2">以下仅为部分元素参考图，如需含设计拆解与更多案例的PPT版本，请联系张阿莱获取。</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(event, 'tab-hotsale-print')">🔥 热销印花</div>
+    <div class="tab" onclick="switchTab(event, 'tab-hotsale-halloween')">🎃 节日专场</div>
+  </div>
+
+  <div class="tab-content active" id="tab-hotsale-print">
+    <div class="element-section">
+      <div class="element-title">花体字</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0097.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0098.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0099.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0100.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0101.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">赛车</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0102.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0103.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0104.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0105.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0106.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">条纹</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0107.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0108.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0109.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0110.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0111.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">迷彩</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0112.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0113.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0114.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0115.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0116.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">几何</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0117.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0118.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0119.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0120.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0121.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">海边度假</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0122.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0123.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0124.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0125.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0126.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">啤酒节</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0127.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0128.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0129.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0130.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0131.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">搞笑标语</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0132.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0133.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0134.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0135.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0136.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">动物表情包</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0137.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0138.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0139.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0140.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0141.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">部落图腾</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0142.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0143.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0144.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0145.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0146.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+  </div>
+
+  <!-- Tab 2: 节日专场 -->
+  <div class="tab-content" id="tab-hotsale-halloween">
+    <div class="element-section">
+      <div class="element-title">骷髅</div>
+      <div class="card" style="margin-bottom:12px">
+        <p style="color:#FB7701;font-weight:600">⚠️ 运营补充：骷髅元素可以和墨西哥的亡灵节（Día de los Muertos）结合起来，主要元素是玫瑰花+骷髅。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:8px">亡灵节（Día de los Muertos）是墨西哥传统节日，通常在11月1日-2日庆祝，以骷髅、万寿菊、蜡烛等元素纪念逝去的亲人，色彩鲜艳且富有艺术感，非常适合作为服饰印花设计灵感。</p>
+      </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0147.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0148.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0149.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0150.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0151.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">骨架</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0152.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0153.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0154.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0155.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0156.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">荆棘纹身</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0157.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0158.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0159.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0160.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0161.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">南瓜</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0162.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0163.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0164.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0165.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0166.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">小鬼</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0167.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0168.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0169.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0170.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0171.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">泼血效果</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0172.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0173.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0174.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0175.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0176.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">标语</div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="new_0177.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0178.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0179.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0180.png" loading="lazy" onclick="openModal(this.src)"></div>
+      <div class="gallery-item"><img src="new_0181.png" loading="lazy" onclick="openModal(this.src)"></div>
+    </div>
+    </div>
+
+  </div>
+
+  <!-- Hot Element Overlay Tool -->
+  <div class="card" style="margin-top:24px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:2px solid #FB7701">
+    <h3 style="color:#FB7701">🎨 热销元素印花替换工具</h3>
+    <p>从上方热销印花元素中选择喜欢的图案，复制下方提示词到豆包APP，<b style="color:#FB7701">同时上传印花元素图片和纯色衣服图片</b>即可完成印花替换。</p>
+    <div style="margin-top:12px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px dashed #FB7701">
+      <p style="font-size:13px;color:#FB7701;margin:0">⚠️ <b>重要提示：</b>跳转到豆包后，需要<b>同时上传两张图片</b>：<br>① 上方热销元素中的印花图案图片（请先截图保存）<br>② 您的纯色衣服正面图片<br>否则AI无法知道要替换什么印花图案。</p>
+    </div>
+    <div id="hotPromptBox" style="margin-top:16px;padding:16px;background:#f9f9f9;border-radius:8px;font-size:13px;color:#555;line-height:1.8;position:relative">
+      <b>任务：</b>请将我上传的【印花元素图片】中的图案，精准替换/融合到另一张【纯色衣服图片】上<br>
+      <b>核心要求：</b><br>
+      1. 保持衣服版型完全不变，仅替换/添加印花图案<br>
+      2. 印花图案需自然融入衣服，符合衣服的褶皱和光影<br>
+      3. 印花位置以胸前为主，大小适中<br>
+      4. 保留衣服的所有细节（领口、袖口、下摆等）<br>
+      5. 印花图案的颜色、细节需与原图保持一致<br>
+      <b>输出格式：</b>宽高比3:4，宽>1340px，高>1785px，小于2M
+      <button onclick="copyHotPrompt()" style="position:absolute;top:8px;right:8px;padding:4px 12px;background:#FB7701;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px">复制提示词</button>
+    </div>
+    <p style="margin-top:12px;color:#999;font-size:13px">点击"复制提示词"后，系统将自动复制提示词并打开豆包网页。请在豆包中粘贴提示词，<b>同时上传印花元素图片和纯色衣服图片</b>即可完成印花替换。</p>
+  </div>
+</div>
+
+<!-- 8.5 店铺合规 -->
+<div class="section" id="compliance">
+  <div class="section-title">店铺合规</div>
+
+  <!-- 合规1: 描述不符 -->
+  <div class="element-section">
+    <div class="element-title">描述不符</div>
+    <div class="card">
+      <p style="font-size:14px;color:#333;line-height:2">基于用户反馈，发现店铺内存在虚假宣传等严重影响用户体验的问题，会对店铺按《商品质量事故处理规则》采取商品下架、禁止上新、禁止上架、限制商家注册其他账户、支付赔付金等一项或者多项处理措施。</p>
+      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>数码印整改规则：</b></p>
+      <div style="background:#FFF5EB;border-left:4px solid #FB7701;padding:10px 16px;border-radius:6px;margin-top:8px">
+        <p style="font-size:14px;color:#333;line-height:2">1. 若实物为与图片纹理、款式一致的真实立体衣物，则将图片更换为实物图即可，确保图货相符；</p>
+        <p style="font-size:14px;color:#333;line-height:2">2. 若实物为平面印花，需在图片和标题首位增加"printed Design- Not Textured/2d printing"描述提示；且任何图文内容均不可出现"3D"等误导性描述用词。</p>
+      </div>
+      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>烫画整改规则：</b></p>
+      <div style="background:#FFF5EB;border-left:4px solid #FB7701;padding:10px 16px;border-radius:6px;margin-top:8px">
+        <p style="font-size:14px;color:#333;line-height:2">1. 商品图片、商品名称/信息和实物完全一致；</p>
+        <p style="font-size:14px;color:#333;line-height:2">2. 如果烫画图案中出现仿牛仔、仿水钻等元素，也需要添加印花效果说明——printed Design- Not Textured/2d printing。</p>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+        <a href="https://qr61.cn/opdkFI/qngoUo0" target="_blank" style="display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px">📥 下载PPT查看详情 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 合规2: TRO -->
+  <div class="element-section">
+    <div class="element-title">TRO</div>
+    <div class="card">
+      <p style="font-size:14px;color:#333;line-height:2"><b>TRO（Temporary Restraining Order，临时限制令）</b>是美国法院在诉讼初期签发的一种紧急临时禁令，通常要求被诉方立即停止相关行为，并可能冻结其账户资金。在跨境电商场景中，权利方常以商标侵权、专利侵权等为由向美国法院申请TRO，要求平台限制涉诉商家账户的提现功能。</p>
+      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px">从过往情况看，许多TRO案件涉及的投诉商品实际上存在合理的抗辩空间。如果商家收到TRO通知后选择不应诉、不抗辩，将处于被动局面，可能面临以下情况：</p>
+      <p style="font-size:14px;color:#333;line-height:2">• <b>丧失抗辩机会：</b>未及时应诉可能导致法院作出缺席判决，商家将失去在法庭上为自己辩护的机会。</p>
+      <p style="font-size:14px;color:#333;line-height:2">• <b>经济损失扩大：</b>缺席判决后，原告可能依据判决要求将账户中被冻结的资金作为赔偿金划扣，商家可能承担超出实际责任的赔付金额。</p>
+      <p style="font-size:14px;color:#333;line-height:2">• <b>形成不利循环：</b>如果大量商家对TRO选择不应诉，权利方可能会认为起诉即可获得赔偿，从而发起更多TRO诉讼，导致更多商家受到影响。</p>
+      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>建议商家在收到TRO通知后，积极通过专业律师评估案件、主张合法权益，避免因消极应对而造成更大的损失。</b></p>
+    </div>
+    <div class="card" style="margin-top:16px;background:#FFF5EB;border-left:4px solid #FB7701">
+      <p style="font-size:14px;color:#333;line-height:2"><b>【如您的店铺已收到TRO，建议采取以下措施】</b></p>
+      <p style="font-size:14px;color:#333;line-height:2">您可通过委托律师主张合法权利，采取适当的应诉措施，同时密切关注案件进展，从而最大限度保障自身权益、减少潜在损失。</p>
+      <p style="font-size:14px;color:#333;line-height:2">如您同步应诉进展或相关文件，平台将根据案件进展或案情处理店铺或账户状态。</p>
+      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>【具体指引】</b></p>
+      <p style="font-size:14px;color:#333;line-height:2">后台提供TRO申诉服务的机构中科赛因、知视达均可在美国法院应诉，如您倾向在美国宾夕法尼亚州法院应诉，可考虑与中科赛因进一步沟通了解，最终您可根据实际情况选择合作的服务机构。</p>
+      <div style="margin-top:8px;padding:12px;background:#f9f9f9;border-radius:8px">
+        <p style="font-size:13px;color:#333;margin:0"><b>🔗 跳转链接：</b><a href="https://agentseller.temu.com/open/market/service/rule/main?srvType=4&authnTypeId=1" target="_blank" style="color:#FB7701;text-decoration:none">TRO申诉服务 →</a></p>
+        <p style="font-size:13px;color:#333;margin-top:4px"><b>📍 路径指引：</b>卖家中心 - 合规中心 - TRO - TRO申诉服务</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. 近期资讯 -->
+<div class="section" id="news">
+  <div class="section-title">近期资讯</div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(event, 'tab-news-country')">🌍 国家站点要求</div>
+    <div class="tab" onclick="switchTab(event, 'tab-news-ops')">📢 店铺运营相关</div>
+  </div>
+
+  <!-- Tab 1: 国家站点要求 -->
+  <div class="tab-content active" id="tab-news-country">
+    <div class="element-section">
+      <div class="element-title">🇮🇹 意大利商品包装环境标签</div>
+      <div class="card-grid">
+        <div class="card">
+          <h3>相关要求及示例</h3>
+          <p>意大利商品包装环境标签相关要求及示例</p>
+          <a href="https://agentseller.temu.com/main/course/detail?courseId=2409120001611" target="_blank" style="display:inline-block;margin-top:10px;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px">查看详情 →</a>
+        </div>
+        <div class="card">
+          <h3>FAQ 常见问题</h3>
+          <p>意大利商品包装环境标签FAQ</p>
+          <a href="https://agentseller.temu.com/main/course/detail?courseId=2410060000009" target="_blank" style="display:inline-block;margin-top:10px;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px">查看详情 →</a>
+        </div>
+        <div class="card">
+          <h3>合规解读</h3>
+          <p>意大利商品包装环境标签合规解读</p>
+          <a href="https://agentseller.temu.com/main/course/detail?courseId=2407290000825" target="_blank" style="display:inline-block;margin-top:10px;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px">查看详情 →</a>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：目前不影响商品售卖，管控节奏后续会通知。</p></div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">🇮🇹 意大利站点皮革与毛皮材质描述合规整改要求</div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2"><b>禁用词汇及违规形式</b>（含合成词/仿制表述）：严禁非真实动物皮革/毛皮材质将以下词汇作为名词、形容词、前缀、后缀或组合词使用（包括但不限于英文、意大利文等）：</p>
+        <p style="font-size:14px;color:#333;line-height:2">• <b>禁用基础词及衍生词：</b>fur, leather, hide, skin, cuoio, pelle, pelliccia 等</p>
+        <p style="font-size:14px;color:#333;line-height:2">• <b>禁用合成词及仿制词：</b>如 Leather-like, Eco-fur, Synthetic fur, Faux fur, Faux leather 等（即使标注为人造/环保，亦不得包含 leather/fur 词根）</p>
+        <p style="font-size:14px;color:#333;line-height:2">• <b>禁用特定材质名称：</b>如 mink coat, fur coat 等</p>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：skin-friendly，skin friendly 等常用面料亲肤描述导致的违规已撤回，请避免上述情况中的其他表述。</p></div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">🇪🇸 西班牙站点水洗唛税号新增要求</div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">基于西班牙法规要求，欧盟服饰纺织品需要在进口商信息下增加进口商西班牙主体的税号。三期洗水唛工具已支持增加相应信息，需要新增西班牙税号的checktype，管控范围同纺织品实物标签范围。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:8px">与欧盟进口商信息适配的税务识别号如下：</p>
+        <div style="margin-top:8px;padding:12px 16px;background:#f9f9f9;border-radius:8px;font-size:14px;color:#FB7701;font-weight:600">
+          VAT No./Número de IVA: IE4096471TH
+        </div>
+        <div style="margin-top:16px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px dashed #FB7701">
+          <p style="font-size:13px;color:#333;margin:0"><b>📋 工具入口与指南：</b></p>
+          <p style="font-size:13px;color:#333;margin-top:8px">• 洗水唛工具入口：<b>【商家中心】-> 备货管理 -> 商品条码管理</b></p>
+          <div style="margin-top:8px;display:flex;gap:12px;flex-wrap:wrap">
+            <a href="https://agentseller.temu.com/goods/label" target="_blank" style="display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:13px">🔗 洗水唛工具入口 →</a>
+            <a href="https://bdl.cdnfe.com/upload_bdl/lpg/502e76e9-aca4-43e4-8e25-68b7b015c3cb.pdf" target="_blank" style="display:inline-block;padding:8px 20px;background:#fff;color:#FB7701;border:1px solid #FB7701;border-radius:6px;text-decoration:none;font-size:13px">📖 洗水唛工具指南 →</a>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding:12px;background:#f9f9f9;border-radius:8px">
+          <p style="font-size:13px;color:#333;margin:0"><b>📖 洗水唛实操指南：</b></p>
+          <p style="font-size:13px;color:#333;margin-top:8px">1. <a href="https://weixin.qq.com/sph/A1laPUE4r" target="_blank" style="color:#FB7701;text-decoration:none">套装洗水唛&实拍图上传注意事项 →</a></p>
+          <p style="font-size:13px;color:#333;margin-top:4px">2. <a href="https://weixin.qq.com/sph/AoUkSnARN" target="_blank" style="color:#FB7701;text-decoration:none">现货商品如何车缝尺码 →</a></p>
+          <p style="font-size:13px;color:#333;margin-top:4px">3. <a href="https://weixin.qq.com/sph/AHuwiImVr" target="_blank" style="color:#FB7701;text-decoration:none">洗水唛实拍图识别异常解决方案 →</a></p>
+          <p style="font-size:13px;color:#333;margin-top:4px">4. <a href="https://bdl.cdnfe.com/upload_bdl/check/8aaf4ff6-7d7d-4cd0-839b-fac9c72e1e5f" target="_blank" style="color:#FB7701;text-decoration:none">洗水唛实物合规自查要点 →</a></p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：请务必使用平台合规的水洗唛，西班牙税号直接使用平台提供的即可。水洗唛无西班牙税号入库自动下架西班牙站，不影响其他站点售卖。</p></div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">🇪🇺 欧盟包装法8国上传EPR注册号</div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">按欧盟相关法规要求，商家需办理爱尔兰、匈牙利、波兰、荷兰、捷克、卢森堡、立陶宛、比利时等国家的EPR包装法资质。</p>
+        <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+          <a href="https://agentseller.temu.com/govern/epr-cert" target="_blank" style="display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px">🔗 EPR注册号上传链接 →</a>
+          <a href="https://agentseller.temu.com/open/market/service/rule/main" target="_blank" style="display:inline-block;padding:8px 20px;background:#fff;color:#FB7701;border:1px solid #FB7701;border-radius:6px;text-decoration:none;font-size:14px">🛒 服务市场下单链接 →</a>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：优先办理波兰、荷兰、捷克三个国家，目前商品仍可在这些站点销售，具体下架时间等后续通知。</p></div>
+    </div>
+  </div>
+
+  <!-- Tab 2: 店铺运营相关 -->
+  <div class="tab-content" id="tab-news-ops">
+    <div class="element-section">
+      <div class="element-title">📍 制造地点待填写</div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">系统会自动勾选商品产地，商家只需检查是否有别的制造地点需要补充，没有的话点击确认即可。</p>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：不是所有品都需要，命中特定条件的品才是必填，目前不支持批量确认，可以先放几天等平台这边刷新数据。</p></div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">👕 关于男装、童装面料品质相关事项的提醒</div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">为帮助商家进一步提升男装、童装商品品质，减少因面料质量或商品信息不准确影响消费者体验，现就面料选用、品质自查等相关事项提醒如下：</p>
+        <p style="font-size:14px;color:#333;line-height:2">部分商品可能根据实际开展面料克重、起毛起球、纤维成分等相关抽检。抽检可能产生次品并按流程退回，请留意。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>一、确保面料品质，提升消费者体验</b></p>
+        <p style="font-size:14px;color:#333;line-height:2">商家的产品遵循宣传承诺及行业标准，选用与产品定位、价格匹配的优质面料，确保展示的纤维含量、种类、克重等属性真实性，避免材质降级。保障面料的舒适度、耐用性及安全性，从源头提升消费者穿着体验与信任度。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>二、加强面料品质检测</b></p>
+        <p style="font-size:14px;color:#333;line-height:2">采用克重刀、起毛起球仪等专业检测设备，依据相关标准及行业规范，对产品面料实施抽检。重点包括面料克重、起毛起球等级、纤维成分一致性等核心指标，抽检未达标的产品将按规定采取下架、限制上架等处理措施。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>三、保持同款商品品质稳定</b></p>
+        <p style="font-size:14px;color:#333;line-height:2">关注同款产品品质一致性，针对同款商品核查不同商家销售产品的面料品质差异，对存在明显质量落差、材质不一致的商品进行标记预警，情节严重的进行违规处理。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:12px">请各商家结合自身商品及经营实际，及时开展相关自查，把控产品面料品质。</p>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：请注意准确维护面料克重和成分信息，面料克重实物测量不得比系统信息低10%以上，面料成分会找第三方检测机构检测，必须保证系统信息完全准确，不得冒填、乱填。</p></div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">🚫 纺织品夸大描述宣传词整改</div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">如下商品请重点检查【标题】【轮播图】【商详图】【主图视频】四个部分中是否含有如下夸大描述的用词，如有则需删除，否则商品将被下架。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:8px">需删除词（包括且不限于）："milk silk"、"vegan silk"、"space cotton"，及其变体"ice silky"、"milk silky"、"vegan silky"等。</p>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：请及时在商家端确认修改。</p></div>
+    </div>
+
+    <div class="element-section">
+      <div class="element-title">🐱 关于SANRIO商标即将开启站点管控的通知</div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">从9月份开始逐步清理存量不合规的授权书，不合规的商品会被逐步下架（管控会下架全部一类站点，二类站点暂不影响）。</p>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：请确保店铺下商品的 SANRIO 授权符合授权范围，避免超出授权区域销售。</p></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<!-- Image Modal -->
+<div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:200;justify-content:center;align-items:center;flex-direction:column" onclick="closeModal()">
+  <img id="modal-img" style="max-width:90%;max-height:80%;border-radius:8px" onclick="event.stopPropagation()">
+  <div style="margin-top:16px;display:flex;gap:12px" onclick="event.stopPropagation()">
+    <button id="modal-lens-btn" onclick="googleLensSearch()" style="padding:10px 24px;background:#4285F4;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.3s" onmouseover="this.style.background='#3367D6'" onmouseout="this.style.background='#4285F4'">
+      🔍 谷歌识图查找同款
+    </button>
+    <button onclick="closeModal()" style="padding:10px 24px;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:8px;font-size:14px;cursor:pointer;transition:background 0.3s" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+      ✕ 关闭
+    </button>
+  </div>
+</div>
+
+<script>
+function copyCatPath(td) {
+  var text = td.textContent.trim();
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  // Show toast
+  var toast = document.createElement('div');
+  toast.className = 'copy-toast';
+  toast.textContent = '✅ 类目路径已复制：' + text.substring(0, 30) + '...';
+  document.body.appendChild(toast);
+  setTimeout(function() { toast.remove(); }, 2000);
+}
+
+function navToCat(catId) {
+  var el = document.getElementById(catId);
+  if (el) {
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+    el.style.background = '#FFF5EB';
+    el.style.transition = 'background 0.5s';
+    setTimeout(function() { el.style.background = ''; }, 2000);
+  }
+}
+
+function navTo(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+function switchTab(evt, tabId) {
+  var btn = evt.currentTarget;
+  var parent = btn.closest('.tabs').parentElement;
+  parent.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
+  parent.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+function openModal(src, showLens) {
+  document.getElementById('modal-img').src = src;
+  var lensBtn = document.getElementById('modal-lens-btn');
+  if (lensBtn) { lensBtn.style.display = showLens === false ? 'none' : 'flex'; }
+  document.getElementById('modal').style.display = 'flex';
+}
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
+}
+
+function googleLensSearch() {
+  var imgSrc = document.getElementById('modal-img').src;
+  var absoluteUrl = new URL(imgSrc, window.location.href).href;
+  var lensUrl = 'https://lens.google.com/uploadbyurl?url=' + encodeURIComponent(absoluteUrl);
+  window.open(lensUrl, '_blank');
+}
+
+function copyFormula(card) {
+  var h3 = card.querySelector('h3');
+  var p = card.querySelector('p');
+  var title = h3 ? h3.textContent.trim() : '';
+  var formula = p ? p.textContent.trim() : '';
+  var text = title + '标题公式：' + formula;
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  var toast = document.createElement('div');
+  toast.className = 'copy-toast';
+  toast.textContent = '✅ ' + title + '公式已复制';
+  document.body.appendChild(toast);
+  setTimeout(function() { toast.remove(); }, 2000);
+}
+
+// Scroll spy - highlight nav based on scroll position
+window.addEventListener('scroll', function() {
+  var sections = document.querySelectorAll('.section');
+  var scrollPos = window.scrollY + 100;
+  sections.forEach(function(sec) {
+    var top = sec.offsetTop;
+    var bottom = top + sec.offsetHeight;
+    if (scrollPos >= top && scrollPos < bottom) {
+      var id = sec.id;
+      document.querySelectorAll('.nav-item').forEach(function(item) {
+        item.classList.remove('active');
+        if (item.getAttribute('onclick').includes(id)) {
+          item.classList.add('active');
+        }
+      });
+    }
+  });
+});
+
+function copyText(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  alert('提示词已复制！正在为您打开豆包网页，请粘贴提示词并上传商品图片。');
+  window.open('https://www.doubao.com/chat/', '_blank');
+}
+
+function copyTitlePrompt() {
+  var cat = document.getElementById('titleCategory').value;
+  var formulas = {
+    't恤': 'T恤标题公式【节日 + 人群 + 图案/花色 + 领型 + 袖长 + 场景 + 风格 + 功能特性 + 季节 + 面料/材质 + 颜色 + 版型 + 细节 + 规格 + 热搜词】',
+    '卫衣': '卫衣标题公式【节日 + 品类 + 人群 + 领型 + 场景 + 风格 + 袖长 + 季节 + 功能特性 + 图案/花色 + 面料/材质 + 颜色 + 版型 + 细节 + 闭合 + 热搜词】',
+    'polo': 'POLO标题公式【节日 + 品类 + 人群 + 领型 + 门襟 + 图案/花色 + 场景 + 风格 + 功能特性 + 季节 + 袖长 + 面料/材质 + 颜色 + 版型 + 细节 + 规格 + 热搜词】',
+    '打底压缩': '打底压缩标题公式【节日 + 品类 + 人群 + 功能特性 + 场景 + 领型 + 袖长 + 季节 + 风格 + 面料/材质 + 颜色 + 图案/花色 + 版型 + 细节 + 规格 + 热搜词】',
+    '防晒服': '防晒服标题公式【节日 + 品类 + 人群 + 场景 + 功能特性 + 领型 + 袖长 + 季节 + 风格 + 面料/材质 + 颜色 + 图案/花色 + 版型 + 细节 + 规格 + 热搜词】'
+  };
+  var catText = {'tshirt':'T恤','hoodie':'卫衣','polo':'POLO','compression':'打底压缩','sunshirt':'防晒服'}[cat] || 'T恤';
+  var formula = formulas[catText] || formulas['T恤'];
+  var text = '角色：你是一位精通TEMU平台算法与欧美消费习惯的跨境电商运营专家\n' +
+    '任务：请结合上传的【商品图片】和【标题关键词枚举表格】，严格按照' + formula + '为该商品撰写符合TEMU规范的英文标题\n' +
+    'TEMU商品标题硬性要求：\n' +
+    '1. 中文标题控制在100字符，英文标题控制在250字符，前70字符放置最核心卖点\n' +
+    '2. 严禁出现任何促销词（如Sale, Free Shipping, Best Seller）、无意义堆砌词及品牌侵权词\n' +
+    '3. 若枚举表中的词无法精准覆盖图片的特征（如特定的图案/印花细节、面料视觉效果等），请结合图片本身的视觉特征，自动补充最贴切、最地道的英文词汇填充到对应位置\n' +
+    '4. 英文标题每个实词首字母大写，半角标点，阅读自然顺畅\n' +
+    '输出格式：请分别输出中文和英文的商品标题，标明标题占用的字符数和标题撰写逻辑';
+  // Add sun protection warning if needed
+  var catVal = document.getElementById('titleCategory').value;
+  if (catVal === 'sunshirt') {
+    var hasSP = document.getElementById('hasSunProtection');
+    if (hasSP && hasSP.value === 'no') {
+      // 删除功能特性维度，替换公式
+      text = text.replace('【节日 + 品类 + 人群 + 场景 + 功能特性 + 领型 + 袖长 + 季节 + 风格 + 面料/材质 + 颜色 + 图案/花色 + 版型 + 细节 + 规格 + 热搜词】', '【节日 + 品类 + 人群 + 场景 + 领型 + 袖长 + 季节 + 风格 + 面料/材质 + 颜色 + 图案/花色 + 版型 + 细节 + 规格 + 热搜词】');
+      text = text.replace('功能特性 + ', '');
+      text += '\n\n⚠️ 特别提醒：您选择了"无防晒资质"，请勿在标题中添加任何防晒相关表述，包括但不限于：UPF50+、UV Protection、Sun Protection、防晒、遮阳、防紫外线等功能特性描述，否则可能面临合规风险。';
+    }
+  }
+  copyText(text);
+}
+
+function copyVisualPrompt() {
+  var style = document.getElementById('visualType').value || '所选视觉风格';
+  var text = '任务：请参照' + style + '的视觉风格，将上传的商品图片转化为该风格的效果图\n' +
+    '核心要求：\n' +
+    '1. 必须严格按照给出的商品版型生成，严禁改为其他版型\n' +
+    '2. 需要呈现不同的背景场景、不同的动作姿态，避免雷同\n' +
+    '3. 衣服细节不可改变（拉链头颜色、口袋、印花图案等需完整保留）\n' +
+    '输出格式：宽高比3:4，宽>1340px，高>1785px，小于2M';
+  copyText(text);
+}
+
+function handleTitleImgUpload(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('titlePreviewImg').src = e.target.result;
+      document.getElementById('titlePreviewName').textContent = input.files[0].name;
+      document.getElementById('titleUploadPreview').style.display = 'block';
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function updateTitlePrompt() {
+  var cat = document.getElementById('titleCategory');
+  var catText = {'tshirt':'T恤','hoodie':'卫衣','polo':'POLO','compression':'打底压缩','sunshirt':'防晒服'}[cat.value] || 'T恤';
+  // Show/hide sun protection option
+  var sunOpt = document.getElementById('sunProtectionOption');
+  if (sunOpt) {
+    sunOpt.style.display = (cat.value === 'sunshirt') ? 'block' : 'none';
+  }
+  var formulas = {
+    'T恤': 'T恤标题公式【节日 + 人群 + 图案/花色 + 领型 + 袖长 + 场景 + 风格 + 功能特性 + 季节 + 面料/材质 + 颜色 + 版型 + 细节 + 规格 + 热搜词】',
+    '卫衣': '卫衣标题公式【节日 + 品类 + 人群 + 领型 + 场景 + 风格 + 袖长 + 季节 + 功能特性 + 图案/花色 + 面料/材质 + 颜色 + 版型 + 细节 + 闭合 + 热搜词】',
+    'POLO': 'POLO标题公式【节日 + 品类 + 人群 + 领型 + 门襟 + 图案/花色 + 场景 + 风格 + 功能特性 + 季节 + 袖长 + 面料/材质 + 颜色 + 版型 + 细节 + 规格 + 热搜词】',
+    '打底压缩': '打底压缩标题公式【节日 + 品类 + 人群 + 功能特性 + 场景 + 领型 + 袖长 + 季节 + 风格 + 面料/材质 + 颜色 + 图案/花色 + 版型 + 细节 + 规格 + 热搜词】',
+    '防晒服': '防晒服标题公式【节日 + 品类 + 人群 + 场景 + 功能特性 + 领型 + 袖长 + 季节 + 风格 + 面料/材质 + 颜色 + 图案/花色 + 版型 + 细节 + 规格 + 热搜词】'
+  };
+  var formula = formulas[catText] || formulas['T恤'];
+  var box = document.getElementById('titlePromptBox');
+  if (box) {
+    box.innerHTML = '<b>角色：</b>你是一位精通TEMU平台算法与欧美消费习惯的跨境电商运营专家<br>' +
+      '<b>任务：</b>请结合上传的【商品图片】和【标题关键词枚举表格】，严格按照' + formula + '为该商品撰写符合TEMU规范的英文标题<br>' +
+      '<b>TEMU商品标题硬性要求：</b><br>1. 中文标题控制在100字符，英文标题控制在250字符，前70字符放置最核心卖点<br>2. 严禁出现任何促销词（如Sale, Free Shipping, Best Seller）、无意义堆砌词及品牌侵权词<br>3. 若枚举表中的词无法精准覆盖图片的特征（如特定的图案/印花细节、面料视觉效果等），请结合图片本身的视觉特征，自动补充最贴切、最地道的英文词汇填充到对应位置<br>4. 英文标题每个实词首字母大写，半角标点，阅读自然顺畅<br><b>输出格式：</b>请分别输出中文和英文的商品标题，标明标题占用的字符数和标题撰写逻辑' +
+      '<button onclick="copyTitlePrompt()" style="position:absolute;top:8px;right:8px;padding:4px 12px;background:#FB7701;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px">复制提示词</button>';
+  }
+  // Add sun protection warning if needed
+  if (cat.value === 'sunshirt') {
+    var hasSP = document.getElementById('hasSunProtection');
+    if (hasSP && hasSP.value === 'no') {
+      // 删除功能特性维度
+      box.innerHTML = box.innerHTML.replace('功能特性 + ', '');
+      box.innerHTML = box.innerHTML.replace('【节日 + 品类 + 人群 + 场景 + 功能特性 + 领型', '【节日 + 品类 + 人群 + 场景 + 领型');
+      // 添加警告
+      var warnDiv = document.createElement('div');
+      warnDiv.style.cssText = 'background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:8px 12px;margin-top:8px;font-size:13px;color:#856404';
+      warnDiv.innerHTML = '⚠️ <b>防晒资质提醒：</b>您选择了"无防晒资质"，公式已自动删除【功能特性】维度。请勿在标题中出现任何防晒相关表述，包括但不限于：UPF50+、UV Protection、Sun Protection、防晒、遮阳、防紫外线等。';
+      box.appendChild(warnDiv);
+    }
+  }
+}
+
+function updateVisualPrompt() {
+  var style = document.getElementById('visualType').value || '所选视觉风格';
+  var box = document.getElementById('visualPromptBox');
+  if (box) {
+    box.innerHTML = '<b>任务：</b>请参照' + style + '的视觉风格，将上传的商品图片转化为该风格的效果图<br>' +
+      '<b>核心要求：</b><br>1. 必须严格按照给出的商品版型生成，严禁改为其他版型<br>2. 需要呈现不同的背景场景、不同的动作姿态，避免雷同<br>3. 衣服细节不可改变（拉链头颜色、口袋、印花图案等需完整保留）<br>' +
+      '<b>输出格式：</b>宽高比3:4，宽>1340px，高>1785px，小于2M' +
+      '<button onclick="copyVisualPrompt()" style="position:absolute;top:8px;right:8px;padding:4px 12px;background:#FB7701;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px">复制提示词</button>';
+  }
+}
+
+function handleImgUpload(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('previewImg').src = e.target.result;
+      document.getElementById('previewName').textContent = input.files[0].name;
+      document.getElementById('uploadPreview').style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function switchRegion(evt, region) {
+  document.querySelectorAll('.region-content').forEach(function(e) { e.style.display = 'none'; });
+  document.querySelectorAll('.region-tab').forEach(function(e) {
+    e.style.background = '#fff';
+    e.style.color = '#666';
+    e.style.borderColor = '#ddd';
+  });
+  document.getElementById(region).style.display = 'block';
+  evt.currentTarget.style.background = '#FB7701';
+  evt.currentTarget.style.color = '#fff';
+  evt.currentTarget.style.borderColor = '#FB7701';
+}
+
+var festivalData = {
+  newyear: { name:'新年 (New Year)', desc:'全球通用节日，1月1日庆祝新年的到来。各国都有跨年倒计时、烟花表演等庆祝活动。', elements:'烟花图案、数字年份、星星、金色/银色亮片、"Happy New Year"标语印花', tips:'提前30天备货，12月下旬为搜索高峰。推荐金色/银色金属感印花T恤。' },
+  threekings: { name:'三王节 (Día de Reyes)', desc:'1月6日，纪念东方三博士拜访耶稣。在墨西哥和西班牙语国家是重要的儿童收礼日。', elements:'皇冠、星星、骆驼、国王蛋糕(Rosca de Reyes)图案、"Regalos para niños"关键词', tips:'长尾节日，常备少量库存即可。标题提前加入"Día de Reyes"关键词。' },
+  carnival: { name:'狂欢节 (Carnival)', desc:'2月-3月间（四旬斋前），巴西里约狂欢节最为盛大。威尼斯、新奥尔良等地也有庆祝。化装游行、桑巴舞、街头派对。', elements:'面具、羽毛头饰、彩带、亮片、桑巴色彩(金/绿/紫)、小丑图案、热带印花', tips:'短尾节日，提前30天备货。推荐亮片印花T恤、面具图案卫衣。搜索词：Carnival, Carnaval, Mardi Gras。' },
+  valentine: { name:'情人节 (Valentine\'s Day)', desc:'2月14日，全球性浪漫节日。情侣互送玫瑰、巧克力、贺卡，享用浪漫晚餐。', elements:'爱心、玫瑰、情侣图案、红色/粉色系、"Love"标语、丘比特、 kissing lips', tips:'短尾节日，1月下旬开始搜索量上升。推荐爱心印花T恤、情侣装。标题加"Valentine"关键词。' },
+  stpatrick: { name:'圣帕特里克节 (St. Patrick\'s Day)', desc:'3月17日，纪念爱尔兰守护神圣帕特里克。美国、爱尔兰、英国等地广泛庆祝。绿色是主题色。', elements:'三叶草(clover)、绿色主题、小妖精(leprechaun)、金罐、爱尔兰国旗色(绿/白/橙)、"Lucky"标语', tips:'短尾节日，3月上旬搜索高峰。必须大量绿色系T恤/卫衣。标题加"St Patrick"关键词。' },
+  easter: { name:'复活节 (Easter)', desc:'3-4月间（春分后第一个满月后的周日），基督教重要节日。彩蛋、兔子是标志性元素。', elements:'彩蛋、复活节兔子、小鸡、春天花卉、粉色/黄色/浅绿色系、十字架', tips:'短尾节日，提前30天备货。推荐春装上新+清新风格印花。' },
+  motherday: { name:'母亲节 (Mother\'s Day)', desc:'5月第二个周日（美洲/欧洲/亚洲），墨西哥为5月10日固定日期。向母亲表达感恩。', elements:'康乃馨、爱心、"Best Mom"标语、花卉图案、粉色/红色系、家庭主题', tips:'短尾节日，4月下旬开始搜索上升。推荐家庭主题印花T恤。标题加"Mother Day gift"关键词。' },
+  fatherday: { name:'父亲节 (Father\'s Day)', desc:'6月第三个周日，向父亲表达感恩。', elements:'领带、啤酒、烧烤、"Best Dad"标语、工具图案、蓝色/灰色系、超级英雄爸爸', tips:'短尾节日，6月上旬搜索上升。推荐"Best Dad"印花T恤。标题加"Father Day gift"关键词。' },
+  independenceday: { name:'美国独立日 (Independence Day)', desc:'7月4日，美国国庆日。纪念1776年独立宣言。红白蓝三色是主题色。', elements:'星条旗、红白蓝三色、烟花、自由女神、"USA"标语、鹰、星星图案', tips:'短尾节日，6月下旬搜索高峰。必须大量红白蓝三色T恤。标题加"4th of July, USA"关键词。' },
+  halloween: { name:'万圣节 (Halloween)', desc:'10月31日，源自凯尔特传统的鬼节。变装、南瓜灯、trick-or-treat是核心活动。全球影响力最大的节日之一。', elements:'骷髅、南瓜、幽灵、蝙蝠、蜘蛛网、黑猫、女巫、吸血鬼、"Boo"标语、黑/橙配色', tips:'短尾节日，9月搜索开始暴增。最重要的印花T恤销售节点。提前45天备货。推荐骷髅/南瓜系列印花。' },
+  dayofdead: { name:'亡灵节 (Día de los Muertos)', desc:'11月1-2日，墨西哥传统节日。纪念逝去的亲人，色彩鲜艳的骷髅是标志。', elements:'糖骷髅、万寿菊、卡特里娜、祭坛、彩色骷髅、墨西哥剪纸图案', tips:'短尾节日，10月下旬搜索高峰。推荐彩色骷髅印花T恤。与万圣节搭配销售效果最佳。' },
+  thanksgiving: { name:'感恩节 (Thanksgiving)', desc:'11月第四个周四（美国），10月第二个周一（加拿大）。家庭团聚、火鸡大餐。', elements:'火鸡、秋叶、感恩标语、丰收元素、棕色/橙色系、家庭聚餐场景', tips:'短尾节日，11月搜索高峰。推荐感恩主题印花T恤。紧接黑五大促，需提前备货。' },
+  blackfriday: { name:'黑色星期五 (Black Friday)', desc:'11月第四个周五，感恩节次日。全球最大的购物促销日。', elements:'打折标签、"Black Friday"标语、购物车、百分比折扣图案', tips:'短尾节日，全品类大促。提前优化主图和库存。标题加"Black Friday deal"关键词。' },
+  christmas: { name:'圣诞节 (Christmas)', desc:'12月25日，全球最重要的节日之一。圣诞树、礼物交换、家庭聚会。', elements:'圣诞树、驯鹿、雪花、圣诞老人、圣诞袜、红/绿/金色系、"Merry Christmas"标语、毛衣图案', tips:'短尾节日，11月搜索开始暴增。提前45天备货。推荐圣诞元素印花毛衣/卫衣。' },
+  oktoberfest: { name:'啤酒节 (Oktoberfest)', desc:'9月中旬-10月初，德国慕尼黑最大的民间节日。巴伐利亚传统服饰、啤酒文化。', elements:'啤酒杯、巴伐利亚格纹、皮裤、啤酒花、蓝白格子、"Prost"标语', tips:'短尾节日，8月搜索开始上升。推荐啤酒主题印花T恤。标题加"Oktoberfest"关键词。' },
+  ramadan: { name:'斋月 (Ramadan)', desc:'伊斯兰历第九个月，穆斯林全球禁食月。日间禁食禁水，日落后开斋。中东地区最重要的宗教时期。', elements:'新月、星星、几何伊斯兰纹样、阿拉伯书法、绿色/金色系、Ramadan Kareem标语', tips:'短尾节日，提前30天备货。中东市场最重要的节点。推荐伊斯兰几何纹样T恤。标题加Ramadan, Eid关键词。' },
+  eid: { name:'开斋节 (Eid al-Fitr)', desc:'斋月结束后的盛大节日，穆斯林穿上新衣，走亲访友，互赠礼物。相当于穆斯林的新年。', elements:'新月、星星、阿拉伯纹样、新衣主题、金色/绿色系、Eid Mubarak标语、礼盒', tips:'短尾节日，中东市场最大的购物节点。推荐Eid Mubarak印花T恤。标题加Eid, Eid al-Fitr关键词。' },
+  austriday: { name:'澳大利亚日 (Australia Day)', desc:'1月26日，澳大利亚国庆日。BBQ、海滩派对、国旗色装饰是传统。', elements:'澳洲国旗、袋鼠、考拉、南十字星、绿/金色系、冲浪板、"Aussie"标语', tips:'短尾节日，1月中旬搜索高峰。推荐澳洲元素印花T恤。标题加"Australia Day"关键词。' }
+};
+
+function showFestival(key) {
+  var f = festivalData[key];
+  if (!f) return;
+  var html = '<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:300;display:flex;justify-content:center;align-items:center" onclick="this.remove()">';
+  html += '<div style="background:#fff;border-radius:12px;padding:32px;max-width:600px;max-height:80vh;overflow-y:auto;margin:20px" onclick="event.stopPropagation()">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">';
+  html += '<h3 style="color:#FB7701;font-size:20px;margin:0">' + f.name + '</h3>';
+  html += '<span style="cursor:pointer;font-size:24px;color:#999" onclick="this.parentElement.parentElement.parentElement.remove()">✕</span>';
+  html += '</div>';
+  html += '<p style="color:#333;line-height:1.8;margin-bottom:16px"><b>📖 节日介绍：</b><br>' + f.desc + '</p>';
+  html += '<p style="color:#333;line-height:1.8;margin-bottom:16px"><b>🎨 相关服装印花元素：</b><br>' + f.elements + '</p>';
+  html += '<p style="color:#FB7701;line-height:1.8"><b>💡 运营建议：</b><br>' + f.tips + '</p>';
+  html += '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function searchFestival() {
+  var q = document.getElementById('festivalSearch').value.trim();
+  if (!q) return;
+  var result = document.getElementById('festivalResult');
+  
+  // Search in festivalData
+  var found = null;
+  for (var key in festivalData) {
+    var f = festivalData[key];
+    if (f.name.indexOf(q) >= 0 || key.toLowerCase().indexOf(q.toLowerCase()) >= 0) {
+      found = f;
+      break;
+    }
+  }
+  
+  if (found) {
+    result.style.display = 'block';
+    result.innerHTML = '<div style="background:#fff;border-radius:8px;padding:20px;border:1px solid #eee">' +
+      '<h4 style="color:#FB7701;margin-bottom:12px">' + found.name + '</h4>' +
+      '<p style="color:#333;line-height:1.8;margin-bottom:12px"><b>📖 节日介绍：</b><br>' + found.desc + '</p>' +
+      '<p style="color:#333;line-height:1.8;margin-bottom:12px"><b>🎨 相关服装印花元素：</b><br>' + found.elements + '</p>' +
+      '<p style="color:#FB7701;line-height:1.8"><b>💡 运营建议：</b><br>' + found.tips + '</p>' +
+      '</div>';
+  } else {
+    result.style.display = 'block';
+    result.innerHTML = '<div style="background:#fff;border-radius:8px;padding:20px;border:1px solid #eee">' +
+      '<p style="color:#999">未找到"' + q + '"的节日信息。</p>' +
+      '<p style="color:#666;font-size:13px;margin-top:8px">💡 建议：1) 检查拼写；2) 尝试英文搜索（如 Halloween, Christmas）；3) 使用上方各洲日历查看完整列表。</p>' +
+      '<div style="margin-top:12px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px solid #FB7701">' +
+      '<p style="color:#333;font-size:13px;margin-bottom:8px">💡 您可以使用AI助手查询节日详情和热销印花元素：</p>' +
+      '<div style="background:#f9f9f9;padding:10px;border-radius:6px;font-size:12px;color:#555;line-height:1.6;margin-bottom:8px">请帮我查询以下节日的详细介绍，以及在这个节日期间，男装服装类目中热销的印花元素有哪些？节日名称：【' + q + '】。请提供：1. 节日的历史背景和庆祝方式 2. 该节日期间男装热销的印花/图案元素 3. 推荐的标题关键词</div>' +
+      '<button onclick="copyFestivalSearchPrompt(\'' + q + '\')" style="padding:8px 20px;background:#FB7701;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px">📋 复制提示词并跳转豆包查询 →</button>' +
+      '</div>' +
+      '</div>';
+  }
+}
+
+// Allow Enter key to trigger search
+document.getElementById('festivalSearch').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') searchFestival();
+});
+
+// Copy festival search prompt and open doubao
+function copyFestivalSearchPrompt(query) {
+  var prompt = '请帮我查询以下节日的详细介绍，以及在这个节日期间，男装服装类目中热销的印花元素有哪些？节日名称：【' + query + '】。请提供：1. 节日的历史背景和庆祝方式 2. 该节日期间男装热销的印花/图案元素 3. 推荐的标题关键词';
+  var textarea = document.createElement('textarea');
+  textarea.value = prompt;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(textarea);
+  window.open('https://www.doubao.com/chat/', '_blank');
+}
+
+// Keyword tab switching
+
+
+// Hot element overlay tool
+function handleHotImgUpload(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('hotPreviewImg').src = e.target.result;
+      document.getElementById('hotPreviewName').textContent = input.files[0].name;
+      document.getElementById('hotUploadPreview').style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function showDownloadHint() {
+  var toast = document.createElement('div');
+  toast.className = 'copy-toast';
+  toast.textContent = '📋 正在打开关键词表格下载页面，请在页面中点击下载按钮...';
+  document.body.appendChild(toast);
+  setTimeout(function() { toast.remove(); }, 3000);
+}
+
+var onlineFormulas = {
+  'tshirt': ['节日','人群','图案/花色','领型','袖长','场景','风格','功能特性','季节','面料/材质','颜色','版型','细节','规格','热搜词'],
+  'hoodie': ['节日','品类','人群','领型','场景','风格','袖长','季节','功能特性','图案/花色','面料/材质','颜色','版型','细节','闭合','热搜词'],
+  'polo': ['节日','品类','人群','领型','门襟','图案/花色','场景','风格','功能特性','季节','袖长','面料/材质','颜色','版型','细节','规格','热搜词'],
+  'compression': ['节日','品类','人群','功能特性','场景','领型','袖长','季节','风格','面料/材质','颜色','图案/花色','版型','细节','规格','热搜词'],
+  'sunshirt': ['节日','品类','人群','场景','功能特性','领型','袖长','季节','风格','面料/材质','颜色','图案/花色','版型','细节','规格','热搜词']
+};
+
+var kwOptions = {
+  '节日': [['万圣节','Halloween'],['圣诞节','Christmas'],['情人节','Valentine'],['感恩节','Thanksgiving'],['黑五','Black Friday'],['新年','New Year'],['啤酒节','Oktoberfest'],['母亲节','Mothers Day'],['父亲节','Fathers Day'],['复活节','Easter'],['亡灵节','Day of the Dead'],['开学季','Back to School'],['圣帕特里克节','St Patricks Day'],['独立日','Independence Day'],['狂欢节','Carnival'],['斋月/开斋节','Ramadan Eid'],['夏季狂欢','Summer'],['超级碗','Super Bowl'],['以上都不是','']],
+  '人群': [['男性','Mens'],['少年','Teen Boys'],['青年','Young Men'],['中老年','Big and Tall'],['运动人群','Athletic'],['户外人群','Outdoor'],['商务人群','Business'],['潮流人群','Streetwear'],['音乐爱好者','Music Lover'],['度假人群','Vacation'],['艺术创意','Creative'],['学生群体','Student'],['以上都不是','']],
+  '品类': [['T恤','T-Shirt'],['卫衣','Hoodie'],['POLO衫','Polo Shirt'],['文化衫','Tee'],['图形T恤','Graphic Tee'],['口袋T恤','Pocket Tee'],['防晒服','Sun Shirt'],['钓鱼服','Fishing Shirt'],['压缩衣','Compression Shirt'],['以上都不是','']],
+  '版型': [['修身','Slim Fit'],['宽松','Loose Fit'],['常规','Regular Fit'],['Oversized','Oversized'],['短款','Cropped'],['加长','Longline'],['压缩','Compression'],['落肩','Drop Shoulder'],['运动版型','Athletic Fit'],['以上都不是','']],
+  '面料/材质': [['棉','Cotton'],['纯棉','100% Cotton'],['棉混纺','Cotton Blend'],['聚酯纤维','Polyester'],['氨纶','Spandex'],['莫代尔','Modal'],['竹纤维','Bamboo Fiber'],['亚麻','Linen'],['冰丝','Ice Silk'],['有机棉','Organic Cotton'],['精梳棉','Combed Cotton'],['丝光棉','Mercerized Cotton'],['抓绒','Fleece'],['毛圈','French Terry'],['以上都不是','']],
+  '场景': [['休闲','Casual'],['日常','Daily'],['街头','Street'],['健身','Gym'],['锻炼','Workout'],['海滩','Beach'],['度假','Vacation'],['校园','School'],['派对','Party'],['办公','Office'],['运动','Sports'],['旅行','Travel'],['户外','Outdoor'],['嘻哈','Hip-hop'],['滑板','Skate'],['以上都不是','']],
+  '风格': [['时尚','Fashion'],['潮流','Trendy'],['经典','Classic'],['复古','Vintage'],['休闲','Casual'],['Y2K','Y2K'],['街头风','Streetwear'],['极简','Minimalist'],['基础','Basic'],['学院风','Preppy'],['夏威夷','Hawaiian'],['波西米亚','Bohemian'],['韩版','Korean Style'],['嘻哈','Hip-hop'],['美式','American Style'],['运动风','Sporty'],['以上都不是','']],
+  '功能特性': [['透气','Breathable'],['速干','Quick-Dry'],['弹力','Stretch'],['吸湿排汗','Moisture-wicking'],['冰凉','Cooling'],['防紫外线','UV Protection'],['抗菌','Antibacterial'],['轻薄','Lightweight'],['压缩','Compression'],['防风','Windproof'],['保暖','Thermal'],['防水','Waterproof'],['抗皱','Wrinkle Resistant'],['以上都不是','']],
+  '颜色': [['黑色','Black'],['白色','White'],['灰色','Gray'],['藏青','Navy Blue'],['浅蓝','Light Blue'],['绿色','Green'],['军绿','Army Green'],['红色','Red'],['酒红','Burgundy'],['橙色','Orange'],['黄色','Yellow'],['棕色','Brown'],['米色','Beige'],['卡其','Khaki'],['紫色','Purple'],['粉色','Pink'],['多色','Multicolor'],['以上都不是','']],
+  '图案/花色': [['纯色','Solid'],['印花','Print'],['条纹','Striped'],['花卉','Floral'],['图形','Graphic'],['撞色','Color-block'],['迷彩','Camo'],['扎染','Tie-dye'],['豹纹','Leopard'],['格纹','Plaid'],['字母','Letter'],['几何','Geometric'],['波点','Polka Dot'],['渐变','Gradient'],['拼接','Patchwork'],['心形','Heart'],['动物','Animal'],['抽象','Abstract'],['以上都不是','']],
+  '领型': [['圆领','Crew Neck'],['V领','V-Neck'],['连帽','Hooded'],['翻领','Polo Collar'],['立领','Stand Collar'],['Mock领','Mock Neck'],['高领','Turtleneck'],['船型领','Scoop Neck'],['亨利领','Henley'],['拉链领','Zip Neck'],['以上都不是','']],
+  '袖长': [['短袖','Short Sleeve'],['长袖','Long Sleeve'],['无袖','Sleeveless'],['七分袖','3/4 Sleeve'],['插肩袖','Raglan Sleeve'],['以上都不是','']],
+  '季节': [['夏季','Summer'],['春季','Spring'],['秋季','Autumn'],['冬季','Winter'],['四季','All Seasons'],['夏日必备','Summer Essential'],['以上都不是','']],
+  '门襟': [['单排扣','Single Breasted'],['双排扣','Double Breasted'],['拉链门襟','Zip Front'],['纽扣门襟','Button Front'],['以上都不是','']],
+  '闭合': [['套头','Pullover'],['拉链','Zip Up'],['纽扣','Button Up'],['以上都不是','']],
+  '细节': [['口袋','Pocket'],['撞色边线','Ringer Trim'],['撞色领','Contrast Collar'],['侧开叉','Side Slit'],['落肩','Drop Shoulder'],['弧形下摆','Curved Hem'],['以上都不是','']],
+  '规格': [['单件','1pc'],['2件装','2pcs'],['3件装','3pcs'],['5件装','5pcs'],['套装','Pack'],['多件装','Multi-pack'],['以上都不是','']],
+  '热搜词': [['男士图案T恤','Mens Graphic Tees'],['男士卫衣','Mens Hoodies'],['男士POLO衫','Mens Polo Shirts'],['男士运动上衣','Mens Workout Shirts'],['男士防晒衬衫','Mens Sun Shirt'],['男士趣味T恤','Mens Novelty T-Shirt'],['男士休闲T恤','Mens Casual Tees'],['男士圆领卫衣','Mens Crewneck Sweatshirt'],['男士压缩衣','Mens Compression Shirt'],['男士钓鱼衬衫','Mens Fishing Shirt'],['男士街头潮流T恤','Mens Streetwear T-Shirt'],['男士酷炫图案T恤','Mens Cool Graphic Tee'],['男士宽松卫衣','Mens Oversized Hoodie'],['男士防紫外线衬衫','Mens UV Protection Shirt'],['以上都不是','']]
+};
+
+function updateOnlineTitle() {
+  var cat = document.getElementById('onlineTitleCat').value;
+  var dims = onlineFormulas[cat] || onlineFormulas['tshirt'];
+  var container = document.getElementById('onlineTitleInputs');
+  container.innerHTML = '';
+  var sunDiv = document.getElementById('sunProtectionOnline');
+  if (sunDiv) sunDiv.style.display = (cat === 'sunshirt') ? 'block' : 'none';
+
+  dims.forEach(function(dim) {
+    var div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;gap:6px;min-width:0;max-width:100%;overflow:hidden';
+    var opts = kwOptions[dim] || [];
+    var selectHtml = '<select class="kw-select" data-dim="' + dim + '" style="flex:1;padding:6px 8px;border:1px solid #ddd;border-radius:4px;font-size:13px;min-width:0;max-width:100%" onchange="handleKwSelect(this)"><option value="">请选择</option>';
+    opts.forEach(function(opt) {
+      var label = opt[0] + (opt[1] ? ' (' + opt[1] + ')' : '');
+      selectHtml += '<option value="' + opt[1] + '" data-cn="' + opt[0] + '">' + label + '</option>';
+    });
+    selectHtml += '</select>';
+    var customHtml = '<input type="text" class="kw-custom" data-dim="' + dim + '" style="display:none;flex:1;padding:6px 8px;border:1px solid #ddd;border-radius:4px;font-size:13px" placeholder="请输入' + dim + '关键词">';
+    div.innerHTML = '<label style="font-size:12px;color:#666;min-width:70px">' + dim + '</label>' + selectHtml + customHtml;
+    container.appendChild(div);
+  });
+}
+
+function handleKwSelect(sel) {
+  var dim = sel.getAttribute('data-dim');
+  var customInput = sel.parentElement.querySelector('.kw-custom');
+  if (sel.selectedIndex > 0 && sel.options[sel.selectedIndex].text.indexOf('以上都不是') >= 0) {
+    customInput.style.display = 'block';
+    customInput.placeholder = '请输入' + dim + '关键词（非必填，留空则跳过此维度）';
+    customInput.focus();
+  } else {
+    customInput.style.display = 'none';
+    customInput.value = '';
+  }
+}
+
+function generateOnlineTitle() {
+  var selects = document.querySelectorAll('.kw-select');
+  var cat = document.getElementById('onlineTitleCat').value;
+  var hasSun = true;
+  var sunDiv = document.getElementById('sunProtectionOnline');
+  if (sunDiv && sunDiv.style.display === 'block') {
+    hasSun = document.getElementById('onlineHasSunProtection').value === 'yes';
+  }
+
+  var partsEn = [];
+  var partsCn = [];
+  var logicParts = [];
+  var pendingTranslation = [];
+
+  selects.forEach(function(sel) {
+    var dim = sel.getAttribute('data-dim');
+    if (dim === '功能特性' && !hasSun) return;
+
+    var val = sel.value;
+    var cn = sel.options[sel.selectedIndex].getAttribute('data-cn') || '';
+    var customInput = sel.parentElement.querySelector('.kw-custom');
+    
+    if (sel.selectedIndex > 0 && sel.options[sel.selectedIndex].text.indexOf('以上都不是') >= 0) {
+      if (customInput && customInput.value.trim()) {
+        var userInput = customInput.value.trim();
+        cn = userInput;
+        if (/[一-龥]/.test(userInput)) {
+          var translationMap = {
+            '万圣节': 'Halloween', '圣诞节': 'Christmas', '情人节': 'Valentine',
+            '男性': 'Mens', '少年': 'Teen Boys', '青年': 'Young Men',
+            '黑色': 'Black', '白色': 'White', '灰色': 'Gray', '红色': 'Red',
+            '蓝色': 'Blue', '绿色': 'Green', '黄色': 'Yellow', '紫色': 'Purple',
+            '粉色': 'Pink', '橙色': 'Orange', '棕色': 'Brown',
+            '短袖': 'Short Sleeve', '长袖': 'Long Sleeve', '无袖': 'Sleeveless',
+            '圆领': 'Crew Neck', 'V领': 'V-Neck', '连帽': 'Hooded', '翻领': 'Polo Collar',
+            '棉': 'Cotton', '聚酯纤维': 'Polyester', '亚麻': 'Linen', '氨纶': 'Spandex',
+            '夏季': 'Summer', '春季': 'Spring', '秋季': 'Autumn', '冬季': 'Winter',
+            '休闲': 'Casual', '时尚': 'Fashion', '潮流': 'Trendy', '经典': 'Classic',
+            '透气': 'Breathable', '速干': 'Quick-Dry', '弹力': 'Stretch',
+            '修身': 'Slim Fit', '宽松': 'Loose Fit', '常规': 'Regular Fit',
+            '印花': 'Print', '条纹': 'Striped', '格纹': 'Plaid', '迷彩': 'Camo',
+            '口袋': 'Pocket', '单件': '1pc', '2件装': '2pcs'
+          };
+          var translated = translationMap[userInput];
+          if (!translated) {
+            val = userInput;
+            pendingTranslation.push({index: partsEn.length, chinese: userInput});
+          } else {
+            val = translated;
+          }
+        } else {
+          val = userInput;
+        }
+      } else {
+        return;
+      }
+    }
+    
+    if (val) {
+      partsEn.push(val);
+      partsCn.push(cn || val);
+      logicParts.push(dim);
+    }
+  });
+
+  if (partsEn.length < 3) {
+    alert('请至少选择3个维度的关键词');
+    return;
+  }
+
+  var titleEn = partsEn.join(' ');
+  if (titleEn.length > 250) titleEn = titleEn.substring(0, 250);
+  
+  var breakdown = [];
+  for (var i = 0; i < logicParts.length; i++) {
+    breakdown.push(logicParts[i] + ': ' + (partsCn[i] || partsEn[i]));
+  }
+  var titleBreakdown = breakdown.join(' | ');
+
+  var translationNote = '';
+  if (pendingTranslation.length > 0) {
+    translationNote = '\n\n⚠️ 以下中文词汇未能自动翻译，建议手动确认英文表述：' + 
+      pendingTranslation.map(function(t) { return t.chinese; }).join('、');
+  }
+
+  var result = document.getElementById('onlineTitleResult');
+  document.getElementById('onlineTitleEn').textContent = titleEn;
+  document.getElementById('onlineTitleBreakdown').textContent = titleBreakdown;
+  document.getElementById('onlineTitleCount').textContent = titleEn.length + ' 字符';
+  document.getElementById('onlineTitleLogic').textContent = '共选取 ' + logicParts.length + ' 个维度关键词拼接' + (translationNote ? translationNote : '');
+  result.style.display = 'block';
+}
+
+function clearOnlineTitle() {
+  document.querySelectorAll('.kw-select').forEach(function(sel) { sel.value = ''; });
+  document.querySelectorAll('.kw-custom').forEach(function(input) { input.value = ''; input.style.display = 'none'; });
+  document.getElementById('onlineTitleResult').style.display = 'none';
+}
+
+// Initialize online title generator
+updateOnlineTitle();
+
+function copyHotPrompt() {
+  var text = '任务：请将我上传的【印花元素图片】中的图案，精准替换/融合到另一张【纯色衣服图片】上\n' +
+    '核心要求：\n' +
+    '1. 保持衣服版型完全不变，仅替换/添加印花图案\n' +
+    '2. 印花图案需自然融入衣服，符合衣服的褶皱和光影\n' +
+    '3. 印花位置以胸前为主，大小适中\n' +
+    '4. 保留衣服的所有细节（领口、袖口、下摆等）\n' +
+    '5. 印花图案的颜色、细节需与原图保持一致\n' +
+    '输出格式：宽高比3:4，宽>1340px，高>1785px，小于2M';
+  copyText(text);
+}
+// ========== 面料克重查询 ==========
+var fabricWeightData = {
+  "衬衫": {
+    "消光破卡": "≥120G", "韩国丝": "≥110G", "人棉": "≥100G", "梭织平纹": "≥105G",
+    "洗水竹节": "≥100G", "冰丝皱": "≥150G", "色丁": ">100G", "酷丝棉": "≥130G",
+    "阳光麻": "≥135G", "梭织斜纹": "≥115G", "四面弹": "≥110G", "色织格": "≥155G",
+    "灯芯绒": "≥220G", "梭织色织布": ">90G", "针织提花": ">140G", "丝绒": ">180G",
+    "亚麻": "≥140G", "拉架平纹": ">220G"
+  },
+  "上衣": {
+    "珠地布": "≥150G", "鸟眼布": "≥150G", "针眼布": "≥150G", "平板布": "≥150G",
+    "纯棉": "≥180G", "仿棉": "≥180G", "华夫格": "≥180G", "亚麻": "≥140G",
+    "牛奶丝": "≥180G", "提花": "≥180G", "坑条布": "≥180G", "健康布": "≥210G",
+    "空气层": "≥210G", "直贡呢": "≥180G", "色丁": "≥100G", "太空棉": "≥210G",
+    "五枚缎": "≥100G", "卫衣料": "≥180G", "斜纹底卫衣料": "≥190G", "针织双面": "≥180G",
+    "针织平纹": "≥180G", "法国罗纹": "≥180G", "罗马布": "≥180G", "针织间条": "≥180G"
+  },
+  "裤子": {
+    "牛奶丝": "≥220G", "华夫格": "≥220G", "鸟眼布": "≥220G", "针眼布": "≥220G",
+    "拉架平纹": "≥220G", "直贡呢": "≥220G", "太空棉": "≥220G", "空气层": "≥220G",
+    "健康布": "≥220G", "拉毛布": "≥220G", "罗马布": "≥240G", "丝绒": "≥250G",
+    "大鱼鳞卫衣": "≥280G", "斜纹底卫衣料": "≥220G", "罗纹布": "≥220G", "坑条布": "≥220G",
+    "麂皮绒": "≥300G", "四面弹": "≥120G", "梭织斜纹": "≥175G", "酷丝棉": "≥145G",
+    "灯芯绒": "≥225G", "磨毛布": "≥240G", "PU皮革": "≥240G", "麻布类": "≥180G",
+    "梭织色织布": "≥100G", "针织绣花": "≥200G（网布底）", "梭织染色提花": "≥120G",
+    "风衣料（含羽绒服料）": "≥120G", "梭织平纹": "≥140G", "梭织缎纹": "≥140G",
+    "仿牛仔": "≥140G", "化纤乱麻": "≥140G", "亮片丝": "≥140G", "绉布（结构类绉布）": "≥140G",
+    "针织提花": "≥220G", "针织间条": "≥220G", "净色呢料（双面/单面）": "≥140G",
+    "复合布": "≥220G", "仿毛衫": "≥220G", "泳衣布": "≥220G", "珠地布": "≥220G",
+    "法国罗纹": "≥220G", "针织乱麻": "≥220G", "十字罗纹（威化布）": "≥220G"
+  },
+  "套装": {
+    "珠地布": "≥200G", "华夫格": "≥200G", "鸟眼布": "≥220G", "针眼布": "≥220G",
+    "直贡呢": "≥200G", "太空棉": "≥220G", "空气层": "≥220G", "健康布": "≥220G",
+    "拉毛布": "≥220G", "麻布类": "≥180G", "洗水棉": "≥140G", "绉布": "≥140G",
+    "梭织缎纹": "≥140G", "针织间条": "≥200G", "仿牛仔": "≥140G", "梭织平纹": "≥140G",
+    "化纤乱麻": "≥140G", "亮片丝": "≥140G", "坑条布": "≥220G", "拉架平纹": "≥180G",
+    "卫衣布": "≥200G", "十字罗纹（威化布）": "≥200G", "平纹（不含拉架）": "≥180G",
+    "仿毛衫": "≥220G", "泳衣布": "≥200G", "青年布": "≥140G", "牛津纺": "≥140G",
+    "针织乱麻": "≥220G", "罗马布": "≥200G", "毛巾布": "≥220G", "法国罗纹": "≥220G",
+    "梯级布（谷波布）": "≥220G"
+  },
+  "卫衣": {
+    "十字罗纹": "≥240G", "太空棉": "≥220G", "空气层": "≥220G", "健康布": "≥220G",
+    "拉毛布": "≥220G", "华夫格": "≥220G", "直贡呢": ">220G", "亚麻": "≥150G",
+    "日本卫衣": "≥250G", "鱼鳞卫衣": "≥220G", "坑条布": "≥220G", "拉架罗纹": "≥220G",
+    "抓毛卫衣": "≥250G", "毛绒": ">220G", "毛巾布": ">220G", "罗马布": ">220G",
+    "针织乱麻": ">220G", "仿毛衫": ">220G", "法国罗纹": ">220G", "复合布": ">220G",
+    "针织间条": ">220G", "针织提花": ">200G", "丝绒": ">200G"
+  },
+  "西装": {
+    "丝绒": ">160G", "针织金银丝": ">170G", "梭织色织布": ">150G", "麻布类": ">180G",
+    "色丁": ">120G", "五枚缎": ">120G", "风衣料（含羽绒服）": ">120G", "梭织染色提花": ">120G",
+    "洗水棉": ">140G", "绉布": ">140G", "梭织缎纹": ">140G", "仿牛仔": ">140G",
+    "梭织斜纹": ">140G", "化纤乱麻": ">140G", "亮片丝": ">140G", "青年布": ">140G",
+    "牛津纺": ">140G", "梭织平纹": ">140G"
+  }
+};
+
+function updateFabricOptions() {
+  var cat = document.getElementById('fabricCategory').value;
+  var fabricSelect = document.getElementById('fabricName');
+  fabricSelect.innerHTML = '';
+  if (!cat) {
+    fabricSelect.innerHTML = '<option value="">请先选择品类</option>';
+    return;
+  }
+  fabricSelect.innerHTML = '<option value="">选择面料</option>';
+  var fabrics = fabricWeightData[cat];
+  if (fabrics) {
+    for (var name in fabrics) {
+      var opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      fabricSelect.appendChild(opt);
+    }
+  }
+}
+
+function queryFabricWeight() {
+  var cat = document.getElementById('fabricCategory').value;
+  var name = document.getElementById('fabricName').value;
+  var resultDiv = document.getElementById('fabricResult');
+  if (!cat) {
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = '<div style="padding:12px 16px;background:#fff3cd;border-radius:8px;color:#856404;font-size:14px">请先选择品类</div>';
+    return;
+  }
+  if (!name) {
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = '<div style="padding:12px 16px;background:#fff3cd;border-radius:8px;color:#856404;font-size:14px">请选择面料</div>';
+    return;
+  }
+  var weight = fabricWeightData[cat][name];
+  if (weight) {
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = '<div style="padding:12px 16px;background:#e8f5e9;border-radius:8px;font-size:14px;color:#333"><b>✅ 查询结果：</b>' + name + '（' + cat + '）的面料克重要求为 <span style="color:#FB7701;font-weight:600;font-size:16px">' + weight + '</span></div>';
+  } else {
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = '<div style="padding:12px 16px;background:#fdecea;border-radius:8px;color:#c0392b;font-size:14px">❌ 未找到"' + name + '"的面料克重要求，请联系对接运营张阿莱。</div>';
+  }
+}
+
+function copyAndSearchFabric() {
+  var sel = document.getElementById('fabricName');
+  var name = sel.value;
+  var searchText = name ? name + '面料细节' : '面料细节';
+  var ta = document.createElement('textarea');
+  ta.value = searchText;
+  ta.style.cssText = 'position:fixed;opacity:0;left:-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  window.open('https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(searchText), '_blank');
+}
+
+</script>
+</body>
+</html>
