@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>张阿莱商家服务站</title>
+<title>张阿莱 • 商家服务站</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -93,6 +93,9 @@ tr:hover td { background:#FFF5EB; }
 .badge-orange { background:#FFE8D6; color:#FB7701; }
 .badge-green { background:#E6F7E6; color:#52C41A; }
 .badge-blue { background:#E6F7FF; color:#1890FF; }
+
+/* NEW badge pulse animation */
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
 
 /* Banner */
 .banner {
@@ -208,7 +211,11 @@ tr:hover td { background:#FFF5EB; }
     <a class="nav-item" onclick="navTo('marketing')"><span class="nav-icon">📅</span><span>营销节点</span></a>
     <a class="nav-item" onclick="navTo('hotsale')"><span class="nav-icon">🔥</span><span>热销元素</span></a>
     <a class="nav-item" onclick="navTo('compliance')"><span class="nav-icon">🛡️</span><span>店铺合规</span></a>
-    <a class="nav-item" onclick="navTo('news')"><span class="nav-icon">📰</span><span>近期资讯</span></a>
+    <a class="nav-item" onclick="navTo('news');dismissNewBadge('new-badge-nav-news','news-nav-seen')"><span class="nav-icon">📰</span><span>近期资讯</span><span id="new-badge-nav-news" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
+  </div>
+  <div style="background:linear-gradient(135deg,#FB7701,#FF9933);padding:16px 20px;color:#fff">
+    <div style="font-size:14px;font-weight:700;margin-bottom:8px">招商运营：张阿莱</div>
+    <div style="font-size:13px;line-height:1.8;opacity:0.95">联系方式：<br>TemuChat：alessia.zhang<br>微信：Alai3er</div>
   </div>
 </div>
 
@@ -218,8 +225,8 @@ tr:hover td { background:#FFF5EB; }
 <!-- 1. 工作台 -->
 <div class="section" id="dashboard">
   <div class="banner">
-    <h1>张阿莱商家服务站</h1>
-    <p>TEMU印花男装运营 · 微信号：Alai3er</p>
+    <h1>张阿莱 • 商家服务站</h1>
+    <p>寄样地址：zhangalai 13154463628<br>广东省 / 深圳市 / 南山区 深圳市南山区前海国际人才港B塔29楼【G-印花组】</p>
   </div>
   <div class="section-title">本周运营重点</div>
   <div class="card-grid">
@@ -1495,6 +1502,19 @@ tr:hover td { background:#FFF5EB; }
 
   <!-- Tab 1: 国家站点要求 -->
   <div class="tab-content active" id="tab-news-country">
+    <div class="element-section" id="news-pl-pkg" style="position:relative">
+      <div class="element-title">🇵🇱 波兰包装法（PL PKG）新增 AR 资质校验说明</div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">如卖家提交的是 AR 的资质代码，请填写波兰授权代理（AR）的 BDO 资质代码，而非证书编号；</p>
+        <p style="font-size:14px;color:#333;line-height:2">如卖家提交 AR 资质证明文件，需提供对应的 AR 资质证明；</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:8px">⭐️ 目前我们仅认可下图所示类型的 AR 资质证明，其他类型文件暂不作为有效 AR 资质证明：</p>
+        <div style="text-align:center;margin-top:12px">
+          <img src="news_pl_pkg_ar.jpeg" alt="波兰AR资质证明示例" style="max-width:100%;border-radius:8px;border:1px solid #eee" />
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：波兰包装法（PL PKG）资质审核现已新增授权代理（AR）资质证明提交渠道，请按照要求提交波兰包装资质。</p></div>
+    </div>
+
     <div class="element-section">
       <div class="element-title">🇮🇹 意大利商品包装环境标签</div>
       <div class="card-grid">
@@ -1688,6 +1708,20 @@ function switchTab(evt, tabId) {
   btn.classList.add('active');
   document.getElementById(tabId).classList.add('active');
 }
+
+function dismissNewBadge(badgeId, storageKey) {
+  var badge = document.getElementById(badgeId);
+  if (badge) { badge.style.display = 'none'; }
+  try { localStorage.setItem(storageKey, '1'); } catch(e) {}
+}
+(function() {
+  try {
+    if (localStorage.getItem('news-nav-seen') === '1') {
+      var b = document.getElementById('new-badge-nav-news');
+      if (b) { b.style.display = 'none'; }
+    }
+  } catch(e) {}
+})();
 
 function openModal(src, showLens) {
   document.getElementById('modal-img').src = src;
