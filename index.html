@@ -440,7 +440,22 @@ tr:hover td { background:#FFF5EB; }
       <div style="margin-top:12px;padding:12px 16px;background:#f9f9f9;border-radius:8px">
         <p style="font-size:14px;color:#333;margin:0"><b>拉伸值计算：</b>拉伸率 = 拉伸值 ÷ 原长（10CM）× 100%</p>
       </div>
-      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>举例：</b>原始长度10CM，用15N的力拉到了15CM，拉伸值为5CM，则拉伸率为50%，面料弹性选中弹。</p>
+      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>💡 提示：</b>面料弹性拿不准的话，请联系张阿莱确认。</p>
+      <div style="margin-top:12px;padding:16px;background:#fff;border:1px solid #FB7701;border-radius:8px">
+        <p style="font-size:14px;color:#333;margin:0 0 12px"><b>🧮 面料弹性计算工具</b></p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+          <div style="flex:1;min-width:120px">
+            <label style="font-size:13px;color:#666;display:block;margin-bottom:4px">原长（CM）</label>
+            <input id="elastOriginal" type="number" value="10" min="0.1" step="0.1" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box">
+          </div>
+          <div style="flex:1;min-width:120px">
+            <label style="font-size:13px;color:#666;display:block;margin-bottom:4px">拉伸后长度（CM）</label>
+            <input id="elastStretched" type="number" value="15" min="0" step="0.1" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box">
+          </div>
+          <button onclick="calcFabricElasticity()" style="padding:10px 24px;background:#FB7701;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer">🔍 计算拉伸率</button>
+        </div>
+        <div id="elasticResult" style="display:none;margin-top:14px;padding:12px 14px;background:#FFF5EB;border-radius:8px;font-size:14px;color:#333;line-height:1.9"></div>
+      </div>
     </div>
   </div>
 
@@ -1512,8 +1527,6 @@ tr:hover td { background:#FFF5EB; }
       <div class="card" style="margin-top:16px">
         <p style="font-size:14px;color:#FB7701;font-weight:600;line-height:2">⚠️ 运营补充：平台后续会有兜底方案，给填不出货号的商家分配货号。</p>
         <p style="font-size:14px;color:#FB7701;line-height:2;margin-top:8px">批量导入SKU货号路径：商品管理-&gt;商品列表-&gt;更多-&gt;批量导入货号-&gt;下载模板/导入文件</p>
-        <p style="font-size:14px;color:#FB7701;line-height:2;margin-top:8px">• 商家应提供由制造商、生产者或产品供应商（至少参与部分产品制造的主体）分配，用于商品管理和识别的商品识别码；</p>
-        <p style="font-size:14px;color:#FB7701;line-height:2;margin-top:8px">• 不同商品SKU不可填写相同的SKU货号，即型号、颜色等若存在差异、并因此构成不同产品变体的，应分别使用相应的SKU货号。</p>
       </div>
     </div>
 
@@ -1812,6 +1825,42 @@ window.addEventListener('scroll', function() {
   });
 });
 
+function calcFabricElasticity() {
+  var original = parseFloat(document.getElementById('elastOriginal').value);
+  var stretched = parseFloat(document.getElementById('elastStretched').value);
+  var resultBox = document.getElementById('elasticResult');
+  if (isNaN(original) || original <= 0) {
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = '<span style="color:#e6432d">⚠️ 请输入有效的原长（大于0的数值）</span>';
+    return;
+  }
+  if (isNaN(stretched) || stretched < 0) {
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = '<span style="color:#e6432d">⚠️ 请输入有效的拉伸后长度</span>';
+    return;
+  }
+  if (stretched < original) {
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = '<span style="color:#e6432d">⚠️ 拉伸后长度不能小于原长</span>';
+    return;
+  }
+  var stretchValue = stretched - original;
+  var rate = (stretchValue / original) * 100;
+  var r = (Math.round(rate * 100) / 100).toFixed(2);
+  var rNum = parseFloat(r);
+  var level, color;
+  if (rNum <= 10) { level = '无弹'; color = '#666'; }
+  else if (rNum <= 50) { level = '微弹'; color = '#e08f00'; }
+  else if (rNum <= 90) { level = '中弹'; color = '#FB7701'; }
+  else { level = '高弹'; color = '#e6432d'; }
+  var sv = (Math.round(stretchValue * 100) / 100).toFixed(2);
+  resultBox.style.display = 'block';
+  resultBox.innerHTML =
+    '拉伸值：<b>' + sv + ' CM</b><br>' +
+    '拉伸率：<b>' + r + '%</b>（' + stretchValue + ' ÷ ' + original + ' × 100%）<br>' +
+    '面料弹性：<b style="color:' + color + '">' + level + '</b>';
+}
+
 function copyText(text) {
   var ta = document.createElement('textarea');
   ta.value = text;
@@ -1823,7 +1872,7 @@ function copyText(text) {
   try { document.execCommand('copy'); } catch(e) {}
   document.body.removeChild(ta);
   alert('提示词已复制！正在为您打开AI工具网页，请粘贴提示词并上传商品图片。');
-  window.open('https://chat.deepseek.com/', '_blank');
+  window.open('https://www.doubao.com/chat/', '_blank');
 }
 
 function copyTitlePrompt() {
@@ -2976,7 +3025,7 @@ function copyFestivalSearchPrompt(query) {
   textarea.select();
   try { document.execCommand('copy'); } catch(e) {}
   document.body.removeChild(textarea);
-  window.open('https://chat.deepseek.com/', '_blank');
+  window.open('https://www.doubao.com/chat/', '_blank');
 }
 
 // Keyword tab switching
