@@ -1635,7 +1635,19 @@ tr:hover td { background:#FFF5EB; }
 
   <!-- Tab 2: 店铺运营相关 -->
   <div class="tab-content" id="tab-news-ops">
+    <div class="element-section" id="news-img-consistency">
+      <div class="element-title">📸 关于保持商品创建图片、轮播图与实物一致性的提醒 <span id="new-badge-news-img-consistency" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">为帮助您更准确地展示商品，保障消费者购物体验，减少因商品图片与实物不一致引发的售后问题，请您在商品创建及后续调整商品图片时关注以下内容。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:8px">您应确保商品创建时提交的图片、消费者端展示的轮播图与实际销售商品，在包括但不限于材质、版型及做工工艺等关键信息方面保持一致，避免因明显差异造成消费者误解。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>商品创建：</b>创建商品时，应直接上传拟在消费者端展示的最终轮播图，并确保相关图片与实际销售商品一致。</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>后续调整：</b>如商品创建时最终轮播图尚未制作完成，需在后续新增、修改或替换轮播图的，调整后的轮播图应与最初发布时提交的图片及实际销售商品保持一致，不得改变商品材质、版型及做工工艺等关键信息。如调整后的轮播图与商品发布时提交的图片或实际销售商品存在明显差异，或者因此引发消费者售后问题，可能面临对应违规处理措施。</p>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：建议在审版环节，尽量直接提交C端展示的轮播图，从源头减少换图风险。</p></div>
+    </div>
+
     <div class="element-section">
+
       <div class="element-title">📍 制造地点待填写</div>
       <div class="card">
         <p style="font-size:14px;color:#333;line-height:2">系统会自动勾选商品产地，商家只需检查是否有别的制造地点需要补充，没有的话点击确认即可。</p>
@@ -1733,6 +1745,7 @@ function navTo(id, evt) {
   // If navigating away from news, dismiss the EU PID title NEW badge
   if (id !== 'news') {
     dismissNewBadge('new-badge-news-eu-pid','news-eu-pid-seen');
+    dismissNewBadge('new-badge-news-img-consistency','news-img-consistency-seen');
   }
   document.getElementById(id).scrollIntoView({behavior:'smooth'});
   document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
@@ -1763,6 +1776,11 @@ function dismissNewBadge(badgeId, storageKey) {
     if (localStorage.getItem('news-eu-pid-seen') === '1') {
       var euBadge = document.getElementById('new-badge-news-eu-pid');
       if (euBadge) euBadge.style.display = 'none';
+    }
+    // Check image consistency news badge independently
+    if (localStorage.getItem('news-img-consistency-seen') === '1') {
+      var imgBadge = document.getElementById('new-badge-news-img-consistency');
+      if (imgBadge) imgBadge.style.display = 'none';
     }
   } catch(e) {}
 })();
