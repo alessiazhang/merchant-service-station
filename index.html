@@ -82,7 +82,7 @@ body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; backgr
   padding-left:12px; border-left:4px solid #FB7701;
 }
 .xmas-card { margin-bottom:8px; border-radius:8px; overflow:hidden; border:1px solid #eee; background:#f5f5f5; cursor:pointer; }
-.xmas-card img { width:100%; display:block; cursor:pointer; transition:transform 0.2s; }
+.xmas-card img { width:75%; display:block; margin:0 auto; cursor:pointer; transition:transform 0.2s; }
 .xmas-card:hover img { transform:scale(1.01); }
 .xmas-sub { font-size:13px; color:#888; margin-bottom:20px; padding-left:4px; }
 
@@ -215,7 +215,7 @@ tr:hover td { background:#FFF5EB; }
     <a class="nav-item" onclick="navTo('title', event)"><span class="nav-icon">📝</span><span>标题优化</span></a>
     <a class="nav-item" onclick="navTo('visual', event)"><span class="nav-icon">🎨</span><span>视觉优化</span></a>
     <a class="nav-item" onclick="navTo('marketing', event)"><span class="nav-icon">📅</span><span>营销节点</span></a>
-    <a class="nav-item" onclick="navTo('hotsale', event)"><span class="nav-icon">🔥</span><span>热销元素</span></a>
+    <a class="nav-item" onclick="navTo('hotsale', event)"><span class="nav-icon">🔥</span><span>热销元素</span><span id="new-badge-nav-hotsale" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('tongkuan', event)"><span class="nav-icon">🏷️</span><span>同款招品</span></a>
     <a class="nav-item" onclick="navTo('compliance', event)"><span class="nav-icon">🛡️</span><span>店铺合规</span></a>
     <a class="nav-item" onclick="navTo('news', event);dismissNewBadge('new-badge-nav-news','news-nav-seen')"><span class="nav-icon">📰</span><span>近期资讯</span><span id="new-badge-nav-news" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
@@ -1239,7 +1239,7 @@ tr:hover td { background:#FFF5EB; }
   <div class="tabs">
     <div class="tab active" onclick="switchTab(event, 'tab-hotsale-print')">🔥 热销印花</div>
     <div class="tab" onclick="switchTab(event, 'tab-hotsale-halloween')">🎃 万圣元素</div>
-    <div class="tab" onclick="switchTab(event, 'tab-hotsale-christmas')">🎄 圣诞元素</div>
+    <div class="tab" onclick="switchTab(event, 'tab-hotsale-christmas')">🎄 圣诞元素<span id="new-badge-tab-christmas" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></div>
   </div>
 
   <div class="tab-content active" id="tab-hotsale-print">
@@ -1443,10 +1443,6 @@ tr:hover td { background:#FFF5EB; }
   <!-- Tab 3: 圣诞元素 -->
   <div class="tab-content" id="tab-hotsale-christmas">
 
-    <div class="card" style="margin-bottom:20px;background:#fff7f2;border:1px solid #FB7701">
-      <p style="font-size:14px;line-height:2;color:#FB7701;margin:0"><b>🎄 圣诞元素设计指南</b><br>以下为圣诞热销元素汇总，涵盖主要元素、辅助元素、视觉小结与延改思路，供商家挑选印花图案参考。图案优先使用历史爆旺图案（站内）方向。</p>
-    </div>
-
     <div class="element-section">
       <div class="element-title">主要元素</div>
       <div class="xmas-card"><img src="christmas_01.png" loading="lazy" onclick="openModal(this.src)"></div>
@@ -1489,20 +1485,6 @@ tr:hover td { background:#FFF5EB; }
       <div class="xmas-sub">动物 · 驯鹿/企鹅/北极熊等</div>
       <div class="xmas-card"><img src="christmas_18.png" loading="lazy" onclick="openModal(this.src)"></div>
       <div class="xmas-sub">圣诞度假 · 夏季圣诞/热带花卉</div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">视觉小结</div>
-      <div class="xmas-card"><img src="christmas_19.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="xmas-sub">圣诞风格定位 · 休闲/街头/正式/居家</div>
-      <div class="xmas-card"><img src="christmas_20.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="xmas-sub">热销胚衣-圣诞款 · 视觉小结</div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">图案延改思路</div>
-      <div class="xmas-card"><img src="christmas_20.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="xmas-sub">图案延改思路 · 热销胚衣-圣诞款</div>
     </div>
 
     <div class="element-section">
@@ -1905,6 +1887,10 @@ function navTo(id, evt) {
     dismissNewBadge('new-badge-news-img-consistency','news-img-consistency-seen');
     dismissNewBadge('new-badge-news-compliance','news-compliance-seen');
   }
+  // If leaving the hot-sale section, dismiss its nav NEW badge (entering keeps it visible)
+  if (id !== 'hotsale') {
+    dismissNewBadge('new-badge-nav-hotsale','hotsale-nav-seen');
+  }
   document.getElementById(id).scrollIntoView({behavior:'smooth'});
   document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
   (evt||window.event).currentTarget.classList.add('active');
@@ -1917,6 +1903,10 @@ function switchTab(evt, tabId) {
   parent.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById(tabId).classList.add('active');
+  // If leaving the Christmas tab, dismiss its NEW badge (entering keeps it visible)
+  if (tabId !== 'tab-hotsale-christmas') {
+    dismissNewBadge('new-badge-tab-christmas','christmas-tab-seen');
+  }
 }
 
 function dismissNewBadge(badgeId, storageKey) {
@@ -1944,6 +1934,16 @@ function dismissNewBadge(badgeId, storageKey) {
     if (localStorage.getItem('news-compliance-seen') === '1') {
       var compBadge = document.getElementById('new-badge-news-compliance');
       if (compBadge) compBadge.style.display = 'none';
+    }
+    // Check Christmas tab badge independently
+    if (localStorage.getItem('christmas-tab-seen') === '1') {
+      var xmasBadge = document.getElementById('new-badge-tab-christmas');
+      if (xmasBadge) xmasBadge.style.display = 'none';
+    }
+    // Check hot-sale nav badge independently
+    if (localStorage.getItem('hotsale-nav-seen') === '1') {
+      var hsBadge = document.getElementById('new-badge-nav-hotsale');
+      if (hsBadge) hsBadge.style.display = 'none';
     }
   } catch(e) {}
 })();
