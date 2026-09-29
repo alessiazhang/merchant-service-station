@@ -197,6 +197,46 @@ tr:hover td { background:#FFF5EB; }
 }
 
 @keyframes newBlink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* Detail modal (PPT content nested in index, tap-jump) */
+.detail-modal {
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.7); z-index:300; justify-content:center; align-items:flex-start;
+}
+.detail-panel {
+  background:#fff; width:100%; max-width:860px; height:100vh; overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.detail-head {
+  background:#FB7701; color:#fff; padding:14px 24px; display:flex; align-items:center;
+  justify-content:space-between; flex-shrink:0;
+}
+.detail-head .d-title { font-size:17px; font-weight:700; }
+.detail-close {
+  background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.4);
+  border-radius:8px; font-size:14px; cursor:pointer; padding:6px 18px; transition:background 0.3s;
+}
+.detail-close:hover { background:rgba(255,255,255,0.3); }
+.detail-body { flex:1; overflow-y:auto; padding:24px 28px; }
+.detail-body .ppt-page {
+  display:block; width:100%; height:auto; margin:0 auto 20px;
+  border:1px solid #e5e5e5; border-radius:6px; box-shadow:0 1px 6px rgba(0,0,0,0.06);
+  background:#fff;
+}
+.detail-body .ppt-page:last-child { margin-bottom:0; }
+.detail-body .ppt-page-note { text-align:center; font-size:12px; color:#999; margin:4px 0 20px; }
+@media (max-width:768px) { .detail-body { padding:14px 10px; } .detail-body .ppt-page { margin-bottom:14px; } }
+.dc-h { font-size:16px; font-weight:700; color:#FB7701; margin:24px 0 10px; border-left:4px solid #FB7701; padding-left:10px; }
+.dc-h:first-child { margin-top:6px; }
+.dc-sub { font-size:14px; font-weight:600; color:#333; margin:14px 0 8px; }
+.dc-p { font-size:14px; color:#333; line-height:1.9; margin:6px 0; }
+.dc-tag { display:inline-block; padding:3px 10px; background:#FFF5EB; color:#FB7701; border-radius:4px; font-size:13px; margin:4px 4px 0 0; }
+.dc-box { background:#FFF5EB; border-left:4px solid #FB7701; padding:12px 16px; border-radius:6px; margin:10px 0; }
+.dc-box2 { background:#f8f8f8; border-left:4px solid #ddd; padding:12px 16px; border-radius:6px; margin:10px 0; }
+.dc-note { font-size:13px; color:#999; line-height:1.8; margin:18px 0 0; }
+.detail-body table { margin:10px 0; }
+.detail-body th, .detail-body td { font-size:13px; }
+@media (max-width:768px) { .detail-panel { max-width:100%; } .detail-body { padding:18px 16px; } }
 </style>
 </head>
 <body>
@@ -217,7 +257,8 @@ tr:hover td { background:#FFF5EB; }
     <a class="nav-item" onclick="navTo('marketing', event)"><span class="nav-icon">📅</span><span>营销节点</span></a>
     <a class="nav-item" onclick="navTo('hotsale', event)"><span class="nav-icon">🔥</span><span>热销元素</span><span id="new-badge-nav-hotsale" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('tongkuan', event)"><span class="nav-icon">🏷️</span><span>同款招品</span></a>
-    <a class="nav-item" onclick="navTo('compliance', event)"><span class="nav-icon">🛡️</span><span>店铺合规</span></a>
+    <a class="nav-item" onclick="navTo('seller', event)"><span class="nav-icon">📚</span><span>卖家课堂</span><span id="new-badge-nav-seller" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
+    <a class="nav-item" onclick="navTo('compliance', event)"><span class="nav-icon">🛡️</span><span>店铺合规</span><span id="new-badge-nav-compliance" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('news', event);dismissNewBadge('new-badge-nav-news','news-nav-seen')"><span class="nav-icon">📰</span><span>近期资讯</span><span id="new-badge-nav-news" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
   </div>
   <div style="background:linear-gradient(135deg,#FB7701,#FF9933);padding:16px 20px;color:#fff">
@@ -1538,9 +1579,42 @@ tr:hover td { background:#FFF5EB; }
   <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：请确保商品与招品商品完全一致（包括款式、颜色、材质等），避免因不符导致绑定失败。</p></div>
 </div>
 
+<!-- 8.7 卖家课堂 -->
+<div class="section" id="seller">
+  <div class="section-title">卖家课堂 <span id="new-badge-seller-title" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+
+  <!-- 课堂1: 描述不符 -->
+  <div class="element-section">
+    <div class="element-title">描述不符 <span id="new-badge-seller-miaoshu" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="card" style="cursor:pointer" onclick="openDetail('detail-miaoshu','描述不符规则解析与整改')">
+      <p style="font-size:14px;color:#333;line-height:2">商品描述与实物一致是保障消费者体验的基本要求。本课堂解析描述不符的主要问题类型（如材质/面料、尺寸、规格不符等）与对应整改要求，帮助商家从源头减少描述不符风险。</p>
+      <div style="margin-top:10px;display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;font-size:14px;font-weight:600">📖 进入课堂 · 查看规则解析 →</div>
+    </div>
+  </div>
+
+  <!-- 课堂2: 商家推广 -->
+  <div class="element-section">
+    <div class="element-title">商家推广 <span id="new-badge-seller-tuiguang" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="card" style="cursor:pointer" onclick="openDetail('detail-tuiguang','商家推广与流量增长')">
+      <p style="font-size:14px;color:#333;line-height:2">讲解商品推广与流量增长的基础玩法：广告如何帮助商品获得曝光、无订单不计费权益、投放策略建议，以及短期/长期流量增长的差异与报名顺序建议，帮助商家合理规划推广预算。</p>
+      <div style="margin-top:10px;display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;font-size:14px;font-weight:600">📖 进入课堂 · 查看推广指南 →</div>
+    </div>
+  </div>
+</div>
+
 <!-- 8.5 店铺合规 -->
 <div class="section" id="compliance">
-  <div class="section-title">店铺合规</div>
+  <div class="section-title">店铺合规 <span id="new-badge-compliance-title" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+
+  <!-- 合规0: 上新违规（新增） -->
+  <div class="element-section">
+    <div class="element-title">上新违规 <span id="new-badge-zuoe" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="card" style="cursor:pointer" onclick="openDetail('detail-zuoe','上新违规 · 行为解析与申诉说明')">
+      <p style="font-size:14px;color:#333;line-height:2">店铺在商品上新时多次发生违规行为，已违反商家协议、商家规则的相关规定，平台将依规采取相应的处理措施，请予以重视并进行相应整改。</p>
+      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>常见违规类型：</b>标题问题（异常数字、数量不符、标题错乱等）、图片问题（主图误导、P图痕迹明显等）、申报价格问题（漫天报价、套版报价高于底版价格等）、关键信息修改问题（修改材质、重量/体积由大改小等）。</p>
+      <div style="margin-top:12px;display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;font-size:14px;font-weight:600">📖 点击查看 · 违规类型与申诉说明 →</div>
+    </div>
+  </div>
 
   <!-- 合规1: 描述不符 -->
   <div class="element-section">
@@ -1849,6 +1923,47 @@ tr:hover td { background:#FFF5EB; }
   </div>
 </div>
 
+<!-- Detail Modal (tap-jump nested PPT content) -->
+<div id="detail-modal" class="detail-modal">
+  <div class="detail-panel">
+    <div class="detail-head">
+      <div class="d-title" id="detail-title">详情</div>
+      <button class="detail-close" onclick="closeDetail()">✕ 关闭</button>
+    </div>
+    <div class="detail-body" id="detail-body"></div>
+  </div>
+</div>
+
+<div id="detail-zuoe" style="display:none">
+  <img class="ppt-page" src="ppt_pages/zuoe_p01.png" alt="上新违规 第1页">
+  <img class="ppt-page" src="ppt_pages/zuoe_p02.png" alt="上新违规 第2页">
+  <img class="ppt-page" src="ppt_pages/zuoe_p03.png" alt="上新违规 第3页">
+</div>
+<div id="detail-miaoshu" style="display:none">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p01.png" alt="描述不符规则解析与整改 第1页">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p02.png" alt="描述不符规则解析与整改 第2页">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p03.png" alt="描述不符规则解析与整改 第3页">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p04.png" alt="描述不符规则解析与整改 第4页">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p05.png" alt="描述不符规则解析与整改 第5页">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p06.png" alt="描述不符规则解析与整改 第6页">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p07.png" alt="描述不符规则解析与整改 第7页">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p08.png" alt="描述不符规则解析与整改 第8页">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p09.png" alt="描述不符规则解析与整改 第9页">
+  <img class="ppt-page" src="ppt_pages/miaoshu_p10.png" alt="描述不符规则解析与整改 第10页">
+</div>
+<div id="detail-tuiguang" style="display:none">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p01.png" alt="商家推广与流量增长 第1页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p02.png" alt="商家推广与流量增长 第2页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p03.png" alt="商家推广与流量增长 第3页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p04.png" alt="商家推广与流量增长 第4页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p05.png" alt="商家推广与流量增长 第5页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p06.png" alt="商家推广与流量增长 第6页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p07.png" alt="商家推广与流量增长 第7页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p08.png" alt="商家推广与流量增长 第8页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p09.png" alt="商家推广与流量增长 第9页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p10.png" alt="商家推广与流量增长 第10页">
+  <img class="ppt-page" src="ppt_pages/tuiguang_p11.png" alt="商家推广与流量增长 第11页">
+</div>
 <script>
 function copyCatPath(td) {
   var text = td.textContent.trim();
@@ -1913,6 +2028,34 @@ function dismissNewBadge(badgeId, storageKey) {
   if (badge) { badge.style.display = 'none'; }
   try { localStorage.setItem(storageKey, '1'); } catch(e) {}
 }
+
+// Detail modal (tap-jump nested PPT content)
+function openDetail(panelId, title) {
+  var body = document.getElementById('detail-body');
+  var panel = document.getElementById(panelId);
+  if (body && panel) { body.innerHTML = panel.innerHTML; }
+  var t = document.getElementById('detail-title');
+  if (t) { t.textContent = title; }
+  document.getElementById('detail-modal').style.display = 'flex';
+  dismissDetailBadges(panelId);
+}
+function closeDetail() {
+  document.getElementById('detail-modal').style.display = 'none';
+}
+function dismissDetailBadges(panelId) {
+  if (panelId === 'detail-zuoe') {
+    // 用户点进"上新违规"后，店铺合规板块与新内容角标一起消失
+    dismissNewBadge('new-badge-nav-compliance','compliance-nav-seen');
+    dismissNewBadge('new-badge-compliance-title','compliance-title-seen');
+    dismissNewBadge('new-badge-zuoe','zuoe-seen');
+  } else if (panelId === 'detail-miaoshu' || panelId === 'detail-tuiguang') {
+    // 用户点进卖家课堂任一模块后，卖家课堂板块角标消失
+    dismissNewBadge('new-badge-nav-seller','seller-nav-seen');
+    dismissNewBadge('new-badge-seller-title','seller-title-seen');
+    dismissNewBadge('new-badge-seller-miaoshu','seller-miaoshu-seen');
+    dismissNewBadge('new-badge-seller-tuiguang','seller-tuiguang-seen');
+  }
+}
 (function() {
   try {
     if (localStorage.getItem('news-nav-seen') === '1') {
@@ -1944,8 +2087,44 @@ function dismissNewBadge(badgeId, storageKey) {
       var hsBadge = document.getElementById('new-badge-nav-hotsale');
       if (hsBadge) hsBadge.style.display = 'none';
     }
+    // Check compliance (上新违规) badges independently
+    if (localStorage.getItem('compliance-nav-seen') === '1') {
+      var compNav = document.getElementById('new-badge-nav-compliance');
+      if (compNav) compNav.style.display = 'none';
+    }
+    if (localStorage.getItem('compliance-title-seen') === '1') {
+      var compTitle = document.getElementById('new-badge-compliance-title');
+      if (compTitle) compTitle.style.display = 'none';
+    }
+    if (localStorage.getItem('zuoe-seen') === '1') {
+      var zuoeBadge = document.getElementById('new-badge-zuoe');
+      if (zuoeBadge) zuoeBadge.style.display = 'none';
+    }
+    // Check seller classroom badges independently
+    if (localStorage.getItem('seller-nav-seen') === '1') {
+      var sellerNav = document.getElementById('new-badge-nav-seller');
+      if (sellerNav) sellerNav.style.display = 'none';
+    }
+    if (localStorage.getItem('seller-title-seen') === '1') {
+      var sellerTitle = document.getElementById('new-badge-seller-title');
+      if (sellerTitle) sellerTitle.style.display = 'none';
+    }
+    if (localStorage.getItem('seller-miaoshu-seen') === '1') {
+      var sm = document.getElementById('new-badge-seller-miaoshu');
+      if (sm) sm.style.display = 'none';
+    }
+    if (localStorage.getItem('seller-tuiguang-seen') === '1') {
+      var st = document.getElementById('new-badge-seller-tuiguang');
+      if (st) st.style.display = 'none';
+    }
   } catch(e) {}
 })();
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    var dm = document.getElementById('detail-modal');
+    if (dm && dm.style.display === 'flex') { closeDetail(); }
+  }
+});
 
 function openModal(src, showLens) {
   document.getElementById('modal-img').src = src;
