@@ -221,8 +221,27 @@ tr:hover td { background:#FFF5EB; }
 .detail-body .ppt-page {
   display:block; width:100%; height:auto; margin:0 auto 20px;
   border:1px solid #e5e5e5; border-radius:6px; box-shadow:0 1px 6px rgba(0,0,0,0.06);
-  background:#fff;
+  background:#fff; cursor:zoom-in; transition:transform 0.2s, box-shadow 0.2s;
 }
+.detail-body .ppt-page:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.14); }
+
+/* Slide zoom viewer (click to enlarge PPT page) */
+.slide-zoom-modal {
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.88); z-index:400; justify-content:center; align-items:center;
+  flex-direction:column; padding:20px;
+}
+.slide-zoom-modal.show { display:flex; }
+.slide-zoom-img {
+  max-width:96%; max-height:86vh; border-radius:6px; box-shadow:0 8px 40px rgba(0,0,0,0.5);
+  object-fit:contain; background:#fff;
+}
+.slide-zoom-toolbar { margin-top:16px; display:flex; gap:12px; }
+.slide-zoom-btn {
+  padding:8px 20px; background:rgba(255,255,255,0.18); color:#fff; border:1px solid rgba(255,255,255,0.4);
+  border-radius:8px; font-size:14px; cursor:pointer; transition:background 0.3s;
+}
+.slide-zoom-btn:hover { background:rgba(255,255,255,0.3); }
 .detail-body .ppt-page:last-child { margin-bottom:0; }
 .detail-body .ppt-page-note { text-align:center; font-size:12px; color:#999; margin:4px 0 20px; }
 @media (max-width:768px) { .detail-body { padding:14px 10px; } .detail-body .ppt-page { margin-bottom:14px; } }
@@ -1935,35 +1954,44 @@ tr:hover td { background:#FFF5EB; }
 </div>
 
 <div id="detail-zuoe" style="display:none">
-  <img class="ppt-page" src="zuoe_p01.png" alt="上新违规 第1页">
-  <img class="ppt-page" src="zuoe_p02.png" alt="上新违规 第2页">
-  <img class="ppt-page" src="zuoe_p03.png" alt="上新违规 第3页">
+  <img class="ppt-page" src="zuoe_p01.png" alt="上新违规 第1页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="zuoe_p02.png" alt="上新违规 第2页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="zuoe_p03.png" alt="上新违规 第3页" onclick="zoomSlide(this)">
 </div>
 <div id="detail-miaoshu" style="display:none">
-  <img class="ppt-page" src="miaoshu_p01.png" alt="描述不符规则解析与整改 第1页">
-  <img class="ppt-page" src="miaoshu_p02.png" alt="描述不符规则解析与整改 第2页">
-  <img class="ppt-page" src="miaoshu_p03.png" alt="描述不符规则解析与整改 第3页">
-  <img class="ppt-page" src="miaoshu_p04.png" alt="描述不符规则解析与整改 第4页">
-  <img class="ppt-page" src="miaoshu_p05.png" alt="描述不符规则解析与整改 第5页">
-  <img class="ppt-page" src="miaoshu_p06.png" alt="描述不符规则解析与整改 第6页">
-  <img class="ppt-page" src="miaoshu_p07.png" alt="描述不符规则解析与整改 第7页">
-  <img class="ppt-page" src="miaoshu_p08.png" alt="描述不符规则解析与整改 第8页">
-  <img class="ppt-page" src="miaoshu_p09.png" alt="描述不符规则解析与整改 第9页">
-  <img class="ppt-page" src="miaoshu_p10.png" alt="描述不符规则解析与整改 第10页">
+  <img class="ppt-page" src="miaoshu_p01.png" alt="描述不符规则解析与整改 第1页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="miaoshu_p02.png" alt="描述不符规则解析与整改 第2页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="miaoshu_p03.png" alt="描述不符规则解析与整改 第3页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="miaoshu_p04.png" alt="描述不符规则解析与整改 第4页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="miaoshu_p05.png" alt="描述不符规则解析与整改 第5页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="miaoshu_p06.png" alt="描述不符规则解析与整改 第6页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="miaoshu_p07.png" alt="描述不符规则解析与整改 第7页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="miaoshu_p08.png" alt="描述不符规则解析与整改 第8页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="miaoshu_p09.png" alt="描述不符规则解析与整改 第9页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="miaoshu_p10.png" alt="描述不符规则解析与整改 第10页" onclick="zoomSlide(this)">
 </div>
 <div id="detail-tuiguang" style="display:none">
-  <img class="ppt-page" src="tuiguang_p01.png" alt="商家推广与流量增长 第1页">
-  <img class="ppt-page" src="tuiguang_p02.png" alt="商家推广与流量增长 第2页">
-  <img class="ppt-page" src="tuiguang_p03.png" alt="商家推广与流量增长 第3页">
-  <img class="ppt-page" src="tuiguang_p04.png" alt="商家推广与流量增长 第4页">
-  <img class="ppt-page" src="tuiguang_p05.png" alt="商家推广与流量增长 第5页">
-  <img class="ppt-page" src="tuiguang_p06.png" alt="商家推广与流量增长 第6页">
-  <img class="ppt-page" src="tuiguang_p07.png" alt="商家推广与流量增长 第7页">
-  <img class="ppt-page" src="tuiguang_p08.png" alt="商家推广与流量增长 第8页">
-  <img class="ppt-page" src="tuiguang_p09.png" alt="商家推广与流量增长 第9页">
-  <img class="ppt-page" src="tuiguang_p10.png" alt="商家推广与流量增长 第10页">
-  <img class="ppt-page" src="tuiguang_p11.png" alt="商家推广与流量增长 第11页">
+  <img class="ppt-page" src="tuiguang_p01.png" alt="商家推广与流量增长 第1页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p02.png" alt="商家推广与流量增长 第2页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p03.png" alt="商家推广与流量增长 第3页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p04.png" alt="商家推广与流量增长 第4页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p05.png" alt="商家推广与流量增长 第5页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p06.png" alt="商家推广与流量增长 第6页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p07.png" alt="商家推广与流量增长 第7页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p08.png" alt="商家推广与流量增长 第8页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p09.png" alt="商家推广与流量增长 第9页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p10.png" alt="商家推广与流量增长 第10页" onclick="zoomSlide(this)">
+  <img class="ppt-page" src="tuiguang_p11.png" alt="商家推广与流量增长 第11页" onclick="zoomSlide(this)">
 </div>
+
+<!-- Slide zoom viewer (click PPT page to enlarge) -->
+<div id="slide-zoom-modal" class="slide-zoom-modal" onclick="closeZoomSlide(event)">
+  <img id="slide-zoom-img" class="slide-zoom-img" alt="PPT页面放大图" onclick="event.stopPropagation()">
+  <div class="slide-zoom-toolbar" onclick="event.stopPropagation()">
+    <button class="slide-zoom-btn" onclick="closeZoomSlide()">✕ 关闭</button>
+  </div>
+</div>
+
 <script>
 function copyCatPath(td) {
   var text = td.textContent.trim();
@@ -2041,6 +2069,19 @@ function openDetail(panelId, title) {
 }
 function closeDetail() {
   document.getElementById('detail-modal').style.display = 'none';
+}
+
+// Slide zoom viewer: click a PPT page image to enlarge
+function zoomSlide(img) {
+  var zoomModal = document.getElementById('slide-zoom-modal');
+  var zoomImg = document.getElementById('slide-zoom-img');
+  if (zoomImg && img) { zoomImg.src = img.src; }
+  if (zoomModal) { zoomModal.className = 'slide-zoom-modal show'; }
+}
+function closeZoomSlide(evt) {
+  if (evt && evt.target !== evt.currentTarget) { return; } // only close when clicking backdrop or button
+  var zoomModal = document.getElementById('slide-zoom-modal');
+  if (zoomModal) { zoomModal.className = 'slide-zoom-modal'; }
 }
 function dismissDetailBadges(panelId) {
   if (panelId === 'detail-zuoe') {
@@ -2121,6 +2162,8 @@ function dismissDetailBadges(panelId) {
 })();
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
+    var zoomModal = document.getElementById('slide-zoom-modal');
+    if (zoomModal && zoomModal.className.indexOf('show') !== -1) { closeZoomSlide(); return; }
     var dm = document.getElementById('detail-modal');
     if (dm && dm.style.display === 'flex') { closeDetail(); }
   }
