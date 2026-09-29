@@ -119,6 +119,17 @@ tr:hover td { background:#FFF5EB; }
 .tab:hover { color:#FB7701; }
 .tab-content { display:none; }
 .tab-content.active { display:block; }
+/* 类目指引 两级tab */
+.cat-tabs { display:flex; gap:0; margin-bottom:8px; border-bottom:2px solid #f0f0f0; }
+.cat-main-tab { padding:11px 24px; font-size:15px; cursor:pointer; color:#666;
+  border-bottom:2px solid transparent; margin-bottom:-2px; white-space:nowrap; transition:color .2s; }
+.cat-sub-tab { padding:8px 16px; font-size:14px; cursor:pointer; color:#666;
+  border-bottom:2px solid transparent; margin-bottom:-2px; white-space:nowrap; transition:color .2s; }
+.cat-main-tab.active, .cat-sub-tab.active { color:#FB7701; border-bottom-color:#FB7701; font-weight:600; }
+.cat-main-tab:hover, .cat-sub-tab:hover { color:#FB7701; }
+.cat-main-panel, .cat-sub-panel { display:none; }
+.cat-main-panel.active, .cat-sub-panel.active { display:block; }
+.cat-sub-tabs { margin:0 0 18px; }
 
 /* Placeholder */
 .placeholder {
@@ -312,101 +323,147 @@ tr:hover td { background:#FFF5EB; }
   </div>
 </div>
 
-<!-- 2. 类目指引 -->
+  <!-- 2. 类目指引 -->
 <div class="section" id="category">
   <div class="section-title">类目指引</div>
-  <p style="color:#666;margin-bottom:24px">以下为【张阿莱】负责类目的完整上新路径，上架时选择正确的类目路径才能对接。</p>
+  <p style="color:#666;margin-bottom:24px">以下为【张阿莱】负责类目的完整上新路径，上架时选择正确的类目路径才能对接。共分 <b>男装</b> / <b>童装</b> 两大板块，点选上方tab查看对应类目路径。</p>
 
-  <div class="element-section">
-    <div class="element-title" id="cat-tshirt">T恤</div>
-    <table class="cat-path-table">
-      <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 男士户外服饰 > 男士户外衬衫 > T恤</td></tr>
-      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 新奇物品 > 新奇服装和产品 > 新奇服装 > 男士新奇服装 > 男士新奇T恤、衬衫、polo衫 > 男士新奇T恤</td></tr>
-      <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 骑行服 > 男士骑行服 > T恤</td></tr>
-      <tr><td>4</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 跑步服 > 男士跑步服 > 男士跑步T恤 > T恤</td></tr>
-      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 男士骑行服 > T恤</td></tr>
-      <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 男士跑步T恤 > T恤</td></tr>
-      <tr><td>7</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士休闲运动衫、T恤 > 男士休闲运动T恤</td></tr>
-      <tr><td>8</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 男士户外衬衫 > T恤</td></tr>
-      <tr><td>9</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 男士运动休闲衬衫和Polo衫 > T恤</td></tr>
-    </table>
+  <!-- 一级tab: 男装 / 童装 -->
+  <div class="cat-tabs">
+    <div class="cat-main-tab active" onclick="catMainTab(this,'cat-main-male')">男装</div>
+    <div class="cat-main-tab" onclick="catMainTab(this,'cat-main-kids')">童装</div>
   </div>
 
+  <!-- 男装面板 -->
+  <div class="cat-main-panel active" id="cat-main-male">
+
+    <!-- 二级tab: 标码 / 大码 -->
+    <div class="cat-tabs cat-sub-tabs">
+      <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-sub-male-std')">标码</div>
+      <div class="cat-sub-tab" onclick="catSubTab(this,'cat-sub-male-big')">大码</div>
+    </div>
+
+    <div class="cat-sub-panel active" id="cat-sub-male-std">
   <div class="element-section">
-    <div class="element-title">足球服</div>
+    <div class="element-title">T恤</div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 团队运动 > 足球用品 > 服装 > 男士足球服 > T恤</td></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 新奇物品 > 新奇服装和产品 > 新奇服装 > 男士新奇服装 > 男士新奇T恤、衬衫、polo衫 > 男士新奇T恤</td></tr>
     </table>
   </div>
-
   <div class="element-section">
-    <div class="element-title">POLO</div>
-    <table class="cat-path-table">
-      <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 高尔夫用品 > 服装 > 男士高尔夫服 > 男士高尔夫T恤 > T恤</td></tr>
-    </table>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title" id="cat-hoodie">卫衣</div>
+    <div class="element-title">卫衣</div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
       <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 攀岩用品 > 服装 > 男士户外服饰 > 卫衣</td></tr>
-      <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 卫衣</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士时尚帽衫和卫衣 > 男士时尚卫衣</td></tr>
+      <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士卫衣</td></tr>
+    </table>
+  </div>
+  <div class="element-section">
+    <div class="element-title">连帽衫</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 新奇物品 > 新奇服装和产品 > 新奇服装 > 男士新奇服装 > 男士新奇帽衫</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士连帽运动衫</td></tr>
       <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 瑜伽用品 > 服装 > 男士瑜伽服 > 连帽衫</td></tr>
-      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士卫衣</td></tr>
-      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士连帽运动衫</td></tr>
+      <tr><td>4</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 瑜伽服 > 男士瑜伽服 > 连帽衫</td></tr>
     </table>
   </div>
-
   <div class="element-section">
-    <div class="element-title">防晒衣</div>
+    <div class="element-title">防晒衫</div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 男士运动休闲泳装、冲浪装和潜水服 > 防晒衣</td></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士时尚泳衣 > 男士防晒衫</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 男士运动休闲泳装、冲浪装和潜水服 > 防晒衣</td></tr>
     </table>
   </div>
-
   <div class="element-section">
-    <div class="element-title" id="cat-fitness-top">健身服上衣</div>
+    <div class="element-title">风衣/大衣</div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 跑步服 > 男士跑步服 > 打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 跑步 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士休闲运动风衣、夹克</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士外套 > 男士风衣、雨衣 > 男士风衣</td></tr>
+    </table>
+  </div>
+  <div class="element-section">
+    <div class="element-title">健身衣</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 骑行服 > 男士骑行服 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 贴身衣和压缩衣 > 男士运动上衣</td></tr>
       <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>7</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 贴身衣和压缩衣 > 男士运动上衣</td></tr>
+      <tr><td>7</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>8</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 男士骑行服 > 打底和压缩单品 > 男士运动上衣</td></tr>
     </table>
   </div>
-
   <div class="element-section">
-    <div class="element-title">健身服裤子</div>
+    <div class="element-title">健身裤</div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 跑步服 > 男士跑步服 > 打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
-      <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
-      <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
-      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 跑步 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
-      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动短裤 / 男士运动长裤</td></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士运动服紧身裤</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 男士户外服饰 > 打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
+      <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
+      <tr><td>4</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 跑步服 > 男士跑步服 > 打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
+      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 贴身衣和压缩衣 > 男士运动短裤/男士运动长裤</td></tr>
+      <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 男士骑行服 > 打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
+      <tr><td>7</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
+      <tr><td>8</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
     </table>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">健身服套装</div>
-    <table class="cat-path-table">
-      <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士贴身运动衣 > 男士贴身套装</td></tr>
-    </table>
-  </div>
-
   <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
     <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 健身服类目面料要求：</b>健身服类目要求面料氨纶含量 ≥ 8%，提报时请确保面料成分符合此标准，否则将影响审核通过率。</p>
   </div>
+  </div>
+    </div>
+  
+
+    <div class="cat-sub-panel" id="cat-sub-male-big">
+  <div class="element-section">
+    <div class="element-title">风衣/大衣</div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士休闲运动服 > 大码男士休闲运动风衣、夹克</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士外套 > 大码男士风衣、雨衣 > 大码男士风衣</td></tr>
+    </table>
+  </div>
+    </div>
+
+  </div>
+
+  <!-- 童装面板 -->
+  <div class="cat-main-panel" id="cat-main-kids">
+    <!-- 二级tab: 男童 / 男婴 / 女童 / 女婴 -->
+    <div class="cat-tabs cat-sub-tabs">
+      <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-sub-kids-boy')">男童</div>
+      <div class="cat-sub-tab" onclick="catSubTab(this,'cat-sub-kids-babyboy')">男婴</div>
+      <div class="cat-sub-tab" onclick="catSubTab(this,'cat-sub-kids-girl')">女童</div>
+      <div class="cat-sub-tab" onclick="catSubTab(this,'cat-sub-kids-babygirl')">女婴</div>
+    </div>
+
+    <div class="cat-sub-panel active" id="cat-sub-kids-boy">
+      <div id="cat-kids-boy" style="margin-bottom:0"></div>
+    </div>
+
+    <div class="cat-sub-panel" id="cat-sub-kids-babyboy">
+      <div id="cat-kids-babyboy" style="margin-bottom:0"></div>
+    </div>
+
+    <div class="cat-sub-panel" id="cat-sub-kids-girl">
+      <div id="cat-kids-girl" style="margin-bottom:0"></div>
+    </div>
+
+    <div class="cat-sub-panel" id="cat-sub-kids-babygirl">
+      <div id="cat-kids-babygirl" style="margin-bottom:0"></div>
+    </div>
+
+  </div>
+
+
 </div>
+
 
 <!-- 3. 版型分享 -->
 <div class="section" id="scarcity">
@@ -2012,13 +2069,91 @@ function copyCatPath(td) {
   setTimeout(function() { toast.remove(); }, 2000);
 }
 
+/* ==== 类目指引 一级/二级tab切换 ==== */
+function catMainTab(btn, panelId) {
+  var catSec = document.getElementById('category');
+  catSec.querySelectorAll('.cat-main-tab').forEach(function(e){e.classList.remove('active');});
+  catSec.querySelectorAll('.cat-main-panel').forEach(function(e){e.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+function catSubTab(btn, panelId) {
+  var catSec = document.getElementById('category');
+  // 只切换二级tab：找到该主面板内所有二级tab
+  var mainPanel = btn.closest('.cat-main-panel');
+  mainPanel.querySelectorAll('.cat-sub-tab').forEach(function(e){e.classList.remove('active');});
+  mainPanel.querySelectorAll('.cat-sub-panel').forEach(function(e){e.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+/* ==== 童装类目指引(男童/男婴/女童/女婴)渲染 ==== */
+var KIDS_CAT = {
+  'cat-kids-boy': [['防晒衫', [
+    '服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童时尚泳衣 > 男童防晒衫',
+    '运动与户外用品 > 运动户外服饰 > 男童运动户外服饰 > 男孩运动休闲泳装、冲浪服和潜水衣 > 防晒衣',
+    '服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童时尚泳衣 > 男童泳衣套装 > 男童防晒服套装'
+  ]]],
+  'cat-kids-babyboy': [['防晒衫', [
+    '母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男婴泳装 > 男婴防晒服',
+    '服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴泳装 > 男婴防晒服',
+    '母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男婴泳装 > 男婴泳衣套装 > 男婴防晒服套装'
+  ]]],
+  'cat-kids-girl': [['风衣/大衣', [
+    '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童休闲运动服 > 女童休闲运动风衣、夹克',
+    '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童外套、风衣 > 女童雨衣 > 女童风衣'
+  ]], ['防晒衫', [
+    '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童时尚泳衣 > 女童防晒衫',
+    '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童时尚泳衣 > 女童防晒玩水服',
+    '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童时尚泳衣 > 女童泳装套装 > 女童防晒服套装'
+  ]]],
+  'cat-kids-babygirl': [['防晒衫', [
+    '母婴用品 > 服装和配饰 > 女婴服装和鞋靴 > 女婴服装 > 女婴泳装 > 女婴防晒服',
+    '服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴泳装 > 女婴防晒服',
+    '母婴用品 > 服装和配饰 > 女婴服装和鞋靴 > 女婴服装 > 女婴泳装 > 女婴泳装套装 > 女婴防晒服套装'
+  ]]]
+};
+function renderKidsCat(containerId, groups) {
+  var box = document.getElementById(containerId);
+  if (!box) return;
+  var html = '';
+  groups.forEach(function(g) {
+    var name = g[0], paths = g[1];
+    var rows = paths.map(function(p,i){return '      <tr><td>'+(i+1)+'</td><td onclick="copyCatPath(this)">'+p+'</td></tr>';}).join('\n');
+    html += '  <div class="element-section">\n    <div class="element-title">'+name+'</div>\n    <table class="cat-path-table">\n      <tr><th>序号</th><th>类目路径</th></tr>\n'+rows+'\n    </table>\n  </div>\n';
+  });
+  box.innerHTML = html;
+}
+(function(){
+  for (var id in KIDS_CAT) {
+    if (KIDS_CAT.hasOwnProperty(id)) { renderKidsCat(id, KIDS_CAT[id]); }
+  }
+})();
+
 function navToCat(catId) {
-  var el = document.getElementById(catId);
-  if (el) {
-    el.scrollIntoView({behavior:'smooth', block:'start'});
-    el.style.background = '#FFF5EB';
-    el.style.transition = 'background 0.5s';
-    setTimeout(function() { el.style.background = ''; }, 2000);
+  // 版本型分享按钮点击：跳转到类目指引，并自动切到「男装 > 标码」tab
+  var catSec = document.getElementById('category');
+  if (catSec) {
+    catSec.scrollIntoView({behavior:'smooth', block:'start'});
+    // 激活男装主tab + 标码子tab
+    var mainMale = document.getElementById('cat-main-male');
+    if (mainMale) {
+      catSec.querySelectorAll('.cat-main-tab').forEach(function(e){e.classList.remove('active');});
+      catSec.querySelectorAll('.cat-main-panel').forEach(function(e){e.classList.remove('active');});
+      // 选第一个主tab为男装
+      var maleBtn = catSec.querySelector('.cat-main-tab');
+      if (maleBtn) { maleBtn.classList.add('active'); }
+      mainMale.classList.add('active');
+      // 激活标码子tab
+      var stdPanel = document.getElementById('cat-sub-male-std');
+      if (stdPanel) {
+        mainMale.querySelectorAll('.cat-sub-tab').forEach(function(e){e.classList.remove('active');});
+        mainMale.querySelectorAll('.cat-sub-panel').forEach(function(e){e.classList.remove('active');});
+        var stdBtn = mainMale.querySelector('.cat-sub-tab');
+        if (stdBtn) { stdBtn.classList.add('active'); }
+        stdPanel.classList.add('active');
+      }
+    }
   }
 }
 
