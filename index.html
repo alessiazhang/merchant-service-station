@@ -91,7 +91,7 @@ body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; backgr
 .xmas-item { width:calc(50% - 5px); margin-bottom:10px; }
 .xmas-item .xmas-sub { margin-bottom:8px; }
 .xmas-item .xmas-card { margin-bottom:0; display:flex; flex-wrap:nowrap; gap:10px; }
-.xmas-item .xmas-card img { width:calc(25% - 7.5px); height:auto; display:block; margin:0; object-fit:cover; border-radius:6px; }
+.xmas-item .xmas-card img { width:calc(25% - 7.5px); display:block; margin:0; object-fit:cover; object-position:center top; border-radius:6px; }
 
 /* Table */
 table { width:100%; border-collapse:collapse; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
@@ -5364,5 +5364,28 @@ initSizeCategories();
 </div>
 
 
+<script>
+// 圣诞元素图片比例：按原图方向显示，横图 4:3、竖图 3:4
+(function () {
+  function applyXmasAspect() {
+    document.querySelectorAll('.xmas-item .xmas-card img').forEach(function (img) {
+      if (img.naturalWidth && img.naturalHeight) {
+        var ratio = (img.naturalWidth >= img.naturalHeight) ? '4 / 3' : '3 / 4';
+        img.style.aspectRatio = ratio;
+      } else {
+        img.style.aspectRatio = '3 / 4';
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', applyXmasAspect);
+  window.addEventListener('load', applyXmasAspect);
+  // 懒加载图片加载完成后再应用一次
+  document.addEventListener('load', function (e) {
+    if (e.target && e.target.tagName === 'IMG') {
+      applyXmasAspect();
+    }
+  }, true);
+})();
+</script>
 </body>
 </html>
