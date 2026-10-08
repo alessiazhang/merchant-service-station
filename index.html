@@ -81,17 +81,17 @@ body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; backgr
   font-size:18px; font-weight:600; color:#333; margin-bottom:16px;
   padding-left:12px; border-left:4px solid #FB7701;
 }
-.xmas-card { margin-bottom:8px; border-radius:8px; overflow:hidden; border:1px solid #eee; background:#f5f5f5; cursor:pointer; }
+.xmas-card { margin-bottom:8px; border-radius:8px; overflow:hidden; cursor:pointer; }
 .xmas-card img { width:75%; display:block; margin:0 auto; cursor:pointer; transition:transform 0.2s; }
 .xmas-card:hover img { transform:scale(1.01); }
 .xmas-sub { font-size:13px; color:#888; margin-bottom:20px; padding-left:4px; }
 /* Christmas sub-tab layout */
 .xmas-subtabs { margin-bottom:22px; }
-.xmas-row { display:flex; flex-wrap:wrap; gap:18px; margin-bottom:8px; }
-.xmas-item { width:130px; }
+.xmas-row { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:8px; }
+.xmas-item { width:calc(50% - 5px); margin-bottom:10px; }
 .xmas-item .xmas-sub { margin-bottom:8px; }
-.xmas-item .xmas-card { margin-bottom:0; }
-.xmas-item .xmas-card img { width:100%; display:block; margin-bottom:8px; }
+.xmas-item .xmas-card { margin-bottom:0; display:flex; flex-wrap:nowrap; gap:10px; }
+.xmas-item .xmas-card img { width:calc(25% - 7.5px); height:auto; display:block; margin:0; object-fit:cover; border-radius:6px; }
 
 /* Table */
 table { width:100%; border-collapse:collapse; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
@@ -2251,12 +2251,6 @@ tr:hover td { background:#FFF5EB; }
             <img src="christmas_image50.png" loading="lazy" onclick="openModal(this.src)" alt="并排树">
             <img src="christmas_image51.png" loading="lazy" onclick="openModal(this.src)" alt="并排树">
             <img src="christmas_image52.png" loading="lazy" onclick="openModal(this.src)" alt="并排树">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">英文结合</div>
-          <div class="xmas-card">
-            <img src="christmas_image53.png" loading="lazy" onclick="openModal(this.src)" alt="英文结合">
           </div>
         </div>
         <div class="xmas-item">
