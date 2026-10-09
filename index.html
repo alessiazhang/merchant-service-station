@@ -92,8 +92,8 @@ body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; backgr
 .xmas-item:nth-child(even) { transform:translateX(12%); }
 .xmas-item.xmas-solo { transform:translateX(25%); }
 .xmas-item .xmas-sub { margin-bottom:8px; }
-.xmas-item .xmas-card { margin-bottom:0; display:flex; flex-wrap:nowrap; gap:10px; }
-.xmas-item .xmas-card img { width:calc(25% - 7.5px); display:block; margin:0; object-fit:cover; object-position:center top; border-radius:6px; }
+.xmas-item .xmas-card { margin-bottom:0; display:flex; flex-wrap:wrap; gap:10px; }
+.xmas-item .xmas-card img { width:calc(25% - 7.5px); flex-shrink:0; display:block; margin:0; object-fit:cover; object-position:center top; border-radius:6px; }
 
 /* Table */
 table { width:100%; border-collapse:collapse; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
