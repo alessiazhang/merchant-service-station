@@ -89,6 +89,7 @@ body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; backgr
 .xmas-subtabs { margin-bottom:22px; }
 .xmas-row { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:8px; }
 .xmas-item { width:calc(50% - 5px); margin-bottom:10px; }
+.xmas-item.xmas-solo { transform:translateX(25%); }
 .xmas-item .xmas-sub { margin-bottom:8px; }
 .xmas-item .xmas-card { margin-bottom:0; display:flex; flex-wrap:nowrap; gap:10px; }
 .xmas-item .xmas-card img { width:calc(25% - 7.5px); display:block; margin:0; object-fit:cover; object-position:center top; border-radius:6px; }
@@ -5377,14 +5378,19 @@ initSizeCategories();
       }
     });
   }
-  document.addEventListener('DOMContentLoaded', applyXmasAspect);
-  window.addEventListener('load', applyXmasAspect);
-  // 懒加载图片加载完成后再应用一次
-  document.addEventListener('load', function (e) {
-    if (e.target && e.target.tagName === 'IMG') {
-      applyXmasAspect();
-    }
-  }, true);
+  function applyXmasSolo() {
+    // 行内 item 数为奇数时，末项独占一行（右侧无内容），整体右移一张图片位
+    document.querySelectorAll('.xmas-row').forEach(function (row) {
+      var items = row.querySelectorAll(':scope > .xmas-item');
+      if (items.length % 2 === 1 && items.length > 0) {
+        items[items.length - 1].classList.add('xmas-solo');
+      } else {
+        items.forEach(function (it) { it.classList.remove('xmas-solo'); });
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', applyXmasSolo);
+  window.addEventListener('load', applyXmasSolo);
 })();
 </script>
 </body>
