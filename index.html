@@ -305,6 +305,39 @@ tr:hover td { background:#FFF5EB; }
 .contact-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:300;justify-content:center;align-items:flex-start;overflow-y:auto}
 .contact-modal.show{display:flex !important}
 
+/* ===== 上新路径（参数规范：.meta / .label / .category）===== */
+.card.path-card{padding:0;overflow:visible;margin-bottom:16px}
+.card.path-card:hover{transform:none;box-shadow:0 4px 16px rgba(25,37,58,.045)}
+.meta{border-top:1px solid #e4e8ef;padding:14px 17px}
+.card.path-card>.meta:first-child{border-top:none}
+.meta .label{font-size:12px;color:#697386;font-weight:400;margin-bottom:6px}
+.category{
+  font-size:13px;font-weight:700;line-height:1.65;color:#263247;
+  background:#f8f9fb;border-left:3px solid #fb7701;padding:8px 10px;
+  border-radius:6px;word-break:break-all;position:relative;cursor:pointer;overflow:visible;
+  transition:color .18s ease,border-left-color .18s ease;
+}
+.category:hover{color:#fb7701}
+.category.copied{color:#147d64;border-left-color:#147d64}
+.category + .category{margin-top:8px}
+.category::before{
+  content:'点击可复制';position:absolute;left:0;top:-32px;
+  background:#263247;color:#fff;font-size:11px;font-weight:500;line-height:1;
+  padding:6px 9px;border-radius:6px;white-space:nowrap;
+  opacity:0;transform:translateY(3px);
+  transition:opacity .18s ease,transform .18s ease;
+  z-index:20;pointer-events:none;
+}
+.category::after{
+  content:'';position:absolute;left:14px;top:-9px;width:0;height:0;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:5px solid #263247;
+  opacity:0;transition:opacity .18s ease;z-index:20;pointer-events:none;
+}
+.category:hover::before{opacity:1;transform:translateY(0)}
+.category:hover::after{opacity:1}
+.path-note{font-size:13px;line-height:1.7;margin-top:8px}
+
 /* ===== Unified copy tooltip ===== */
 .copy-tip {
   position: fixed;
@@ -929,8 +962,11 @@ tr:hover td { background:#FFF5EB; }
   <!-- 版型1: 卫衣/连帽衫 -->
   <div class="element-section">
     <div class="element-title">卫衣/连帽衫</div>
-    <div class="card" style="margin-bottom:16px;background:#FFF5EB;border-left:4px solid #FB7701">
-      <div style="font-size:14px;color:#333;line-height:2"><b>上新路径：</b><br>• 服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士时尚帽衫和卫衣 > 男士时尚卫衣</div>
+    <div class="card path-card">
+      <div class="meta">
+        <div class="label">上新路径</div>
+        <div class="category" data-copy="服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 男装 &gt; 男士时尚帽衫和卫衣 &gt; 男士时尚卫衣" data-noreplace>服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 男装 &gt; 男士时尚帽衫和卫衣 &gt; 男士时尚卫衣</div>
+      </div>
     </div>
     <div class="gallery-grid">
       <div class="gallery-item"><img src="new_0005.png" loading="lazy" onclick="openModal(this.src)"></div>
@@ -948,8 +984,12 @@ tr:hover td { background:#FFF5EB; }
   <!-- 版型2: 亚麻面料-亚麻 -->
   <div class="element-section">
     <div class="element-title" id="cat-linen">亚麻面料-亚麻 ⭐最高优先级</div>
-    <div class="card" style="margin-bottom:16px;background:#FFF5EB;border-left:4px solid #FB7701">
-      <div style="font-size:14px;color:#333;line-height:2"><b>上新路径：</b><br>• 运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士连帽运动衫<br><span style="color:#FB7701;font-weight:600">⭐ 此系列版型开款优先级最高，数码印商家可将面料替换成四面弹。</span></div>
+    <div class="card path-card">
+      <div class="meta">
+        <div class="label">上新路径</div>
+        <div class="category" data-copy="运动与户外用品 &gt; 健身、训练用品 &gt; 健身服 &gt; 男士 &gt; 男士连帽运动衫" data-noreplace>运动与户外用品 &gt; 健身、训练用品 &gt; 健身服 &gt; 男士 &gt; 男士连帽运动衫</div>
+        <div class="path-note" style="color:#FB7701;font-weight:600">⭐ 此系列版型开款优先级最高，数码印商家可将面料替换成四面弹。</div>
+      </div>
     </div>
     <div class="gallery-grid">
       <div class="gallery-item"><img src="new_0014.png" loading="lazy" onclick="openModal(this.src)"></div>
@@ -967,8 +1007,14 @@ tr:hover td { background:#FFF5EB; }
   <!-- 版型3: 品类分享-健身服 -->
   <div class="element-section">
     <div class="element-title" id="cat-fitness">品类分享-健身服</div>
-    <div class="card" style="margin-bottom:16px;background:#FFF5EB;border-left:4px solid #FB7701">
-      <div style="font-size:14px;color:#333;line-height:2"><b>上新路径：</b><br>• 运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣<br>• 服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士打底和压缩单品 > 男士运动短裤/男士运动长裤<br>• 服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士贴身运动衣 > 男士贴身套装<br><span style="color:#e74c3c;font-weight:600">⚠️ 面料必须含8%及以上的氨纶</span></div>
+    <div class="card path-card">
+      <div class="meta">
+        <div class="label">上新路径</div>
+        <div class="category" data-copy="运动与户外用品 &gt; 户外休闲 &gt; 徒步和户外休闲服装 &gt; 男士户外服饰 &gt; 打底和压缩单品 &gt; 男士运动上衣" data-noreplace>运动与户外用品 &gt; 户外休闲 &gt; 徒步和户外休闲服装 &gt; 男士户外服饰 &gt; 打底和压缩单品 &gt; 男士运动上衣</div>
+        <div class="category" data-copy="服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 男装 &gt; 男士休闲运动服 &gt; 男士打底和压缩单品 &gt; 男士运动短裤/男士运动长裤" data-noreplace>服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 男装 &gt; 男士休闲运动服 &gt; 男士打底和压缩单品 &gt; 男士运动短裤/男士运动长裤</div>
+        <div class="category" data-copy="服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 男装 &gt; 男士休闲运动服 &gt; 男士贴身运动衣 &gt; 男士贴身套装" data-noreplace>服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 男装 &gt; 男士休闲运动服 &gt; 男士贴身运动衣 &gt; 男士贴身套装</div>
+        <div class="path-note" style="color:#e74c3c;font-weight:600">⚠️ 面料必须含8%及以上的氨纶</div>
+      </div>
     </div>
     <div class="gallery-grid">
       <div class="gallery-item"><img src="new_0024.jpg" loading="lazy" onclick="openModal(this.src)"></div>
@@ -5769,6 +5815,43 @@ function calcWeightKids(gender){
   });
   window.addEventListener('scroll', hide, true);
   window.addEventListener('resize', hide);
+})();
+</script>
+<script>
+/* ===== 上新路径：点击复制（采用全局事件委托）===== */
+(function () {
+  function toast(msg) {
+    var t = document.createElement('div');
+    t.className = 'copy-toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 2000);
+  }
+  document.addEventListener('click', function (e) {
+    var node = e.target;
+    if (!node || node.nodeType !== 1) node = node && node.parentNode;
+    var el = node && node.closest ? node.closest('[data-copy]') : null;
+    if (!el) return;
+    var text = el.getAttribute('data-copy') || '';
+    if (!text) return;
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+    document.body.removeChild(ta);
+    if (ok) {
+      el.classList.add('copied');
+      setTimeout(function () { el.classList.remove('copied'); }, 1200);
+      toast('已复制：' + text);
+    } else {
+      alert('复制失败，请手动复制');
+    }
+  });
 })();
 </script>
 </body>
