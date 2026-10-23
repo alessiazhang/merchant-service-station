@@ -968,7 +968,11 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童打底裤</td></tr>
           </table>
           </div>
+        
+        <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
+          <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 童装紧身类面料要求：</b>紧身上衣、紧身裤（打底压缩类）须使用高弹面料，面料氨纶含量 <b>≥ 10%</b>。</p>
         </div>
+</div>
         <div class="element-section">
           
         <div class="element-title">正装</div>
@@ -1096,7 +1100,11 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴下装 > 女婴打底裤</td></tr>
           </table>
           </div>
+        
+        <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
+          <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 童装紧身类面料要求：</b>紧身上衣、紧身裤（打底压缩类）须使用高弹面料，面料氨纶含量 <b>≥ 10%</b>。</p>
         </div>
+</div>
         <div class="element-section">
           <div class="element-title">正装</div>
           <div class="cat-tabs cat-sub-tabs">
@@ -1448,7 +1456,11 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
             <tr><th>序号</th><th>类目路径</th></tr>
           <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女士时尚 > 女士商店 > 孕妇装 > 孕妇打底裤、裤袜</td></tr>
           </table>
+        
+        <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
+          <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 孕妇装紧身类面料要求：</b>孕妇打底裤、裤袜等贴身紧身款须使用高弹面料，面料氨纶含量 <b>≥ 10%</b>。</p>
         </div>
+</div>
     </div>
   </div>
 </div>
@@ -1663,6 +1675,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
             <option value="">请先选择肩型</option>
           </select>
         </div>
+        <div id="sizeHintEU" style="display:none;margin-top:14px;padding:12px 16px;background:#FFF5EB;border-left:4px solid #FB7701;border-radius:6px;font-size:13px;color:#333;line-height:1.9"></div>
         <div id="sizeResultEU" style="display:none;margin-top:16px"></div>
       </div>
       <div class="card">
@@ -1696,6 +1709,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
             <option value="">请先选择肩型</option>
           </select>
         </div>
+        <div id="sizeHintAsia" style="display:none;margin-top:14px;padding:12px 16px;background:#FFF5EB;border-left:4px solid #FB7701;border-radius:6px;font-size:13px;color:#333;line-height:1.9"></div>
         <div id="sizeResultAsia" style="display:none;margin-top:16px"></div>
       </div>
       <div class="card">
@@ -3385,6 +3399,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
         </div>
       </div>
     </div>
+    <p style="font-size:12px;color:#999;line-height:1.9;margin:14px 2px 0">※ 免责声明：本工具计算结果依据上述允差规则与您填写的实测克重自动推算得出，仅供参考，不作为仓库收货判定、品质仲裁或结算依据；实际允收重量以仓库实测数据及平台最新规则为准。</p>
   </div>
 
   <!-- 课堂4: JIT模式规则介绍（新增） -->
@@ -6247,6 +6262,7 @@ function setEuSizeMode(mode){
   catSel.innerHTML='<option value="">选择品类</option>';
   var data=getEuSizeData();
   for(var cat in data){var opt=document.createElement('option');opt.value=cat;opt.textContent=cat;catSel.appendChild(opt);}
+  updateSizeHint('eu','');
   var shoulderSel=document.getElementById('sizeShoulderEU');
   var fitSel=document.getElementById('sizeFitEU');
   shoulderSel.innerHTML='<option value="">选择肩型</option>';
@@ -6275,6 +6291,31 @@ function initSizeCategories() {
   }
 }
 
+function sizeFabricHint(cat) {
+  if (cat === '运动紧身上衣') {
+    return '<b>⚠️ 面料弹性提示：</b><br>' +
+      '紧身尺码以面料高弹为前提，请先核对面料氨纶含量再套用本表：<br>' +
+      '• 氨纶 <b>≥10%</b>：可按本表「紧身」版型开发；<br>' +
+      '• 氨纶 <b>5%~10%</b>：请改选 <b>T恤—中弹修身款</b>；<br>' +
+      '• 氨纶 <b>2%~5%</b>：请改选 <b>T恤—微弹修身款</b>；<br>' +
+      '• 氨纶 <b>&lt;2%</b>：请改选 <b>T恤—常规款</b>。';
+  }
+  if (cat === '运动紧身裤子') {
+    return '<b>⚠️ 面料弹性提示：</b><br>' +
+      '紧身裤尺码要求面料氨纶含量 <b>≥10%</b>，请先确认所用面料为高弹面料，再套用本表数据；<br>' +
+      '若氨纶含量低于10%，请改用弹力更高的面料，或另选其他裤型尺码表。';
+  }
+  return '';
+}
+
+function updateSizeHint(region, cat) {
+  var hintDiv = document.getElementById(region === 'eu' ? 'sizeHintEU' : 'sizeHintAsia');
+  if (!hintDiv) return;
+  var txt = cat ? sizeFabricHint(cat) : '';
+  if (txt) { hintDiv.innerHTML = txt; hintDiv.style.display = 'block'; }
+  else { hintDiv.innerHTML = ''; hintDiv.style.display = 'none'; }
+}
+
 // Categories that don't need shoulder type selection
 var noShoulderCats = ['背心','球衣','西装','毛衣','马甲','棉服','中东长袍','卫裤','梭织休闲裤','牛仔裤','西裤','短裤','运动紧身裤子','泳裤','牛仔短裤'];
 
@@ -6290,6 +6331,7 @@ function updateSizeShoulders(region) {
     fitSel = document.getElementById('sizeFitAsia');
   }
   var cat = catSel.value;
+  updateSizeHint(region, cat);
   // Reset shoulder and fit dropdowns
   shoulderSel.innerHTML = '<option value="">选择肩型</option>';
   shoulderSel.disabled = true;
