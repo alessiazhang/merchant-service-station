@@ -572,6 +572,141 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
   background:#fff;cursor:zoom-in;transition:transform .15s}
 .mp-item img:hover{transform:scale(1.01)}
 @media(max-width:700px){.mp-grid{flex-direction:column;gap:14px}.mp-item{width:100%}.mp-item img{max-width:47%}}
+/* ============ 自适应布局：尺寸全部由视口推导（无固定宽度） ============ */
+:root{
+  --sb-w: clamp(176px, 15vw, 232px);
+  --pad-x: clamp(14px, 2.3vw, 46px);
+  --content-max: min(1680px, 94vw);
+  --grid-gap: clamp(10px, 1.2vw, 20px);
+  --card-min: clamp(150px, 14vw, 250px);
+}
+
+/* 侧栏宽度随视口微调 */
+.sidebar{ width: var(--sb-w); }
+.main{ margin-left: var(--sb-w); width: calc(100% - var(--sb-w)); max-width: calc(100% - var(--sb-w)); }
+
+/* 内容区：留白 clamp，超宽屏居中并限宽 */
+.section{
+  padding: clamp(20px, 2.6vw, 46px) var(--pad-x);
+  max-width: min(var(--content-max), 100%);
+  margin: 0 auto;
+}
+
+/* 卡片栅格：按视口算卡片宽度，卡片尺寸有上限 */
+.card-grid{
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  gap: var(--grid-gap);
+  align-items: stretch;
+}
+/* 卡片列数：超宽屏自然增列（卡片有上限）；桌面 5~7 列；平板 3~4 列；手机 2 列 */
+@media (min-width: 2100px){ .card-grid{ --card-min: 230px; } }
+@media (max-width: 1100px){ .card-grid:not(.contact-grid):not(.contact-groups){ grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 860px){ .card-grid:not(.contact-grid):not(.contact-groups){ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 520px){ .card-grid:not(.contact-grid):not(.contact-groups){ grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+.formula-panel .card-grid,
+.formula-panel .card-grid:not(.contact-grid):not(.contact-groups){ grid-template-columns: 1fr; }
+.gallery-grid{
+  grid-template-columns: repeat(auto-fill, minmax(clamp(150px, 13vw, 208px), 1fr));
+  gap: clamp(6px, .8vw, 12px);
+}
+.guide-grid{ gap: clamp(10px, 1vw, 16px); }
+
+/* 顶部三栏信息区：3 栏 → 2 栏 → 1 栏 */
+.contact-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--grid-gap); }
+@media (max-width: 1000px){ .contact-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px){ .contact-grid{ grid-template-columns: 1fr; } }
+
+/* 类目页签：内边距/字号随屏宽缩放，文字不换行 */
+.cat-tabs{ flex-wrap: wrap; row-gap: 2px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+.cat-tabs::-webkit-scrollbar{ height: 0; width: 0; display: none; }
+.cat-owner-tab, .cat-main-tab{
+  padding: clamp(8px, 1vw, 11px) clamp(12px, 1.7vw, 24px);
+  font-size: clamp(13px, 1.1vw, 15px);
+  white-space: nowrap;
+}
+.cat-sub-tab{
+  padding: clamp(6px, .8vw, 8px) clamp(10px, 1.3vw, 16px);
+  font-size: clamp(12.5px, 1vw, 14px);
+  white-space: nowrap;
+}
+.cat-filter-label{ font-size: clamp(11px, .9vw, 12px); }
+.cat-filter-select{ font-size: clamp(12px, 1vw, 13px); }
+
+/* 上新路径卡片：字号缩放 + 长路径允许折行，不撑破卡片 */
+.card.path-card .meta{ padding: clamp(12px, 1.2vw, 17px); }
+.meta .label{ font-size: clamp(11px, .9vw, 12px); }
+.category{
+  font-size: clamp(12px, .55vw + 9px, 13.5px);
+  line-height: 1.7;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.path-note{ font-size: clamp(12px, .5vw + 9.5px, 13px); line-height: 1.75; }
+
+/* 营销节点表格内边距随屏宽 */
+.marketing-table th, .marketing-table td,
+.region-table th, .region-table td{ padding-left: clamp(8px, .5cm, 18px); padding-right: clamp(6px, .3vw, 12px); }
+
+@media (max-width: 1200px){
+  .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
+@media (max-width: 900px){
+  /* 侧栏改为顶部横排，导航可横向滑动（隐藏滚动条） */
+  .sidebar{
+    position: sticky; top: 0; left: auto; width: 100%; height: auto;
+    flex-direction: column; border-right: none; border-bottom: 1px solid #e6e6e6;
+    overflow: visible; z-index: 200;
+  }
+  .logo{ padding: 10px 14px; gap: 8px; }
+  .logo-icon{ width: 30px; height: 30px; font-size: 15px; border-radius: 7px; }
+  .logo-text{ display: block; font-size: 13.5px; line-height: 1.5; }
+  .nav{
+    display: flex; flex-direction: row; gap: 2px; padding: 0 6px 4px;
+    overflow-x: auto; overflow-y: hidden; -ms-overflow-style: none; scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar{ height: 0; width: 0; display: none; }
+  .nav-item{
+    flex: 0 0 auto; white-space: nowrap; padding: 8px 11px;
+    font-size: clamp(12px, 3vw, 13.5px);
+    border-left: none; border-bottom: 3px solid transparent;
+  }
+  .nav-item.active{ border-left-color: transparent; border-bottom-color: #FB7701; }
+  .nav-item span{ display: inline; }
+  .nav-icon{ font-size: 15px; width: auto; }
+  .main{ margin-left: 0; width: 100%; max-width: 100%; }
+  .sidebar > div:last-child{ padding: 8px 14px; }
+  .sidebar > div:last-child > div{ font-size: 11.5px; margin-bottom: 2px; line-height: 1.6; }
+  .sidebar > div:last-child > div:last-child{ margin-top: 6px; padding: 6px 0; font-size: 12px; }
+  .gallery-grid{ grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 760px){
+  /* 窄屏时下拉独占一行 */
+  .cat-filter-wrap{
+    flex: 0 0 100%; margin-left: 0; padding-left: 0; padding-top: 8px;
+    border-top: 1px dashed #eee;
+  }
+  .cat-filter-select{ flex: 1; max-width: none; }
+}
+@media (max-width: 640px){
+  .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
+  .section-title{ font-size: clamp(18px, 5vw, 22px); margin-bottom: 18px; }
+  .banner{ padding: clamp(20px, 5.5vw, 34px); border-radius: 14px; }
+  .banner h1{ font-size: clamp(19px, 5.4vw, 24px); }
+  .banner p{ font-size: clamp(12.5px, 3.4vw, 14px); line-height: 1.7; }
+  .card{ padding: clamp(14px, 4vw, 20px); border-radius: 10px; }
+  .element-title{ font-size: clamp(15px, 4.2vw, 17px); margin-bottom: 12px; }
+  .cat-path-table td, .cat-path-table th{ padding: 10px 12px; font-size: 13px; }
+  .cat-path-table td:first-child, .cat-path-table th:first-child{ width: 38px; font-size: 12.5px; }
+  .path-note{ font-size: 12.5px; }
+  .guide-name{ font-size: 13px; }
+  .rl-box{ padding: 12px 12px; }
+  .rl-who{ font-size: 13.5px; }
+  .card h3{ font-size: clamp(14px, 3.8vw, 16px); }
+  .card p{ font-size: clamp(12.5px, 3.4vw, 14px); line-height: 1.7; }
+  .category{ font-size: clamp(12px, 3.3vw, 13.5px); }
+  .cat-tabs{ margin-bottom: 14px; }
+  .contact-item, .contact-card{ padding: clamp(12px, 3.4vw, 18px); }
+}
 </style>
 </head>
 <body>
@@ -586,7 +721,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     <a class="nav-item active" onclick="navTo('dashboard', event)"><span class="nav-icon">🏠</span><span>工作台</span></a>
     <a class="nav-item" onclick="navTo('category', event)"><span class="nav-icon">📋</span><span>类目路径</span> <span id="new-badge-nav-category" data-nv="7" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('banmove', event)"><span class="nav-icon">🔄</span><span>底版平移</span></a>
-    <a class="nav-item" onclick="navTo('scarcity', event)"><span class="nav-icon">⭐</span><span>版型分享 <span id="new-badge-nav-scarcity" data-nv="5" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></span></a>
+    <a class="nav-item" onclick="navTo('scarcity', event)"><span class="nav-icon">⭐</span><span>版型分享 <span id="new-badge-nav-scarcity-lib" data-nv="11" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></span></a>
     <a class="nav-item" onclick="navTo('sizing', event)"><span class="nav-icon">📏</span><span>尺码信息</span></a>
     <a class="nav-item" onclick="navTo('title', event)"><span class="nav-icon">📝</span><span>标题优化</span></a>
     <a class="nav-item" onclick="navTo('visual', event)"><span class="nav-icon">🎨</span><span>视觉优化</span></a>
@@ -615,7 +750,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
   </div>
     <div id="contact" style="padding:0">
     <div class="section-title">联系方式</div>
-    <div class="card-grid">
+    <div class="card-grid contact-grid">
       <div class="card" style="text-align:center;padding:18px 16px">
         <div style="font-size:16px;font-weight:700;color:#333;margin-bottom:4px">张阿莱 <span style="font-size:12px;font-weight:400;color:#999">alessia.zhang</span></div>
         <div style="font-size:12px;color:#999;margin-bottom:12px">对接运营</div>
@@ -758,7 +893,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
   <!-- 2. 类目指引 -->
 <div class="section" id="category">
-  <div class="section-title">类目路径 <span id="new-badge-category-title" data-nv="4" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+  <div class="section-title">类目路径 <span id="new-badge-category-title" data-nv="12" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
   <p style="color:#666;margin-bottom:24px">以下为各类目的完整上新路径，上架时选择正确的类目路径才能对接。</p>
   <!-- 对接人查询工具 -->
   <div class="rl-box" id="recruit-lookup">
@@ -785,11 +920,11 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
   <!-- 一级tab: 负责人（张阿莱 / 许桑栀 / 白条 / 周以灵 / 文许容） -->
   <div class="cat-tabs">
-    <div class="cat-owner-tab active" onclick="catOwnerTab(this,'cat-owner-zhang')">张阿莱 <span id="new-badge-cat-zhang" data-nv="4" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
-    <div class="cat-owner-tab" onclick="catOwnerTab(this,'cat-owner-xu')">许桑栀</div>
+    <div class="cat-owner-tab active" onclick="catOwnerTab(this,'cat-owner-zhang')">张阿莱 <span id="new-badge-cat-zhang" data-nv="12" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="cat-owner-tab" onclick="catOwnerTab(this,'cat-owner-xu')">许桑栀 <span id="new-badge-cat-xu" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
     <div class="cat-owner-tab" onclick="catOwnerTab(this,'cat-owner-bai')">白条</div>
-    <div class="cat-owner-tab" onclick="catOwnerTab(this,'cat-owner-zhou')">周以灵 <span id="new-badge-cat-zhou" data-nv="3" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
-    <div class="cat-owner-tab" onclick="catOwnerTab(this,'cat-owner-wen')">文许容 <span id="new-badge-cat-wen" data-nv="3" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="cat-owner-tab" onclick="catOwnerTab(this,'cat-owner-zhou')">周以灵 <span id="new-badge-cat-zhou" data-nv="12" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="cat-owner-tab" onclick="catOwnerTab(this,'cat-owner-wen')">文许容 <span id="new-badge-cat-wen" data-nv="12" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
   </div>
 
   <div class="cat-owner-panel active" id="cat-owner-zhang">
@@ -812,13 +947,6 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
       <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 新奇物品 > 新奇服装和产品 > 新奇服装 > 男士新奇服装 > 男士新奇T恤、衬衫、polo衫 > 男士新奇T恤</td></tr>
-    </table>
-  </div>
-  <div class="element-section">
-    <div class="element-title">足球衫 <span id="new-badge-cat-zhang-football" data-nv="4" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
-    <table class="cat-path-table">
-      <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 团队运动 > 足球用品 > 服装 > 男士足球服 > 男士足球衫</td></tr>
     </table>
   </div>
   <div class="element-section">
@@ -850,11 +978,19 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     </table>
   </div>
   <div class="element-section">
-    <div class="element-title">风衣/大衣</div>
+    <div class="element-title">沙滩裤 <span id="new-badge-cat-zhang-beachshorts" data-nv="12" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <table class="cat-path-table">
+      <tr><th>序号</th><th>类目路径</th></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士时尚泳衣 > 男士沙滩裤</td></tr>
+    </table>
+  </div>
+  <div class="element-section">
+    <div class="element-title">风衣/夹克 <span id="new-badge-cat-zhang-coat" data-nv="12" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
       <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士休闲运动风衣、夹克</td></tr>
-      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士外套 > 男士风衣、雨衣 > 男士风衣</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 瑜伽服 > 男士瑜伽服 > 田径和运动服夹克</td></tr>
+      <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 瑜伽用品 > 服装 > 男士瑜伽服 > 田径和运动服夹克</td></tr>
     </table>
   </div>
   <div class="element-section">
@@ -863,12 +999,10 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
       <tr><th>序号</th><th>类目路径</th></tr>
       <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士打底和压缩单品 > 男士运动上衣</td></tr>
       <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 骑行服 > 男士骑行服 > 打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 贴身衣和压缩衣 > 男士运动上衣</td></tr>
-      <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>7</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动上衣</td></tr>
-      <tr><td>8</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 男士骑行服 > 打底和压缩单品 > 男士运动上衣</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 贴身衣和压缩衣 > 男士运动上衣</td></tr>
+      <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士打底和压缩单品 > 男士运动上衣</td></tr>
+      <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 打底和压缩单品 > 男士运动上衣</td></tr>
     </table>
   </div>
   <div class="element-section">
@@ -880,51 +1014,35 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
       <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
       <tr><td>4</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 跑步服 > 男士跑步服 > 打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
       <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男士运动户外服饰 > 贴身衣和压缩衣 > 男士运动短裤/男士运动长裤</td></tr>
-      <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 男士骑行服 > 打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
-      <tr><td>7</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
-      <tr><td>8</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
+      <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
+      <tr><td>7</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男士户外服饰 > 打底和压缩单品 > 男士运动短裤/男士运动长裤</td></tr>
     </table>
   </div>
   <div class="element-section">
-    <div class="element-title">健身套装</div>
+    <div class="element-title">健身套装 <span id="new-badge-cat-zhang-set" data-nv="12" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士贴身运动衣 > 男士贴身套装</td></tr>
-      <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士贴身运动衣 > 男士贴身套装</td></tr>
+      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 瑜伽服 > 男士瑜伽服 > 运动上装和下装套装</td></tr>
+      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士休闲运动服 > 男士贴身运动衣 > 男士贴身套装</td></tr>
+      <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男士 > 男士贴身运动衣 > 男士贴身套装</td></tr>
+      <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 瑜伽用品 > 服装 > 男士瑜伽服 > 运动上装和下装套装</td></tr>
     </table>
   </div>
   <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
     <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 健身服类目面料要求：</b>健身服类目要求面料氨纶含量 ≥ 8%，提报时请确保面料成分符合此标准，否则将影响审核通过率。</p>
-  </div>
-  <div class="element-section" style="margin-top:32px">
-    <div class="element-title">内裤 <span id="new-badge-cat-zhang-underwear" data-nv="4" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
-    <table class="cat-path-table">
-      <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 跑步服 > 男士跑步服 > 男士运动内衣 > 男士运动短衬裤</td></tr>
-      <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 跑步 > 服装 > 男士跑步服 > 男士运动内衣 > 男士运动短衬裤</td></tr>
-    </table>
   </div>
   </div>
   
 
     <div class="cat-sub-panel" id="cat-sub-male-big">
   <div class="element-section">
-    <div class="element-title">风衣/大衣</div>
+    <div class="element-title">风衣/夹克</div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
       <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士休闲运动服 > 大码男士休闲运动风衣、夹克</td></tr>
-      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士外套 > 大码男士风衣、雨衣 > 大码男士风衣</td></tr>
     </table>
   </div>
-  <div class="element-section">
-    <div class="element-title">防晒衫</div>
-    <table class="cat-path-table">
-      <tr><th>序号</th><th>类目路径</th></tr>
-      <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士时尚泳衣 > 大码男士防晒衫</td></tr>
-      <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士时尚泳衣 > 大码男士防晒服套装</td></tr>
-    </table>
   </div>
-    </div>
 
   </div>
 
@@ -960,265 +1078,251 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
   <div class="cat-owner-panel" id="cat-owner-xu">
     <div class="cat-tabs">
-      <div class="cat-main-tab active" onclick="catMainTab(this,'cat-xu-big')">儿童（大童/青少年）</div>
-      <div class="cat-main-tab" onclick="catMainTab(this,'cat-xu-baby')">婴童</div>
+      <div class="cat-main-tab active" onclick="catMainTab(this,'cat-xu-kids')">童装 <span id="new-badge-cat-xu-kids" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+      <div class="cat-main-tab" onclick="catMainTab(this,'cat-xu-preg')">孕妇装 <span id="new-badge-cat-xu-preg" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
     </div>
-    <div class="cat-main-panel active" id="cat-xu-big">
-      <!-- 大童：男童 / 女童 -->
+    <div class="cat-main-panel active" id="cat-xu-kids">
+      <div class="cat-tabs cat-sub-tabs">
+        <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-boy')">男童</div>
+        <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-babyboy')">男婴</div>
+        <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-girl')">女童</div>
+        <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-babygirl')">女婴</div>
+      </div>
+      <div class="cat-sub-panel active" id="cat-xu-boy">
         <div class="element-section">
-          <div class="element-title">POLO</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-polo-bboy')">男童</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-polo-bgirl')">女童</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-polo-bboy">
+          <div class="element-title">POLO <span id="new-badge-xu-boy-0" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童上衣、T恤、衬衫 > 男童Polo衫</td></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 高尔高尔夫服 > 男童高尔夫服 > 男童高尔夫运动衫 > Polo 衫</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 高尔夫用品 > 服装 > 男童高尔夫服 > 男童高尔夫运动衫 > Polo 衫</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 男童户外服饰 > 男童徒步 T 恤 > Polo 衫</td></tr>
+            <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男童户外服饰 > 男童徒步 T 恤 > Polo 衫</td></tr>
           </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-polo-bgirl">
+        </div>
+        <div class="element-section">
+          <div class="element-title">短裤 <span id="new-badge-xu-boy-1" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 足球服 > 男童足球服 > 短裤</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 团队运动 > 足球用品 > 服装 > 男童足球服 > 短裤</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男生 > 男童休闲运动短裤</td></tr>
+            <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 男童骑行服 > 打底与紧身单品 > 男童运动短裤</td></tr>
+          </table>
+        </div>
+        <div class="element-section">
+          <div class="element-title">衬衫 <span id="new-badge-xu-boy-2" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童上衣、T恤、衬衫 > 男童衬衫</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童休闲运动服 > 男童休闲运动运动T恤 > 男生运动服系扣衬衫</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 男童户外服饰 > 男童徒步 T 恤 > 系扣衬衫</td></tr>
+            <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男生 > 男童休闲运动运动T恤 > 男生运动服系扣衬衫</td></tr>
+          </table>
+        </div>
+        <div class="element-section">
+          <div class="element-title">马甲 <span id="new-badge-xu-boy-3" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童休闲运动服 > 男童运动马甲</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男生 > 男童运动马甲</td></tr>
+          </table>
+        </div>
+        <div class="element-section">
+          <div class="element-title">骑行裤 <span id="new-badge-xu-boy-4" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 男童骑行服 > 打底与紧身单品 > 男童运动长裤</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 骑行用品 > 服装 > 男童骑行服 > 打底和压缩单品 > 男童运动长裤</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 男童运动户外服饰 > 男童运动休闲短裤和裤子 > 男童运动休闲裤 > 骑行裤</td></tr>
+          </table>
+        </div>
+        <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
+          <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 童装紧身类面料要求：</b>紧身上衣、紧身裤（打底压缩类）须使用高弹面料，面料氨纶含量 <b>≥ 10%</b>。</p>
+        </div>
+        <div class="element-section">
+          <div class="element-title">正装 <span id="new-badge-xu-boy-5" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童西装、礼服 > 男童休闲西装</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童西装、礼服 > 男童西装、礼服套装</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="cat-sub-panel" id="cat-xu-babyboy">
+        <div class="element-section">
+          <div class="element-title">POLO <span id="new-badge-xu-babyboy-0" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴T恤、Polo衫 > 男婴Polo衫</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男婴T恤、Polo衫 > 男婴Polo衫</td></tr>
+          </table>
+        </div>
+        <div class="element-section">
+          <div class="element-title">衬衫 <span id="new-badge-xu-babyboy-1" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴T恤、Polo衫 > 男婴衬衫</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动迷用品 > 运动风服装 > 运动风婴儿服装 > 婴儿运动衫和衬衫</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男婴T恤、Polo衫 > 男婴衬衫</td></tr>
+          </table>
+        </div>
+        <div class="element-section">
+          <div class="element-title">套装 <span id="new-badge-xu-babyboy-2" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴服饰套装 > 男婴裤套装</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男婴服饰套装 > 男婴裤套装</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男新生儿套装</td></tr>
+            <tr><td>4</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男新生儿套装</td></tr>
+          </table>
+        </div>
+        <div class="element-section">
+          <div class="element-title">马甲 <span id="new-badge-xu-babyboy-3" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴外套、夹克 > 男婴马甲</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男婴外套、夹克 > 男婴马甲</td></tr>
+          </table>
+        </div>
+        <div class="element-section">
+          <div class="element-title">正装 <span id="new-badge-xu-babyboy-4" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴洗礼服</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男婴外套、夹克 > 男婴正装外套</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴西服、礼服 > 男婴西服套装</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="cat-sub-panel" id="cat-xu-girl">
+        <div class="element-section">
+          <div class="element-title">POLO <span id="new-badge-xu-girl-0" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童上衣、T恤、衬衫 > 女童Polo衫</td></tr>
             <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童休闲运动服 > 女童休闲运动运动T恤 > 女童休闲运动Polo衫</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 新奇物品 > 新奇服装和产品 > 新奇服装 > 女童新奇服装 > 女童新奇上衣和 T 恤 > 女童新奇 Polo 衫</td></tr>
+            <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 女生 > 女童休闲运动运动T恤 > 女童休闲运动Polo衫</td></tr>
+            <tr><td>5</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 高尔夫用品 > 服装 > 女童高尔夫服 > 女童高尔夫运动衫 > Polo 衫</td></tr>
+            <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 女童户外服饰 > 女童徒步 T 恤 > Polo 衫</td></tr>
           </table>
-          </div>
         </div>
         <div class="element-section">
-          <div class="element-title">衬衫</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-cs-bboy')">男童</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-cs-bgirl')">女童</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-cs-bboy">
+          <div class="element-title">短裤 <span id="new-badge-xu-girl-1" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童上衣、T恤、衬衫 > 男童衬衫</td></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 足球服 > 女童足球服 > 短裤</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 团队运动 > 足球用品 > 服装 > 女童足球服 > 短裤</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 女童户外服饰 > 女童徒步短裤</td></tr>
+            <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 女童骑行服 > 女童骑行裤装 > 女童骑行短裤</td></tr>
           </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-cs-bgirl">
+        </div>
+        <div class="element-section">
+          <div class="element-title">衬衫 <span id="new-badge-xu-girl-2" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童上衣、T恤、衬衫 > 女童衬衫和扣角领衬衫</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童休闲运动服 > 女童休闲运动运动T恤 > 女生运动服系扣衬衫</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 户外服饰 > 女童户外服饰 > 女童徒步 T 恤 > 系扣衬衫</td></tr>
+            <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 徒步和户外休闲服装 > 女童户外服饰 > 女童徒步 T 恤 > 系扣衬衫</td></tr>
+            <tr><td>5</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 高尔高尔夫服 > 女童高尔夫服 > 女童高尔夫运动衫 > 系扣衬衫</td></tr>
+            <tr><td>6</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 高尔夫用品 > 服装 > 女童高尔夫服 > 女童高尔夫运动衫 > 系扣衬衫</td></tr>
           </table>
-          </div>
         </div>
         <div class="element-section">
-          <div class="element-title">马甲</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-mj-bboy')">男童</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-mj-bgirl')">女童</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-mj-bboy">
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童外套、风衣 > 男童单马甲</td></tr>
-          </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-mj-bgirl">
+          <div class="element-title">马甲 <span id="new-badge-xu-girl-3" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童外套、风衣 > 女童单马甲</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童休闲运动服 > 女童运动马甲</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 女生 > 女童运动马甲</td></tr>
           </table>
-          </div>
         </div>
         <div class="element-section">
-          <div class="element-title">打底压缩</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-dd-bboy')">男童</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-dd-bgirl')">女童</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-dd-bboy">
-<div style="font-weight:600;margin:10px 0 4px;font-size:14px;color:#333">紧身衣</div>
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童休闲运动服 > 男童打底和压缩单品 > 男童运动上衣</td></tr>
-          </table>
-<div style="font-weight:600;margin:10px 0 4px;font-size:14px;color:#333">运动短裤</div>
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童休闲运动服 > 男童打底和压缩单品 > 男童运动短裤</td></tr>
-            <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男生 > 男童打底和压缩单品 > 男童运动短裤</td></tr>
-          </table>
-<div style="font-weight:600;margin:10px 0 4px;font-size:14px;color:#333">运动长裤</div>
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童休闲运动服 > 男童打底和压缩单品 > 男童运动长裤</td></tr>
-            <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 健身、训练用品 > 健身服 > 男生 > 男童运动紧身裤</td></tr>
-          </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-dd-bgirl">
-<div style="font-weight:600;margin:10px 0 4px;font-size:14px;color:#333">紧身衣</div>
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童休闲运动服 > 女童打底和压缩单品 > 女童运动上衣</td></tr>
-            <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动户外服饰 > 女童运动户外服饰 > 贴身衣和压缩衣 > 女童运动上衣</td></tr>
-          </table>
-<div style="font-weight:600;margin:10px 0 4px;font-size:14px;color:#333">紧身裤</div>
+          <div class="element-title">打底裤 <span id="new-badge-xu-girl-4" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童打底裤</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童休闲运动服 > 女生运动服紧身裤</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童休闲运动服 > 女童打底和压缩单品 > 女童运动长裤</td></tr>
+            <tr><td>4</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 女童骑行服 > 女童骑行裤装 > 女童骑行长裤</td></tr>
           </table>
-          </div>
-        
-        <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
-          <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 童装紧身类面料要求：</b>紧身上衣、紧身裤（打底压缩类）须使用高弹面料，面料氨纶含量 <b>≥ 10%</b>。</p>
-        </div>
-</div>
-        <div class="element-section">
-          
-        <div class="element-title">正装</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-zz-bboy')">男童</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-zz-bgirl')">女童</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-zz-bboy">
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男童时尚 > 男童服装 > 男童西装、礼服 > 男童西装、礼服套装</td></tr>
-          </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-zz-bgirl">
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童西装、礼服 > 女童西装、礼服套装</td></tr>
-          </table>
-          </div>
-        </div>
-    </div>
-    <div class="cat-main-panel" id="cat-xu-baby">
-      <!-- 婴童：男婴 / 女婴 -->
-        <div class="element-section">
-          <div class="element-title">套装</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-tz-bboyb')">男婴</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-tz-bgirlb')">女婴</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-tz-bboyb">
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴服饰套装 > 男婴裤套装</td></tr>
-            <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴服饰套装 > 男婴短裤套装</td></tr>
-            <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男新生儿套装</td></tr>
-            <tr><td>4</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男新生儿套装</td></tr>
-            <tr><td>5</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴运动服和帽衫 > 男婴运动套装</td></tr>
-          </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-tz-bgirlb">
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴服饰套装 > 女婴短裤套装</td></tr>
-            <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴服饰套装 > 女婴裤套装</td></tr>
-            <tr><td>3</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴运动服和帽衫 > 女婴运动套装</td></tr>
-            <tr><td>4</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女新生儿套装</td></tr>
-            <tr><td>5</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴服饰套装 > 女婴裙套装</td></tr>
-          </table>
-          </div>
         </div>
         <div class="element-section">
-          <div class="element-title">POLO</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-polo-bboyb')">男婴</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-polo-bgirlb')">女婴</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-polo-bboyb">
+          <div class="element-title">正装 <span id="new-badge-xu-girl-5" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴T恤、Polo衫 > 男婴Polo衫</td></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童外套、风衣 > 女童正装外套</td></tr>
           </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-polo-bgirlb">
+        </div>
+      </div>
+      <div class="cat-sub-panel" id="cat-xu-babygirl">
+        <div class="element-section">
+          <div class="element-title">POLO <span id="new-badge-xu-babygirl-0" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴T恤、Polo衫 > 女婴Polo衫</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 女婴服装和鞋靴 > 女婴服装 > 女婴T恤、Polo衫 > 女婴Polo衫</td></tr>
           </table>
-          </div>
         </div>
         <div class="element-section">
-          <div class="element-title">衬衫</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-cs-bboyb')">男婴</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-cs-bgirlb')">女婴</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-cs-bboyb">
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴T恤、Polo衫 > 男婴衬衫</td></tr>
-          </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-cs-bgirlb">
+          <div class="element-title">衬衫 <span id="new-badge-xu-babygirl-1" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴T恤、Polo衫 > 女婴衬衫</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 女婴服装和鞋靴 > 女婴服装 > 女婴T恤、Polo衫 > 女婴衬衫</td></tr>
           </table>
-          </div>
         </div>
         <div class="element-section">
-          <div class="element-title">马甲</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-mj-bboyb')">男婴</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-mj-bgirlb')">女婴</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-mj-bboyb">
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴外套、夹克 > 男婴马甲</td></tr>
-          </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-mj-bgirlb">
+          <div class="element-title">马甲 <span id="new-badge-xu-babygirl-2" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴外套、夹克 > 女婴马甲</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 女婴服装和鞋靴 > 女婴服装 > 女婴外套、夹克 > 女婴马甲</td></tr>
           </table>
-          </div>
         </div>
         <div class="element-section">
-          <div class="element-title">打底压缩</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-dd-bboyb')">男婴</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-dd-bgirlb')">女婴</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-dd-bboyb">
-<div style="font-weight:600;margin:10px 0 4px;font-size:14px;color:#333">打底裤</div>
+          <div class="element-title">套装 <span id="new-badge-xu-babygirl-3" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴下装 > 男婴打底裤</td></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴服饰套装 > 女婴短裤套装</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女新生儿套装</td></tr>
+            <tr><td>3</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 女婴服装和鞋靴 > 女婴服装 > 女婴服饰套装 > 女婴裤套装</td></tr>
+            <tr><td>4</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 女婴服装和鞋靴 > 女婴服装 > 女新生儿套装</td></tr>
           </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-dd-bgirlb">
-<div style="font-weight:600;margin:10px 0 4px;font-size:14px;color:#333">紧身裤</div>
+        </div>
+        <div class="element-section">
+          <div class="element-title">打底裤 <span id="new-badge-xu-babygirl-4" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴下装 > 女婴打底裤</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 女婴服装和鞋靴 > 女婴服装 > 女婴下装 > 女婴打底裤</td></tr>
           </table>
-          </div>
-        
-        <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
-          <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 童装紧身类面料要求：</b>紧身上衣、紧身裤（打底压缩类）须使用高弹面料，面料氨纶含量 <b>≥ 10%</b>。</p>
         </div>
-</div>
         <div class="element-section">
-          <div class="element-title">正装</div>
-          <div class="cat-tabs cat-sub-tabs">
-            <div class="cat-sub-tab active" onclick="catSubTab(this,'cat-xu-zz-bboyb')">男婴</div>
-            <div class="cat-sub-tab" onclick="catSubTab(this,'cat-xu-zz-bgirlb')">女婴</div>
-          </div>
-          <div class="cat-sub-panel active" id="cat-xu-zz-bboyb">
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴外套、夹克 > 男婴正装外套</td></tr>
-          </table>
-          </div>
-          <div class="cat-sub-panel" id="cat-xu-zz-bgirlb">
+          <div class="element-title">正装 <span id="new-badge-xu-babygirl-5" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
             <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 女婴服装和鞋靴 > 女婴服装 > 女婴外套、夹克 > 女婴正装外套</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">母婴用品 > 服装和配饰 > 女婴服装和鞋靴 > 女婴服装 > 女婴外套、夹克 > 女婴正装外套</td></tr>
           </table>
-          </div>
+        </div>
+        <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
+          <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 童装紧身类面料要求：</b>紧身上衣、紧身裤（打底压缩类）须使用高弹面料，面料氨纶含量 <b>≥ 10%</b>。</p>
+        </div>
+      </div>
+    </div>
+    <div class="cat-main-panel" id="cat-xu-preg">
+        <div class="element-section">
+          <div class="element-title">正装 <span id="new-badge-xu-preg-0" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+            <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女士时尚 > 女士商店 > 孕妇装 > 孕妇商务西装</td></tr>
+            <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 女士时尚 > 女士商店 > 大码孕妇装 > 大码孕妇商务西装</td></tr>
+          </table>
         </div>
     </div>
-  </div>  <div class="cat-owner-panel" id="cat-owner-bai">
+  </div><div class="cat-owner-panel" id="cat-owner-bai">
     <div class="cat-tabs">
       <div class="cat-main-tab active" onclick="catMainTab(this,'cat-bai-std')">标码</div>
       <div class="cat-main-tab" onclick="catMainTab(this,'cat-bai-big')">大码</div>
@@ -1265,13 +1369,6 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
           </table>
         </div>
         <div class="element-section">
-          <div class="element-title">背心</div>
-          <table class="cat-path-table">
-            <tr><th>序号</th><th>类目路径</th></tr>
-          <tr><td>1</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 跑步用品 > 服装 > 男士跑步服 > 男士跑步T恤 > 背心</td></tr>
-          </table>
-        </div>
-        <div class="element-section">
           <div class="element-title">POLO</div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
@@ -1279,13 +1376,18 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
           </table>
         </div>
         <div class="element-section">
-          <div class="element-title">足球服</div>
+          <div class="element-title">骑行服 <span id="new-badge-cat-zhou-cycling" data-nv="12" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
           <table class="cat-path-table">
             <tr><th>序号</th><th>类目路径</th></tr>
-          <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 足球服 > 男士足球服 > T 恤</td></tr>
+          <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 体育专用服装 > 骑行服 > 男士骑行服 > 打底和压缩单品 > 男士运动上衣</td></tr>
+          <tr><td>2</td><td onclick="copyCatPath(this)">运动与户外用品 > 户外休闲 > 骑行用品 > 服装 > 男士骑行服 > 打底与紧身单品 > 男士运动上衣</td></tr>
+          <tr><td>3</td><td onclick="copyCatPath(this)">运动与户外用品 > 运动服装和器材 > 骑行用品 > 服装 > 男士骑行服 > 打底和压缩单品 > 男士运动上衣</td></tr>
           </table>
         </div>
-      </div>
+        <div class="card" style="margin-top:20px;background:#FFF5EB;border-left:4px solid #FB7701;padding:16px">
+          <p style="font-size:14px;color:#333;line-height:1.8;margin:0"><b>⚠️ 骑行服类目面料要求：</b>健身服类目要求面料氨纶含量 ≥ 8%，提报时请确保面料成分符合此标准，否则将影响审核通过率。</p>
+        </div>
+        </div>
       <div class="cat-main-panel" id="cat-zhou-big">
         <div class="element-section">
           <div class="element-title">T恤</div>
@@ -1390,6 +1492,14 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
             <tr><th>序号</th><th>类目路径</th></tr>
           <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士休闲运动服 > 大码男士休闲运动短裤</td></tr>
           <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男装短裤 > 大码男士工装短裤</td></tr>
+          </table>
+        </div>
+        <div class="element-section">
+          <div class="element-title">防晒衫 <span id="new-badge-cat-wen-sunshirt" data-nv="12" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+          <table class="cat-path-table">
+            <tr><th>序号</th><th>类目路径</th></tr>
+          <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士时尚泳衣 > 大码男士防晒衫</td></tr>
+          <tr><td>2</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士时尚泳衣 > 大码男士防晒服套装</td></tr>
           </table>
         </div>
         <div class="element-section">
@@ -1590,7 +1700,19 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
   <div class="section-title">版型分享 <span id="new-badge-scarcity-title" data-nv="5" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
   <p style="color:#666;margin-bottom:24px">以下为近期热门的版型分享，包含上新路径和参考图片。</p>
 
-  <!-- 版型1: 卫衣/连帽衫 -->
+  <!-- 版型1: 版型库（纸样下载） -->
+  <div class="element-section" id="pattern-library">
+    <div class="element-title">版型库路径 <span id="new-badge-scarcity-lib" data-nv="13" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="card path-card">
+      <div class="meta">
+        <div class="label">商家后台版型库路径</div>
+        <div class="category" data-copy="商品管理-版型管理-版型学习资料" data-noreplace>商品管理-版型管理-版型学习资料</div>
+        <div class="path-note" style="color:#333">📎 纸样可直接在「版型学习资料」中下载，开款打版前先到这里取用平台官方纸样，版型更贴合类目要求、也能减少自行制版的偏差。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 版型2: 卫衣/连帽衫 -->
   <div class="element-section">
     <div class="element-title">卫衣/连帽衫 <span id="new-badge-scarcity-hoodie" data-nv="5" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
     <div class="card path-card">
@@ -1613,7 +1735,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     </div>
   </div>
 
-  <!-- 版型2: 品类分享-健身服 -->
+  <!-- 版型3: 品类分享-健身服 -->
   <div class="element-section">
     <div class="element-title" id="cat-fitness">品类分享-健身服</div>
     <div class="card path-card">
@@ -1639,6 +1761,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
       <div class="gallery-item"><img src="new_0034.png" loading="lazy" onclick="openModal(this.src)"></div>
     </div>
   </div>
+
 </div>
 
 <!-- 3.5 尺码信息 -->
@@ -4216,10 +4339,7 @@ var KIDS_CAT = {
     '服装、鞋靴和珠宝饰品 > 婴儿服饰及鞋靴 > 男婴服装和鞋靴 > 男婴服装 > 男婴泳装 > 男婴防晒服',
     '母婴用品 > 服装和配饰 > 男婴服装和鞋靴 > 男婴服装 > 男婴泳装 > 男婴泳衣套装 > 男婴防晒服套装'
   ]]],
-  'cat-kids-girl': [['风衣/大衣', [
-    '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童休闲运动服 > 女童休闲运动风衣、夹克',
-    '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童外套、风衣 > 女童雨衣 > 女童风衣'
-  ]], ['防晒衫', [
+  'cat-kids-girl': [['防晒衫', [
     '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童时尚泳衣 > 女童防晒衫',
     '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童时尚泳衣 > 女童防晒玩水服',
     '服装、鞋靴和珠宝饰品 > 女童时尚 > 女童服装 > 女童时尚泳衣 > 女童泳装套装 > 女童防晒服套装'
@@ -4375,7 +4495,7 @@ function dismissNewBadge(badgeId, storageKey) {
 // 每次发布新内容：把 SITE_CONTENT_VERSION +1，并为该次新增内容的角标标记 data-nv=新版本号。
 // 页面打开即视为已阅读当前版本：早于已读基线的历史角标不再显示，仅在新版本发布时才重新亮起
 // 对应新增内容的 NEW 角标（其余角标保持隐藏），彻底避免"历史NEW长期累积/点了才消失"的问题。
-var SITE_CONTENT_VERSION = 10;
+var SITE_CONTENT_VERSION = 13;
 var SEEN_KEY = 'site-content-seen-version';
 function getSeenVersion() {
   try { return parseInt(localStorage.getItem(SEEN_KEY) || '0', 10) || 0; } catch(e) { return 0; }
@@ -7119,7 +7239,7 @@ document.addEventListener('keydown', function (e) {
 <script>
 /* ==== 对接人查询工具（紧凑版） ==== */
 (function(){
-  var RL = [{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"T恤"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"足球衫"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"卫衣"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"连帽衫"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"防晒衫"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"风衣/大衣"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"健身衣"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"健身裤"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"健身套装"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"内裤"},{"p":"male","s":"std","o":"白条","oid":"cat-owner-bai","m":"cat-bai-std","sub":"","c":"套装"},{"p":"male","s":"std","o":"白条","oid":"cat-owner-bai","m":"cat-bai-std","sub":"","c":"家居服"},{"p":"male","s":"std","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-std","sub":"","c":"T恤"},{"p":"male","s":"std","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-std","sub":"","c":"背心"},{"p":"male","s":"std","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-std","sub":"","c":"POLO"},{"p":"male","s":"std","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-std","sub":"","c":"足球服"},{"p":"male","s":"std","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-std","c":"实用外套"},{"p":"male","s":"std","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-std","c":"实用长裤"},{"p":"male","s":"std","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-std","c":"实用套装"},{"p":"male","s":"std","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-std","c":"装扮服"},{"p":"male","s":"big","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-big","c":"风衣/大衣"},{"p":"male","s":"big","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-big","c":"防晒衫"},{"p":"male","s":"big","o":"白条","oid":"cat-owner-bai","m":"cat-bai-big","sub":"","c":"家居服"},{"p":"male","s":"big","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-big","sub":"","c":"T恤"},{"p":"male","s":"big","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-big","sub":"","c":"POLO"},{"p":"male","s":"big","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-big","sub":"","c":"衬衫"},{"p":"male","s":"big","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-big","sub":"","c":"西装"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"背心"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"长裤"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"短裤"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"沙滩裤"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"卫衣"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"连帽衫"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"健身服"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"装扮服"},{"p":"kids","s":"boy","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-kids","sub":"cat-sub-kids-boy","c":"防晒衫"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-polo-bboy","c":"POLO"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-cs-bboy","c":"衬衫"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-mj-bboy","c":"马甲"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-dd-bboy","c":"打底压缩"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-zz-bboy","c":"正装"},{"p":"kids","s":"girl","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-kids","sub":"cat-sub-kids-girl","c":"风衣/大衣"},{"p":"kids","s":"girl","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-kids","sub":"cat-sub-kids-girl","c":"防晒衫"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-polo-bgirl","c":"POLO"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-cs-bgirl","c":"衬衫"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-mj-bgirl","c":"马甲"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-dd-bgirl","c":"打底压缩"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-big","sub":"cat-xu-zz-bgirl","c":"正装"},{"p":"kids","s":"babyboy","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-kids","sub":"cat-sub-kids-babyboy","c":"防晒衫"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-tz-bboyb","c":"套装"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-polo-bboyb","c":"POLO"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-cs-bboyb","c":"衬衫"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-mj-bboyb","c":"马甲"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-dd-bboyb","c":"打底压缩"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-zz-bboyb","c":"正装"},{"p":"kids","s":"babygirl","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-kids","sub":"cat-sub-kids-babygirl","c":"防晒衫"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-tz-bgirlb","c":"套装"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-polo-bgirlb","c":"POLO"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-cs-bgirlb","c":"衬衫"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-mj-bgirlb","c":"马甲"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-dd-bgirlb","c":"打底压缩"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-baby","sub":"cat-xu-zz-bgirlb","c":"正装"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"连衣裙"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"卫衣"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"T恤"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"POLO"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"套装"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"内衣"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"亨利衫"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"衬衫"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"外套夹克"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"短裤"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"长裤"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"防晒衫"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"牛仔裤"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"毛衣"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"家居服"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"打底裤"}];
+  var RL = [{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"T恤"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"卫衣"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"连帽衫"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"防晒衫"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"风衣/夹克"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"沙滩裤"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"健身衣"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"健身裤"},{"p":"male","s":"std","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-std","c":"健身套装"},{"p":"male","s":"std","o":"白条","oid":"cat-owner-bai","m":"cat-bai-std","sub":"","c":"套装"},{"p":"male","s":"std","o":"白条","oid":"cat-owner-bai","m":"cat-bai-std","sub":"","c":"家居服"},{"p":"male","s":"std","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-std","sub":"","c":"T恤"},{"p":"male","s":"std","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-std","sub":"","c":"POLO"},{"p":"male","s":"std","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-std","c":"实用外套"},{"p":"male","s":"std","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-std","c":"实用长裤"},{"p":"male","s":"std","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-std","c":"实用套装"},{"p":"male","s":"std","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-std","c":"装扮服"},{"p":"male","s":"big","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-male","sub":"cat-sub-male-big","c":"风衣/夹克"},{"p":"male","s":"big","o":"白条","oid":"cat-owner-bai","m":"cat-bai-big","sub":"","c":"家居服"},{"p":"male","s":"big","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-big","sub":"","c":"T恤"},{"p":"male","s":"big","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-big","sub":"","c":"POLO"},{"p":"male","s":"big","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-big","sub":"","c":"衬衫"},{"p":"male","s":"big","o":"周以灵","oid":"cat-owner-zhou","m":"cat-zhou-big","sub":"","c":"西装"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"背心"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"长裤"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"短裤"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"沙滩裤"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"卫衣"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"连帽衫"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"健身服"},{"p":"male","s":"big","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-male","sub":"cat-wen-big","c":"装扮服"},{"p":"kids","s":"boy","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-kids","sub":"cat-sub-kids-boy","c":"防晒衫"},{"p":"kids","s":"girl","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-kids","sub":"cat-sub-kids-girl","c":"防晒衫"},{"p":"kids","s":"babyboy","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-kids","sub":"cat-sub-kids-babyboy","c":"防晒衫"},{"p":"kids","s":"babygirl","o":"张阿莱","oid":"cat-owner-zhang","m":"cat-main-kids","sub":"cat-sub-kids-babygirl","c":"防晒衫"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"连衣裙"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"卫衣"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"T恤"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"POLO"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"套装"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"内衣"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"亨利衫"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"衬衫"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"外套夹克"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"短裤"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"长裤"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"防晒衫"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"牛仔裤"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"毛衣"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"家居服"},{"p":"mum","s":"all","o":"文许容","oid":"cat-owner-wen","m":"cat-wen-mum","sub":"","c":"打底裤"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-boy","c":"POLO"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-boy","c":"短裤"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-boy","c":"衬衫"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-boy","c":"马甲"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-boy","c":"骑行裤"},{"p":"kids","s":"boy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-boy","c":"正装"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babyboy","c":"POLO"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babyboy","c":"衬衫"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babyboy","c":"套装"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babyboy","c":"马甲"},{"p":"kids","s":"babyboy","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babyboy","c":"正装"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-girl","c":"POLO"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-girl","c":"短裤"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-girl","c":"衬衫"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-girl","c":"马甲"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-girl","c":"打底裤"},{"p":"kids","s":"girl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-girl","c":"正装"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babygirl","c":"POLO"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babygirl","c":"衬衫"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babygirl","c":"马甲"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babygirl","c":"套装"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babygirl","c":"打底裤"},{"p":"kids","s":"babygirl","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-kids","sub":"cat-xu-babygirl","c":"正装"},{"p":"mum","s":"all","o":"许桑栀","oid":"cat-owner-xu","m":"cat-xu-preg","sub":"","c":"正装"}];
 
   var PEOPLE = [
     {k:'male', t:'男装'},
