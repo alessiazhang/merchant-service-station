@@ -560,6 +560,16 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 .pkg-sub{font-size:12px;color:#666;line-height:1.6;margin-top:10px;text-align:center;
   padding:5px 10px;border:1px solid transparent;border-radius:6px;width:100%;box-sizing:border-box}
 .pkg-note{font-size:12.5px;color:#999;line-height:1.9;margin-top:14px}
+.pkg-label-wrap{margin-top:18px;padding-top:16px;border-top:1px dashed #eee}
+.pkg-label-title{font-size:13.5px;font-weight:600;color:#333;margin-bottom:10px}
+.pkg-label-links{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-start}
+.pkg-label-link{flex:0 1 calc((100% - 24px)/3);min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-size:13px;font-weight:600;color:#FB7701;text-decoration:none;background:#FFF7F0;border:1px solid #FFCFA6;
+  border-radius:8px;padding:10px 14px;line-height:1.6;transition:background .15s,border-color .15s}
+.pkg-label-link:hover{background:#FFF0E2;border-color:#FB7701}
+.pkg-label-link .pll-arrow{flex:0 0 auto;color:#FB7701}
+@media(max-width:1100px){.pkg-label-link{flex:1 1 calc((100% - 12px)/2)}}
+@media(max-width:760px){.pkg-label-links{flex-direction:column}.pkg-label-link{flex:1 1 auto;width:100%}}
 @media(max-width:760px){.pkg-grid{grid-template-columns:1fr 1fr}}
 
 /* ===== 卖家课堂 · 多件装打包方式 ===== */
@@ -3843,6 +3853,13 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
           </div>
         </div>
         <p class="pkg-note">以上示例仅供参考，根据商品包装实际材质选择对应标识。</p>
+        <div class="pkg-label-wrap">
+          <div class="pkg-label-title">📦 男装、童装常见外包装标签示例图</div>
+          <div class="pkg-label-links">
+            <a class="pkg-label-link" href="https://bdl.cdnfe.com/upload_bdl/page/95e31fd8-fe1f-4a97-906f-055358e7414a.pdf" target="_blank" rel="noopener"><span>👔 男装常见外包装标签示例图</span><span class="pll-arrow">点击查看 →</span></a>
+            <a class="pkg-label-link" href="https://bdl.cdnfe.com/upload_bdl/page/6c8c3397-6564-451e-bc03-526bcb7422c2.pdf" target="_blank" rel="noopener"><span>🧒 童装常见外包装标签示例图</span><span class="pll-arrow">点击查看 →</span></a>
+          </div>
+        </div>
       </div>
       <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：目前后台仅有报错提示，不影响发货、入库，如有异常情况请联系对接运营。</p></div>
     </div>
