@@ -738,7 +738,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     <a class="nav-item" onclick="navTo('marketing', event)"><span class="nav-icon">📅</span><span>营销节点</span></a>
     <a class="nav-item" onclick="navTo('hotsale', event)"><span class="nav-icon">📈</span><span>印花趋势</span><span id="new-badge-nav-hotsale" data-nv="2" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('tongkuan', event)"><span class="nav-icon">🔥</span><span>爆款推荐</span></a>
-    <a class="nav-item" onclick="navTo('seller', event)"><span class="nav-icon">📚</span><span>卖家课堂</span><span id="new-badge-nav-seller" data-nv="10" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
+    <a class="nav-item" onclick="navTo('seller', event)"><span class="nav-icon">📚</span><span>卖家课堂</span><span id="new-badge-nav-seller" data-nv="14" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     
     <a class="nav-item" onclick="navTo('news', event)"><span class="nav-icon">📰</span><span>近期资讯</span> <span id="new-badge-nav-news" data-nv="10" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
   </div>
@@ -3526,7 +3526,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
 <!-- 8.7 卖家课堂 -->
 <div class="section" id="seller">
-  <div class="section-title">卖家课堂 <span id="new-badge-seller-title" data-nv="10" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+  <div class="section-title">卖家课堂 <span id="new-badge-seller-title" data-nv="14" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
 
   <div class="seller-tabs">
     <div class="seller-tab active" onclick="switchSellerTab(this,'seller-run')">店铺运营</div>
@@ -3786,6 +3786,22 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
       <p style="font-size:14px;color:#333;line-height:2">儿童服饰类商品在美国站点售卖需符合 CPC 相关要求，证书的适用商品范围、内容要素与提交方式请参考下方指引。</p>
       <div style="margin-top:12px">
         <a href="https://qr61.cn/opdkFI/qdKgobS" target="_blank" rel="noopener" style="display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600">📖 查看服饰 CPC 合规指引 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 合规6: 国旗类商品发布合规（新增） -->
+  <div class="element-section">
+    <div class="element-title">国旗类商品发布合规指引 <span id="new-badge-seller-flag" data-nv="14" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite">NEW</span></div>
+    <div class="card">
+      <p style="font-size:14px;color:#333;line-height:2">带有国旗图案的服饰类商品，上新前需要先确认是否属于可发布范围：图片和标题里能不能出现国旗、哪些做法会被判定不合规，课程里都有明确说明。</p>
+      <div style="background:#FFF5EB;border-left:4px solid #FB7701;padding:10px 16px;border-radius:6px;margin-top:12px">
+        <p style="font-size:14px;color:#333;line-height:2;margin:0">1. 上新前先核对图案、文字说明与实物是否一致，不要用容易让人误解的国旗元素表述；</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin:0">2. 图片、标题、详情页三处表述要保持一致，避免因前后不一致被判为描述不符；</p>
+        <p style="font-size:14px;color:#333;line-height:2;margin:0">3. 已有商品如涉及国旗元素，也建议按课程要求自查一遍，发现问题及时调整。</p>
+      </div>
+      <div style="margin-top:12px">
+        <a href="https://agentseller.temu.com/main/course/detail?courseId=74165383649" target="_blank" rel="noopener" style="display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600">📖 查看国旗类商品发布合规指引 →</a>
       </div>
     </div>
   </div>
@@ -4512,7 +4528,7 @@ function dismissNewBadge(badgeId, storageKey) {
 // 每次发布新内容：把 SITE_CONTENT_VERSION +1，并为该次新增内容的角标标记 data-nv=新版本号。
 // 页面打开即视为已阅读当前版本：早于已读基线的历史角标不再显示，仅在新版本发布时才重新亮起
 // 对应新增内容的 NEW 角标（其余角标保持隐藏），彻底避免"历史NEW长期累积/点了才消失"的问题。
-var SITE_CONTENT_VERSION = 13;
+var SITE_CONTENT_VERSION = 14;
 var SEEN_KEY = 'site-content-seen-version';
 function getSeenVersion() {
   try { return parseInt(localStorage.getItem(SEEN_KEY) || '0', 10) || 0; } catch(e) { return 0; }
