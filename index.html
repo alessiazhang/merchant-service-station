@@ -17,7 +17,7 @@ body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; backgr
 .sidebar {
   position:fixed; left:0; top:0; width:220px; height:calc(100vh - 36px);
   background:#fff; border-right:1px solid #e0e0e0; z-index:100;
-  display:flex; flex-direction:column; overflow-y:auto;
+  display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden;
 }
 .logo {
   padding:20px; display:flex; align-items:center; gap:10px;
@@ -31,10 +31,13 @@ body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; backgr
 .logo-text { font-size:15px; font-weight:700; color:#333; }
 .nav { flex:1; padding:10px 0; }
 .nav-item {
-  display:flex; align-items:center; gap:12px;
-  padding:12px 20px; cursor:pointer; color:#666; font-size:14px;
+  display:flex; align-items:center; gap:clamp(8px, .9vw, 12px);
+  padding:12px clamp(12px, 1.4vw, 20px); cursor:pointer; color:#666; font-size:14px;
   transition:all 0.2s; text-decoration:none; border-left:3px solid transparent;
+  white-space:nowrap;
 }
+/* 导航文字与 NEW 角标永不换行、不被压缩（任何窗口宽度下都保持单行） */
+.nav-item > span { flex:0 0 auto; white-space:nowrap; }
 .nav-item:hover { background:#FFF5EB; color:#FB7701; }
 .nav-item.active { background:#FFF5EB; color:#FB7701; border-left-color:#FB7701; font-weight:600; }
 .nav-icon { font-size:18px; width:24px; text-align:center; }
@@ -740,7 +743,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     <a class="nav-item" onclick="navTo('tongkuan', event)"><span class="nav-icon">🔥</span><span>爆款推荐</span></a>
     <a class="nav-item" onclick="navTo('seller', event)"><span class="nav-icon">📚</span><span>卖家课堂</span><span id="new-badge-nav-seller" data-nv="14" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     
-    <a class="nav-item" onclick="navTo('news', event)"><span class="nav-icon">📰</span><span>近期资讯</span> <span id="new-badge-nav-news" data-nv="10" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
+    <a class="nav-item" onclick="navTo('news', event)"><span class="nav-icon">📰</span><span>近期资讯</span> <span id="new-badge-nav-news" data-nv="15" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
   </div>
   <div style="background:linear-gradient(135deg,#FB7701,#FF9933);padding:16px 20px;color:#fff">
     <div style="font-size:14px;margin-bottom:8px;line-height:1.8"><b>对接运营：</b><span style="opacity:0.9">张阿莱 / 许桑栀 / 白条 / 文许容 / 周以灵</span></div>
@@ -897,7 +900,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     <div class="card" style="cursor:pointer" onclick="navTo('hotsale', event)"><h3>🎄 印花趋势专题</h3><p>根据本小组负责类目的top 200，整理了9月印花趋势和版型趋势，请移步「印花趋势」板块点击详情查看。</p></div>
     <div class="card" style="cursor:pointer" onclick="navTo('tongkuan', event)"><h3>🏷️ 重点款式提报</h3><p>若您经营的商品与目标商品<b>完全同款</b>，可以填写问卷提报给我们，商品有机会在平台推荐中获得更多曝光。</p></div>
     <div class="card" style="cursor:pointer" onclick="navTo('seller', event)"><h3>📚 卖家课堂合集</h3><p>根据商家常见问题分为「店铺运营」「店铺合规」两大板块，帮助商家合规经营、减少违规损失，玩转爆单技巧。</p></div>
-    <div class="card" style="cursor:pointer" onclick="navTo('news', event)"><h3>📰 近期资讯 <span id="new-badge-dash-news" data-nv="10" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1.2s infinite">NEW</span></h3><p>近期新增<b>「绿点」标识整改要求</b>与<b>多国包装回收标识整改要求</b>，另有波兰、意大利、西班牙等站点合规提醒。</p></div>
+    <div class="card" style="cursor:pointer" onclick="navTo('news', event)"><h3>📰 近期资讯 <span id="new-badge-dash-news" data-nv="15" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1.2s infinite">NEW</span></h3><p>近期新增<b>德国授权代表（AR）信息填写</b>、<b>「绿点」标识整改要求</b>与<b>多国包装回收标识整改要求</b>，另有波兰、意大利、西班牙等站点合规提醒。</p></div>
   </div>
 </div>
 
@@ -3812,7 +3815,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
 <!-- 9. 近期资讯 -->
 <div class="section" id="news">
-  <div class="section-title">近期资讯 <span id="new-badge-news-title" data-nv="10" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+  <div class="section-title">近期资讯 <span id="new-badge-news-title" data-nv="15" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
   <div class="tabs">
     <div class="tab active" onclick="switchTab(event, 'tab-news-country')">🌍 国家站点要求</div>
     <div class="tab" onclick="switchTab(event, 'tab-news-ops')">📢 店铺运营相关</div>
@@ -3820,6 +3823,21 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
   <!-- Tab 1: 国家站点要求 -->
   <div class="tab-content active" id="tab-news-country">
+    <div class="element-section" id="news-de-ar">
+      <div class="element-title">🇩🇪 德国授权代表（AR）信息填写 <span id="new-badge-news-dear" data-nv="15" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1.2s infinite">NEW</span></div>
+      <div class="card">
+        <p style="font-size:14px;color:#333;line-height:2">根据德国包装法规，自 <b>2026 年 8 月 12 日</b>起，在德国境外注册、无德国分支机构、直接向德国消费者销售带包装商品的企业，须指定一名<b>德国授权代表（AR）</b>，并在德国 <b>LUCID 系统</b>中完成登记。</p>
+        <div style="background:#FFF5EB;border-left:4px solid #FB7701;padding:10px 16px;border-radius:6px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <p style="font-size:14px;color:#333;line-height:2;margin:0"><b>操作：</b>登录现有 LUCID 账号 → 按系统指引添加授权代表（<b>无需重新注册</b>）</p>
+          <a href="https://agentseller.temu.com/main/course/detail?courseId=2306090000821" target="_blank" rel="noopener" style="display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap;flex:0 0 auto">📖 德国 LUCID 与授权代表教育材料 →</a>
+        </div>
+        <div style="background:#FFF1F0;border-left:4px solid #FF4D4F;padding:10px 16px;border-radius:6px;margin-top:12px">
+          <p style="font-size:14px;color:#333;line-height:2;margin:0"><b style="color:#FF4D4F">⚠️ 逾期影响：</b>11 月 12 日前未完成绑定，LUCID 注册状态可能被标记为“不完整”或失效，进而影响德国在售商品。</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：所有商家都需要维护德国授权代表信息，8月12日之前注册的德国包装法，在现有 LUCID 账号内添加授权代表即可，无需重新注册。</p></div>
+    </div>
+
     <div class="element-section" id="news-pfas">
       <div class="element-title">🇺🇸 美国站部分州 PFAS 成分申报要求 <span id="new-badge-news-pfas" data-nv="10" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1.2s infinite">NEW</span></div>
       <div class="card">
@@ -3830,6 +3848,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
         </div>
         <p style="font-size:14px;color:#333;line-height:2;margin-top:14px">• 商家须明确申报商品是否含有 PFAS 成分（如实选“是”或“否”）。</p>
       </div>
+      <div class="card" style="margin-top:16px"><p style="color:#FB7701;font-weight:600">⚠️ 运营补充：凡是强调“三防”功效的服装、服饰都可能会用到 PFAS，比如滑雪服、雨衣、瑜伽服、健身紧身衣、跑步速干衣，以及部分标榜防污、免烫的商务衬衫、制服、工作服、校服裤等。如果不确定面料是否有含有机氟的化学品特殊处理过，可以跟面料商确认。</p></div>
     </div>
 
     <div class="element-section" id="news-pkg-recycle">
@@ -4528,7 +4547,7 @@ function dismissNewBadge(badgeId, storageKey) {
 // 每次发布新内容：把 SITE_CONTENT_VERSION +1，并为该次新增内容的角标标记 data-nv=新版本号。
 // 页面打开即视为已阅读当前版本：早于已读基线的历史角标不再显示，仅在新版本发布时才重新亮起
 // 对应新增内容的 NEW 角标（其余角标保持隐藏），彻底避免"历史NEW长期累积/点了才消失"的问题。
-var SITE_CONTENT_VERSION = 14;
+var SITE_CONTENT_VERSION = 15;
 var SEEN_KEY = 'site-content-seen-version';
 function getSeenVersion() {
   try { return parseInt(localStorage.getItem(SEEN_KEY) || '0', 10) || 0; } catch(e) { return 0; }
