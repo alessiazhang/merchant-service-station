@@ -15,20 +15,25 @@ body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; backgr
 
 /* Sidebar */
 .sidebar {
-  position:fixed; left:0; top:0; width:220px; height:calc(100vh - 36px);
+  position:fixed; left:0; top:0; width:220px; height:calc(100vh - var(--foot-h, 32px));
   background:#fff; border-right:1px solid #e0e0e0; z-index:100;
   display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden;
 }
 .logo {
-  padding:20px; display:flex; align-items:center; gap:10px;
-  border-bottom:1px solid #f0f0f0;
+  padding:clamp(12px, 1.4vw, 20px); display:flex; align-items:center; gap:clamp(8px, .8vw, 10px);
+  border-bottom:1px solid #f0f0f0; min-width:0;
 }
 .logo-icon {
   width:40px; height:40px; background:#FB7701; border-radius:8px;
   display:flex; align-items:center; justify-content:center;
-  color:#fff; font-weight:bold; font-size:18px;
+  color:#fff; font-weight:bold; font-size:18px; flex:0 0 auto;
 }
-.logo-text { font-size:15px; font-weight:700; color:#333; }
+/* 标题字号随视窗缩放且永不折行：窗口再窄也保持单行，不挤动布局 */
+.logo-text {
+  font-size:clamp(10px, 3.6vw, 15px); font-weight:700; color:#333;
+  min-width:0; white-space:nowrap; line-height:1.45;
+}
+.logo-text .logo-sub { font-size:0.74em; font-weight:400; color:#999; }
 .nav { flex:1; padding:10px 0; }
 .nav-item {
   display:flex; align-items:center; gap:clamp(8px, .9vw, 12px);
@@ -610,6 +615,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
   --content-max: min(1680px, 94vw);
   --grid-gap: clamp(10px, 1.2vw, 20px);
   --card-min: clamp(150px, 14vw, 250px);
+  --foot-h: 32px; /* 底部冻结免责声明条总高度（含上边框），侧栏据此让位 */
 }
 
 /* 侧栏宽度随视口微调 */
@@ -690,7 +696,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
   }
   .logo{ padding: 10px 14px; gap: 8px; }
   .logo-icon{ width: 30px; height: 30px; font-size: 15px; border-radius: 7px; }
-  .logo-text{ display: block; font-size: 13.5px; line-height: 1.5; }
+  .logo-text{ display: block; font-size:clamp(10.5px, 3.4vw, 13.5px); line-height: 1.5; white-space:nowrap; }
   .nav{
     display: flex; flex-direction: row; gap: 2px; padding: 0 6px 4px;
     overflow-x: auto; overflow-y: hidden; -ms-overflow-style: none; scrollbar-width: none;
@@ -738,6 +744,16 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
   .cat-tabs{ margin-bottom: 14px; }
   .contact-item, .contact-card{ padding: clamp(12px, 3.4vw, 18px); }
 }
+
+/* 窄屏免责声明换行时，冻结条相应加高（此时侧栏已改为顶部横排，无需让位计算） */
+@media (max-width:520px){
+  :root{ --foot-h: 52px; }
+  /* 极小窗口：标题区整体收窄留白、图标与字号同步缩小，标题文本始终单行不挤压 */
+  .logo{ padding:8px 10px; gap:6px; overflow:hidden; }
+  .logo-icon{ width:26px; height:26px; font-size:13px; border-radius:6px; }
+  .logo-text{ font-size:clamp(10px, 3.2vw, 12.5px); letter-spacing:0; }
+}
+
 </style>
 </head>
 <body>
@@ -746,7 +762,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 <div class="sidebar">
   <div class="logo">
     <div class="logo-icon">T</div>
-    <div class="logo-text">张阿莱小组<br><span style="font-size:11px;color:#999">商家服务站</span></div>
+    <div class="logo-text">张阿莱小组<br><span class="logo-sub">商家服务站</span></div>
   </div>
   <div class="nav">
     <a class="nav-item active" onclick="navTo('dashboard', event)"><span class="nav-icon">🏠</span><span>工作台</span></a>
@@ -755,7 +771,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     <a class="nav-item" onclick="navTo('scarcity', event)"><span class="nav-icon">⭐</span><span>版型分享 <span id="new-badge-nav-scarcity-lib" data-nv="11" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></span></a>
     <a class="nav-item" onclick="navTo('sizing', event)"><span class="nav-icon">📏</span><span>尺码信息</span></a>
     <a class="nav-item" onclick="navTo('title', event)"><span class="nav-icon">📝</span><span>标题优化</span></a>
-    <a class="nav-item" onclick="navTo('visual', event)"><span class="nav-icon">🎨</span><span>视觉优化</span></a>
+    <a class="nav-item" onclick="navTo('visual', event)"><span class="nav-icon">🎨</span><span>视觉优化</span><span id="new-badge-nav-visual" data-nv="18" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('marketing', event)"><span class="nav-icon">📅</span><span>营销节点</span></a>
     <a class="nav-item" onclick="navTo('hotsale', event)"><span class="nav-icon">📈</span><span>印花趋势</span><span id="new-badge-nav-hotsale" data-nv="2" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('tongkuan', event)"><span class="nav-icon">🔥</span><span>爆款推荐</span></a>
@@ -2244,10 +2260,22 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
 <!-- 5. 视觉优化 -->
 <div class="section" id="visual">
-  <div class="section-title">视觉优化</div>
+  <div class="section-title">视觉优化 <span id="new-badge-visual-title" data-nv="18" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+
+  <a href="https://alessiazhang.github.io/menswear-visual-kit/" target="_blank" rel="noopener" style="display:block;margin-bottom:24px;text-decoration:none">
+    <div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#FB7701 0%,#FF9A3D 55%,#FFB25E 100%);border-radius:14px;padding:24px 28px;color:#fff;box-shadow:0 8px 24px rgba(251,119,1,0.30);cursor:pointer;transition:transform 0.2s ease,box-shadow 0.2s ease" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 30px rgba(251,119,1,0.40)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 24px rgba(251,119,1,0.30)'">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;position:relative">
+        <div style="flex:1;min-width:260px">
+          <div style="font-size:21px;font-weight:800;margin-bottom:8px;letter-spacing:0.3px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">男装视觉经验分享<span style="font-size:12px;font-weight:700;background:rgba(255,255,255,0.24);border:1px solid rgba(255,255,255,0.6);border-radius:999px;padding:1px 9px;line-height:1.7;letter-spacing:0">NEW</span></div>
+          <p style="font-size:14px;line-height:1.9;color:#FFF7EE;margin:0">拆解 POD 男装视觉设计的 7 个核心方向：3D 立体、平铺静物、场景穿搭、组图拼图、细节结构、主题排版与 AI 指令。包含详细的视觉落地思路及中英双语 AI 提示词，教会你如何用 AI 优化商品主图。</p>
+        </div>
+        <div style="flex-shrink:0;background:#fff;color:#FB7701;padding:12px 28px;border-radius:30px;font-size:15px;font-weight:800;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:inline-flex;align-items:center;gap:6px">查看详情 <span style="transition:transform 0.2s" onmouseover="this.style.transform='translateX(3px)'" onmouseout="this.style.transform='translateX(0)'">→</span></div>
+      </div>
+    </div>
+  </a>
 
   <div class="card" style="margin-bottom:24px">
-    <p>以下是各类视觉风格的参考示例，商家可参照这些风格进行商品主图拍摄和制作。选择最适合自己商品的风格类型，提升点击率和转化率。</p>
+    <p>以下是简化版的各类视觉风格的参考示例，商家可参照这些风格进行商品主图拍摄和制作。选择最适合自己商品的风格类型，提升点击率和转化率。</p>
   </div>
 
   <div class="element-section">
@@ -4170,10 +4198,10 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 </div>
 
 <!-- 网页底部冻结免责声明 -->
-<div style="position:fixed;bottom:0;left:0;width:100%;padding:6px 24px;background:#f9f9f9;border-top:1px solid #eee;text-align:center;z-index:200">
+<div class="site-foot" style="position:fixed;bottom:0;left:0;width:100%;height:var(--foot-h,32px);box-sizing:border-box;padding:0 24px;background:#f9f9f9;border-top:1px solid #eee;display:flex;align-items:center;justify-content:center;text-align:center;z-index:200">
   <p style="font-size:12px;color:#999;line-height:1.6;margin:0">以上内容仅供参考，不构成任何法律意见或建议，亦不构成任何保证、承诺。</p>
 </div>
-<div style="height:36px"></div>
+<div style="height:var(--foot-h,32px)"></div>
 
 </div><!-- end main -->
 
@@ -4631,7 +4659,7 @@ function dismissNewBadge(badgeId, storageKey) {
 // 每次发布新内容：把 SITE_CONTENT_VERSION +1，并为该次新增内容的角标标记 data-nv=新版本号。
 // 页面打开即视为已阅读当前版本：早于已读基线的历史角标不再显示，仅在新版本发布时才重新亮起
 // 对应新增内容的 NEW 角标（其余角标保持隐藏），彻底避免"历史NEW长期累积/点了才消失"的问题。
-var SITE_CONTENT_VERSION = 17;
+var SITE_CONTENT_VERSION = 18;
 var SEEN_KEY = 'site-content-seen-version';
 function getSeenVersion() {
   try { return parseInt(localStorage.getItem(SEEN_KEY) || '0', 10) || 0; } catch(e) { return 0; }
