@@ -113,6 +113,13 @@ body { font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; backgr
 }
 .gallery-item img { width:100%; height:100%; object-fit:cover; cursor:pointer; transition:transform 0.2s; }
 .gallery-item img:hover { transform:scale(1.05); }
+.gallery-group { margin-bottom:18px; }
+.gallery-group:last-child { margin-bottom:24px; }
+.gallery-group .gallery-grid { margin-bottom:0; }
+.gallery-group-title {
+  font-size:13px; font-weight:600; color:#999; letter-spacing:.2px;
+  margin:0 0 10px; line-height:1.5;
+}
 
 /* Element section */
 .element-section { margin-bottom:32px; }
@@ -167,6 +174,20 @@ tr:hover td { background:#FFF5EB; }
 .tab:hover { color:#FB7701; }
 .tab-content { display:none; }
 .tab-content.active { display:block; }
+
+/* 近期资讯：默认展示前 3 条，其余折叠 */
+#news .tab-content .element-section.news-collapsed { display:none; }
+#news .tab-content.news-expanded .element-section.news-collapsed { display:block; }
+.news-more-btn {
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  margin:4px auto 10px; padding:12px 64px; min-width:220px;
+  background:#fff; color:#FB7701; border:1px solid #FB7701; border-radius:999px;
+  font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;
+  transition:background .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.news-more-btn:hover { background:#FB7701; color:#fff; box-shadow:0 6px 16px rgba(251,119,1,0.25); }
+.news-more-btn:active { transform:translateY(1px); }
+.news-more-arrow { font-size:12px; line-height:1; }
 .size-mtab { padding:12px 24px; cursor:pointer; font-size:14px; color:#999;
   border-bottom:2px solid transparent; margin-bottom:-2px; transition:all 0.2s; }
 .size-mtab.active { color:#FB7701; border-bottom-color:#FB7701; font-weight:600; }
@@ -201,6 +222,7 @@ tr:hover td { background:#FFF5EB; }
   width:264px; padding:8px 12px; background:#fff; color:#FB7701; border:1px solid #FB7701;
   border-radius:6px; font-size:14px; line-height:1.5; cursor:pointer; text-decoration:none; white-space:nowrap; }
 .pd-btn.active{ background:#FB7701; color:#fff; }
+.pd-arrow{ margin-left:4px; font-size:13px; line-height:1; }
 @media (max-width:620px){ .pd-btn{ width:calc(50% - 6px); } }
 
 /* 卖家课堂 店铺运营/店铺合规 双tab */
@@ -1776,22 +1798,30 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
         <div class="category" data-copy="服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 大码男装 &gt; 大码男士休闲运动服 &gt; 大码男士卫衣" data-noreplace>服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 大码男装 &gt; 大码男士休闲运动服 &gt; 大码男士卫衣</div>
       </div>
     </div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0005.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0006.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0007.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0008.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0009.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0010.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0011.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0012.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0013.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+    <div class="gallery-group">
+      <div class="gallery-group-title">连帽卫衣</div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="new_0005.png" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0006.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0008.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0009.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0010.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0013.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      </div>
+    </div>
+    <div class="gallery-group">
+      <div class="gallery-group-title">翻领/立领卫衣</div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="new_0007.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0011.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0012.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      </div>
     </div>
   </div>
 
   <!-- 版型3: 品类分享-健身服 -->
   <div class="element-section">
-    <div class="element-title" id="cat-fitness">品类分享-健身服</div>
+    <div class="element-title" id="cat-fitness">健身服</div>
     <div class="card path-card">
       <div class="meta">
         <div class="label">上新路径</div>
@@ -1801,18 +1831,69 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
         <div class="path-note" style="color:#e74c3c;font-weight:600">⚠️ 面料必须含8%及以上的氨纶</div>
       </div>
     </div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0024.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0025.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0026.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0027.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0028.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0029.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0030.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0031.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0032.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0033.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0034.png" loading="lazy" onclick="openModal(this.src)"></div>
+    <div class="gallery-group">
+      <div class="gallery-group-title">健身上衣</div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="new_0024.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0025.png" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0026.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0030.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_fit_top1.png" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_fit_top2.png" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_fit_top3.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      </div>
+    </div>
+    <div class="gallery-group">
+      <div class="gallery-group-title">健身裤子</div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="new_0027.png" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_fit_pants1.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_fit_pants2.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_fit_pants3.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_fit_pants4.png" loading="lazy" onclick="openModal(this.src)"></div>
+      </div>
+    </div>
+    <div class="gallery-group">
+      <div class="gallery-group-title">健身套装</div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="new_0028.png" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0029.png" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0031.png" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0032.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="new_0033.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 版型4: 风衣/夹克 -->
+  <div class="element-section">
+    <div class="element-title">风衣/夹克 <span id="new-badge-scarcity-coat" data-nv="21" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="card path-card">
+      <div class="meta">
+        <div class="label">上新路径</div>
+        <div class="category" data-copy="服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 男装 &gt; 男士休闲运动服 &gt; 男士休闲运动风衣、夹克" data-noreplace>服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 男装 &gt; 男士休闲运动服 &gt; 男士休闲运动风衣、夹克</div>
+        <div class="category" data-copy="服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 大码男装 &gt; 大码男士休闲运动服 &gt; 大码男士休闲运动风衣、夹克" data-noreplace>服装、鞋靴和珠宝饰品 &gt; 男士时尚 &gt; 大码男装 &gt; 大码男士休闲运动服 &gt; 大码男士休闲运动风衣、夹克</div>
+        <div class="category" data-copy="运动与户外用品 &gt; 健身、训练用品 &gt; 瑜伽用品 &gt; 服装 &gt; 男士瑜伽服 &gt; 田径和运动服夹克" data-noreplace>运动与户外用品 &gt; 健身、训练用品 &gt; 瑜伽用品 &gt; 服装 &gt; 男士瑜伽服 &gt; 田径和运动服夹克</div>
+      </div>
+    </div>
+    <div class="gallery-group">
+      <div class="gallery-group-title">风衣大衣</div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="bs_coat1.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_coat2.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_coat3.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      </div>
+    </div>
+    <div class="gallery-group">
+      <div class="gallery-group-title">外套夹克</div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="bs_jacket1.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_jacket2.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_jacket3.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_jacket4.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_jacket5.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+        <div class="gallery-item"><img src="bs_jacket6.jpg" loading="lazy" onclick="openModal(this.src)"></div>
+      </div>
     </div>
   </div>
 
@@ -2145,52 +2226,6 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     </div>
   </div>
 
-  <!-- Online Title Generator -->
-  <div class="card" style="margin-top:24px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:2px solid #FB7701">
-    <h3 style="color:#FB7701">🤖 在线标题生成器</h3>
-    <p>选择品类，从各维度下拉菜单中选择热搜词，系统将根据公式自动生成英文标题，并附带标题内容拆解。所有维度均支持“以上都不是”选项（非必填）。<b style="color:#FB7701">此标题仅供参考体验，请核实无误后使用</b>，不可直接用于上架。</p>
-    <div style="margin-top:16px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px dashed #FB7701">
-      <p style="font-size:13px;color:#333;margin:0">⚠️ <b>使用说明：</b>系统无法看到您的商品图案内容，如选择"以上都不是"需手动补充明确的图案信息，请确保描述真实准确。</p>
-    </div>
-    <div style="margin-top:16px">
-      <label style="font-size:14px;color:#333;font-weight:600">选择品类：</label>
-      <select id="onlineTitleCat" style="margin-left:8px;padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:14px" onchange="updateOnlineTitle()">
-        <option value="tshirt">T恤</option>
-        <option value="hoodie">卫衣/连帽衫</option>
-        <option value="polo">POLO</option>
-        <option value="compression">打底压缩</option>
-        <option value="sunshirt">防晒服</option>
-        <option value="suit">套装</option>
-        <option value="coat">风衣/大衣</option>
-      </select>
-      <div id="sunProtectionOnline" style="display:none;margin-top:12px;padding:12px;background:#FFF5EB;border-radius:8px;border:1px solid #FB7701">
-        <label style="font-size:14px;color:#333;font-weight:600">是否具有防晒资质？</label>
-        <select id="onlineHasSunProtection" style="margin-left:8px;padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:14px">
-          <option value="yes">是，具有防晒资质</option>
-          <option value="no">否，无防晒资质</option>
-        </select>
-        <p style="font-size:12px;color:#e74c3c;margin-top:6px">⚠️ 无防晒资质时，系统将自动跳过功能特性维度。</p>
-      </div>
-    </div>
-    <div id="onlineTitleInputs" style="margin-top:16px;display:grid;grid-template-columns:1fr;gap:10px;max-width:600px">
-      <!-- Dropdowns will be generated by JS -->
-    </div>
-    <div style="margin-top:16px">
-      <button onclick="generateOnlineTitle()" style="padding:10px 24px;background:#FB7701;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px">生成标题</button>
-      <button onclick="clearOnlineTitle()" style="padding:10px 24px;background:#fff;color:#FB7701;border:1px solid #FB7701;border-radius:8px;cursor:pointer;font-size:14px;margin-left:8px">清空</button>
-    </div>
-    <div id="onlineTitleResult" style="margin-top:16px;display:none;padding:16px;background:#f9f9f9;border-radius:8px">
-      <p style="font-size:13px;color:#999;margin-bottom:8px">⚠️ 此标题仅为给用户提供标题生成体验，标题需自行核实无误后使用。系统无法看到您的商品图案内容，请核实图案/花色维度描述的真实性。</p>
-      <p style="font-size:14px;color:#333;line-height:1.8"><b>🇬🇧 英文标题：</b><br><span id="onlineTitleEn" style="color:#FB7701;font-weight:600"></span></p>
-      <p style="font-size:14px;color:#333;line-height:1.8;margin-top:8px"><b>📝 内容拆解：</b><br><span id="onlineTitleBreakdown" style="color:#333;font-size:13px"></span></p>
-      <p style="font-size:13px;color:#666;margin-top:8px"><b>英文字符数：</b><span id="onlineTitleCount"></span> | <b>撰写逻辑：</b><span id="onlineTitleLogic"></span></p>
-    </div>
-  </div>
-
-  <div style="margin:40px 0 24px;padding:16px 20px;background:linear-gradient(90deg,#FFF5EB,#fff);border-left:4px solid #FB7701;border-radius:8px">
-    <p style="font-size:14px;color:#333;line-height:1.8;margin:0">💡 <b>下方为AI标题生成工具</b>：如果您希望由AI自动生成标题，请使用下方工具。需要<b>同时提供关键词表格和商品图片</b>给AI工具，AI将根据公式和图片特征自动撰写标题。</p>
-  </div>
-
   <div class="element-title">标题生成工具</div>
   <div class="card" style="margin-bottom:24px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:2px solid #FB7701">
     <h3 style="color:#FB7701">🤖 AI标题生成工具</h3>
@@ -2281,196 +2316,6 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     </div>
   </a>
 
-  <div class="card" style="margin-bottom:24px">
-    <p>以下是简化版的各类视觉风格的参考示例，商家可参照这些风格进行商品主图拍摄和制作。选择最适合自己商品的风格类型，提升点击率和转化率。</p>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">立体感</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">衣服呈现立体效果，有填充或支撑感</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0035.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0036.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0037.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0038.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">海报体+功能icon</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">衣服挂在衣架或挂钩上拍摄，配合功能icon说明</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0039.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0040.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0041.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0042.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">半平铺半人模</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">上衣平铺搭配裤子人模展示</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0043.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0044.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">折叠</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">衣服折叠后拍摄</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0045.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0046.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0047.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">人台</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">使用人台/假人模特展示</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0048.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0049.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">礼盒</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">商品以礼盒形式包装展示</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="scarce_s5_img5.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="scarce_s5_img6.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">杂志风</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">真人模特穿着展示，杂志风格拍摄</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0050.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0051.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">摆拍</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">产品搭配道具摆拍</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0053.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0054.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0055.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0056.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">SET拆分展示</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">套装各单品拆开展示</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0057.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0058.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0059.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0060.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">俯拍</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">俯视角度拍摄主图，配合文字说明</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0061.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0062.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0063.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">OOTD</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">OOTD（Outfit of the Day）日常穿搭展示，模特搭配帽子/项链/口罩等配饰</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0064.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0065.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0066.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">摆造型</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">模特摆造型展示整体穿搭效果</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0067.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0068.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0069.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0070.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">户外场景</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">户外真实场景拍摄</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0071.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0072.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0073.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0074.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">运动场景</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">运动场景拍摄，展现运动服饰功能性和活力</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0075.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0076.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0077.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">健身房场景</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">健身房内拍摄，突出运动服饰专业感</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0078.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0079.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0080.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">节日元素</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">融入节日主题元素的拍摄风格</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0081.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0082.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0083.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0084.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">黑人街潮</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">黑人模特街头潮流风格拍摄</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0085.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0086.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0087.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0088.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-  </div>
-
-  <div class="element-section">
-    <div class="element-title">城市街道</div>
-    <p style="color:#666;margin-bottom:12px;font-size:14px">城市街道背景拍摄，都市潮流风格</p>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0089.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0090.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0091.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0092.jpg" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    <p style="color:#666;margin-top:12px;font-size:14px">以上是各类视觉风格的参考示例汇总，商家可参照这些风格进行商品主图制作。</p>
-  </div>
-
     <div class="element-title">视觉风格优化分享</div>
 
   <div class="card" style="margin-bottom:24px">
@@ -2542,72 +2387,11 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     <span style="color:#FB7701;font-weight:600">轮播图数量越多越好</span></p>
   </div>
 
-  <div class="card" style="margin-bottom:24px;background:linear-gradient(135deg,#FFF5EB,#FFE8D6);border:2px solid #FB7701">
-    <h3 style="color:#FB7701">🎨 视觉转化工具</h3>
-    <p>选择一种视觉风格类型，上传您的商品图片，复制下方提示词到AI工具即可生成对应视觉效果。</p>
-    <div style="margin-top:16px">
-      <label style="font-size:14px;color:#333;font-weight:600">选择视觉风格：</label>
-      <select id="visualType" style="margin-left:8px;padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:14px" onchange="updateVisualPrompt()">
-        <option value="">请选择...</option>
-        <option value="立体感">立体感</option>
-        <option value="海报体+功能icon">海报体+功能icon</option>
-        <option value="半平铺半人模">半平铺半人模</option>
-        <option value="折叠">折叠</option>
-        <option value="人台">人台</option>
-        <option value="礼盒">礼盒</option>
-        <option value="杂志风">杂志风</option>
-        <option value="SET拆分展示">SET拆分展示</option>
-        <option value="俯拍">俯拍</option>
-        <option value="OOTD">OOTD</option>
-        <option value="摆造型">摆造型</option>
-        <option value="户外场景">户外场景</option>
-      </select>
-      <div id="visualPromptBox" style="margin-top:16px;padding:16px;background:#f9f9f9;border-radius:8px;font-size:13px;color:#555;line-height:1.8;position:relative">
-        <b>任务：</b>请参照所选视觉风格，将上传的商品图片转化为该风格的效果图<br>
-        <b>核心要求：</b><br>
-        1. 必须严格按照给出的商品版型生成，严禁改为其他版型<br>
-        2. 需要呈现不同的背景场景、不同的动作姿态，避免雷同<br>
-        3. 衣服细节不可改变（拉链头颜色、口袋、印花图案等需完整保留）<br>
-        <b>输出格式：</b>宽高比3:4，宽>1340px，高>1785px，小于2M
-        <button onclick="copyVisualPrompt()" style="position:absolute;top:8px;right:8px;padding:4px 12px;background:#FB7701;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px">复制提示词</button>
-      </div>
-      <p style="margin-top:12px;color:#999;font-size:13px">点击"复制提示词"后，系统将自动复制提示词并打开AI工具网页。</p>
-      <div style="margin-top:12px;padding:12px 16px;background:#fff3e0;border-radius:8px;border-left:4px solid #FB7701">
-        <p style="font-size:13px;color:#FB7701;margin:0"><b>⚠️ 使用说明：</b>跳转到AI工具后，需同时上传以下内容：<br>
-        ① 上方对应风格的示例图（请先在网页上右键保存参考图片）<br>
-        ② 您自己的商品版型图片<br>
-        将提示词和两张图片一起发给AI工具，AI才能准确生成对应的视觉效果。</p>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- 7. 营销节点 -->
 <div class="section" id="marketing">
   <div class="section-title">营销节点</div>
-
-  <div class="card" style="margin-bottom:24px">
-    <p>以下是近一年的重要营销节点，商家可根据节点提前规划印花元素和视觉风格。</p>
-  </div>
-
-  <table class="marketing-table" style="margin-bottom:32px">
-    <tr><th>月份</th><th>节日/节点</th><th>日期</th><th>热销印花元素</th></tr>
-    <tr><td>8月</td><td>啤酒节(Oktoberfest)</td><td>8月中-10月初</td><td>啤酒杯/巴伐利亚纹饰印花</td></tr>
-    <tr><td>9月</td><td>开学季</td><td>9月初</td><td>校园字母/书本元素印花</td></tr>
-    <tr><td>10月</td><td><b>万圣节</b></td><td>10月31日</td><td>骷髅/南瓜/蜘蛛网/蝙蝠印花</td></tr>
-    <tr><td>10月</td><td>亡灵节(Día de Muertos)</td><td>11月1-2日</td><td>墨西哥骷髅/万寿菊/玫瑰花印花</td></tr>
-    <tr><td>11月</td><td><b>黑色星期五</b></td><td>11月27日</td><td>折扣/促销主题印花</td></tr>
-    <tr><td>11月</td><td>网络星期一</td><td>11月30日</td><td>科技/数字元素印花</td></tr>
-    <tr><td>12月</td><td><b>圣诞节</b></td><td>12月25日</td><td>圣诞树/雪花/驯鹿/圣诞老人印花</td></tr>
-    <tr><td>12月</td><td>跨年夜</td><td>12月31日</td><td>烟花/倒数数字/金色金属元素印花</td></tr>
-    <tr><td>1月</td><td>新年</td><td>1月1日</td><td>新年生肖/福字/烟花印花</td></tr>
-    <tr><td>1月</td><td>三王节</td><td>1月6日</td><td>三王/星星/礼物盒印花</td></tr>
-    <tr><td>2月</td><td>狂欢节</td><td>2月(变动)</td><td>面具/彩带/羽毛元素印花</td></tr>
-    <tr><td>2月</td><td>情人节</td><td>2月14日</td><td>爱心/Cupid/玫瑰花印花</td></tr>
-    <tr><td>3月</td><td>圣帕特里克节</td><td>3月17日</td><td>三叶草/小矮人/金币元素印花</td></tr>
-    <tr><td>4月</td><td>复活节</td><td>4月(变动)</td><td>彩蛋/兔子/春花元素印花</td></tr>
-    <tr><td>5月</td><td>母亲节/父亲节预热</td><td>5月-6月</td><td>家庭/感恩/领带/工具元素印花</td></tr>
-  </table>
 
   <!-- Global Festival Calendar -->
   <div class="element-title">🌍 各洲国家节庆日历</div>
@@ -2795,768 +2579,14 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     </div>
   </a>
 
-  <div style="margin-bottom:20px">
-    <div class="element-title">热销元素主题专场</div>
-    <p style="font-size:13px;line-height:2;color:#999;margin:6px 0 0 0">以下内容仅供参考，不构成任何法律意见或建议，亦不构成任何保证、承诺。</p>
+  <div class="card">
+    <p style="font-size:14px;color:#333;line-height:2"><b>这些趋势是怎么来的？</b></p>
+    <p style="font-size:14px;color:#333;line-height:2">印花趋势与版型趋势均按平台各细分类目当月的<b>销量 TOP 商品</b>整理而成，每月更新一次，可反映近期市场上真正在走量的印花元素与版型方向。</p>
+    <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>趋势专题怎么用？</b></p>
+    <p style="font-size:14px;color:#333;line-height:2">可对照当月的热销元素与版型挑选开款方向，先在版型库里取用对应的平台纸样，再结合印花趋势确定图案与配色，辅助商家提高新品跟上热销节奏的概率。</p>
   </div>
 
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab(event, 'tab-hotsale-print')">🔥 热销印花</div>
-    <div class="tab" onclick="switchTab(event, 'tab-hotsale-christmas')">🎄 圣诞元素</div>
   </div>
-
-  <div class="tab-content active" id="tab-hotsale-print">
-    <div class="element-section">
-      <div class="element-title">花体字</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0097.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0098.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0099.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0100.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0101.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">赛车</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0102.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0103.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0104.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0105.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0106.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">条纹</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0107.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0108.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0109.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0110.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0111.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">迷彩</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0112.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0113.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0114.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0115.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0116.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">几何</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0117.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0118.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0119.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0120.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0121.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">海边度假</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0122.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0123.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0124.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0125.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0126.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">啤酒节</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0127.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0128.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0129.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0130.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0131.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">搞笑标语</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0132.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0133.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0134.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0135.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0136.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">动物表情包</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0137.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0138.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0139.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0140.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0141.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-    <div class="element-section">
-      <div class="element-title">部落图腾</div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="new_0142.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0143.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0144.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0145.png" loading="lazy" onclick="openModal(this.src)"></div>
-      <div class="gallery-item"><img src="new_0146.png" loading="lazy" onclick="openModal(this.src)"></div>
-    </div>
-    </div>
-
-  </div>
-
-  <!-- Tab 3: 圣诞元素 -->
-    <div class="tab-content" id="tab-hotsale-christmas">
-    <div class="tabs xmas-subtabs">
-      <div class="tab active" onclick="switchXmasSub(event,'xmas-main')">🎁 主要元素</div>
-      <div class="tab" onclick="switchXmasSub(event,'xmas-aux')">🎀 辅助元素</div>
-    </div>
-  <div class="tab-content" id="xmas-main">
-    <div class="element-section">
-      <div class="element-title">圣诞语录</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">HOHOHO</div>
-          <div class="xmas-card">
-            <img src="christmas_image1.png" loading="lazy" onclick="openModal(this.src)" alt="HOHOHO">
-            <img src="christmas_image2.png" loading="lazy" onclick="openModal(this.src)" alt="HOHOHO">
-            <img src="christmas_image3.png" loading="lazy" onclick="openModal(this.src)" alt="HOHOHO">
-            <img src="christmas_image4.png" loading="lazy" onclick="openModal(this.src)" alt="HOHOHO">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">Sleigh all day</div>
-          <div class="xmas-card">
-            <img src="christmas_image5.png" loading="lazy" onclick="openModal(this.src)" alt="Sleigh all day">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">Merry Christmas</div>
-          <div class="xmas-card">
-            <img src="christmas_image6.png" loading="lazy" onclick="openModal(this.src)" alt="Merry Christmas">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">Dear santa</div>
-          <div class="xmas-card">
-            <img src="christmas_image7.png" loading="lazy" onclick="openModal(this.src)" alt="Dear santa">
-            <img src="christmas_image8.png" loading="lazy" onclick="openModal(this.src)" alt="Dear santa">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">圣诞老人</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">AB色 探头动作</div>
-          <div class="xmas-card">
-            <img src="christmas_image9.png" loading="lazy" onclick="openModal(this.src)" alt="AB色 探头动作">
-            <img src="christmas_image10.png" loading="lazy" onclick="openModal(this.src)" alt="AB色 探头动作">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">夸张O嘴</div>
-          <div class="xmas-card">
-            <img src="christmas_image11.png" loading="lazy" onclick="openModal(this.src)" alt="夸张O嘴">
-            <img src="christmas_image12.png" loading="lazy" onclick="openModal(this.src)" alt="夸张O嘴">
-            <img src="christmas_image13.png" loading="lazy" onclick="openModal(this.src)" alt="夸张O嘴">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">结合经典英文</div>
-          <div class="xmas-card">
-            <img src="christmas_image14.png" loading="lazy" onclick="openModal(this.src)" alt="结合经典英文">
-            <img src="christmas_image15.png" loading="lazy" onclick="openModal(this.src)" alt="结合经典英文">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">合照</div>
-          <div class="xmas-card">
-            <img src="christmas_image16.png" loading="lazy" onclick="openModal(this.src)" alt="合照">
-            <img src="christmas_image17.png" loading="lazy" onclick="openModal(this.src)" alt="合照">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">恶搞</div>
-          <div class="xmas-card">
-            <img src="christmas_image18.png" loading="lazy" onclick="openModal(this.src)" alt="恶搞">
-            <img src="christmas_image19.png" loading="lazy" onclick="openModal(this.src)" alt="恶搞">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">圣诞老人+霓虹灯</div>
-          <div class="xmas-card">
-            <img src="christmas_image20.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人+霓虹灯">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">墨镜圣诞老人</div>
-          <div class="xmas-card">
-            <img src="christmas_image21.png" loading="lazy" onclick="openModal(this.src)" alt="墨镜圣诞老人">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">摇滚圣诞老人</div>
-          <div class="xmas-card">
-            <img src="christmas_image22.png" loading="lazy" onclick="openModal(this.src)" alt="摇滚圣诞老人">
-            <img src="christmas_image23.png" loading="lazy" onclick="openModal(this.src)" alt="摇滚圣诞老人">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">麋鹿</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">鹿头logo</div>
-          <div class="xmas-card">
-            <img src="christmas_image24.png" loading="lazy" onclick="openModal(this.src)" alt="鹿头logo">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">表情/墨镜</div>
-          <div class="xmas-card">
-            <img src="christmas_image25.png" loading="lazy" onclick="openModal(this.src)" alt="表情/墨镜">
-            <img src="christmas_image26.png" loading="lazy" onclick="openModal(this.src)" alt="表情/墨镜">
-            <img src="christmas_image27.png" loading="lazy" onclick="openModal(this.src)" alt="表情/墨镜">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">核价插画</div>
-          <div class="xmas-card">
-            <img src="christmas_image28.png" loading="lazy" onclick="openModal(this.src)" alt="核价插画">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">卡通麋鹿</div>
-          <div class="xmas-card">
-            <img src="christmas_image29.png" loading="lazy" onclick="openModal(this.src)" alt="卡通麋鹿">
-            <img src="christmas_image30.png" loading="lazy" onclick="openModal(this.src)" alt="卡通麋鹿">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">红白撞色</div>
-          <div class="xmas-card">
-            <img src="christmas_image31.png" loading="lazy" onclick="openModal(this.src)" alt="红白撞色">
-            <img src="christmas_image32.png" loading="lazy" onclick="openModal(this.src)" alt="红白撞色">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">费尔岛</div>
-          <div class="xmas-card">
-            <img src="christmas_image33.png" loading="lazy" onclick="openModal(this.src)" alt="费尔岛">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">格纹</div>
-          <div class="xmas-card">
-            <img src="christmas_image34.png" loading="lazy" onclick="openModal(this.src)" alt="格纹">
-            <img src="christmas_image35.png" loading="lazy" onclick="openModal(this.src)" alt="格纹">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">炫彩</div>
-          <div class="xmas-card">
-            <img src="christmas_image36.png" loading="lazy" onclick="openModal(this.src)" alt="炫彩">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">雪人</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">复古卡通</div>
-          <div class="xmas-card">
-            <img src="christmas_image37.png" loading="lazy" onclick="openModal(this.src)" alt="复古卡通">
-            <img src="christmas_image38.png" loading="lazy" onclick="openModal(this.src)" alt="复古卡通">
-            <img src="christmas_image39.png" loading="lazy" onclick="openModal(this.src)" alt="复古卡通">
-            <img src="christmas_image40.png" loading="lazy" onclick="openModal(this.src)" alt="复古卡通">
-            <img src="christmas_image41.png" loading="lazy" onclick="openModal(this.src)" alt="复古卡通">
-            <img src="christmas_image42.png" loading="lazy" onclick="openModal(this.src)" alt="复古卡通">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">雪人表情</div>
-          <div class="xmas-card">
-            <img src="christmas_image43.png" loading="lazy" onclick="openModal(this.src)" alt="雪人表情">
-            <img src="christmas_image44.png" loading="lazy" onclick="openModal(this.src)" alt="雪人表情">
-            <img src="christmas_image45.png" loading="lazy" onclick="openModal(this.src)" alt="雪人表情">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">红白满印</div>
-          <div class="xmas-card">
-            <img src="christmas_image46.png" loading="lazy" onclick="openModal(this.src)" alt="红白满印">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">趣味图文</div>
-          <div class="xmas-card">
-            <img src="christmas_image47.png" loading="lazy" onclick="openModal(this.src)" alt="趣味图文">
-            <img src="christmas_image48.png" loading="lazy" onclick="openModal(this.src)" alt="趣味图文">
-            <img src="christmas_image49.png" loading="lazy" onclick="openModal(this.src)" alt="趣味图文">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">圣诞树</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">并排树</div>
-          <div class="xmas-card">
-            <img src="christmas_image50.png" loading="lazy" onclick="openModal(this.src)" alt="并排树">
-            <img src="christmas_image51.png" loading="lazy" onclick="openModal(this.src)" alt="并排树">
-            <img src="christmas_image52.png" loading="lazy" onclick="openModal(this.src)" alt="并排树">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">撞色拼接</div>
-          <div class="xmas-card">
-            <img src="christmas_image32.png" loading="lazy" onclick="openModal(this.src)" alt="撞色拼接">
-            <img src="christmas_image54.png" loading="lazy" onclick="openModal(this.src)" alt="撞色拼接">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">圣诞树+车</div>
-          <div class="xmas-card">
-            <img src="christmas_image55.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞树+车">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">圣诞树+费尔岛</div>
-          <div class="xmas-card">
-            <img src="christmas_image56.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞树+费尔岛">
-            <img src="christmas_image57.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞树+费尔岛">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">3D效果</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">圣诞老人专属装</div>
-          <div class="xmas-card">
-            <img src="christmas_image58.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人专属装">
-            <img src="christmas_image59.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人专属装">
-            <img src="christmas_image60.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人专属装">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">精灵装</div>
-          <div class="xmas-card">
-            <img src="christmas_image61.png" loading="lazy" onclick="openModal(this.src)" alt="精灵装">
-            <img src="christmas_image62.png" loading="lazy" onclick="openModal(this.src)" alt="精灵装">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">肌肉装</div>
-          <div class="xmas-card">
-            <img src="christmas_image63.png" loading="lazy" onclick="openModal(this.src)" alt="肌肉装">
-            <img src="christmas_image64.png" loading="lazy" onclick="openModal(this.src)" alt="肌肉装">
-            <img src="christmas_image65.png" loading="lazy" onclick="openModal(this.src)" alt="肌肉装">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">仿西装</div>
-          <div class="xmas-card">
-            <img src="christmas_image66.png" loading="lazy" onclick="openModal(this.src)" alt="仿西装">
-            <img src="christmas_image67.png" loading="lazy" onclick="openModal(this.src)" alt="仿西装">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">仿开衫</div>
-          <div class="xmas-card">
-            <img src="christmas_image68.png" loading="lazy" onclick="openModal(this.src)" alt="仿开衫">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">仿钩针</div>
-          <div class="xmas-card">
-            <img src="christmas_image69.png" loading="lazy" onclick="openModal(this.src)" alt="仿钩针">
-            <img src="christmas_image70.png" loading="lazy" onclick="openModal(this.src)" alt="仿钩针">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">3D大头效果</div>
-          <div class="xmas-card">
-            <img src="christmas_image71.png" loading="lazy" onclick="openModal(this.src)" alt="3D大头效果">
-            <img src="christmas_image13.png" loading="lazy" onclick="openModal(this.src)" alt="3D大头效果">
-            <img src="christmas_image72.png" loading="lazy" onclick="openModal(this.src)" alt="3D大头效果">
-            <img src="christmas_image73.png" loading="lazy" onclick="openModal(this.src)" alt="3D大头效果">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">破洞效果</div>
-          <div class="xmas-card">
-            <img src="christmas_image74.png" loading="lazy" onclick="openModal(this.src)" alt="破洞效果">
-            <img src="christmas_image75.png" loading="lazy" onclick="openModal(this.src)" alt="破洞效果">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">雪花</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">上下红白排版</div>
-          <div class="xmas-card">
-            <img src="christmas_image76.png" loading="lazy" onclick="openModal(this.src)" alt="上下红白排版">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">大小雪花</div>
-          <div class="xmas-card">
-            <img src="christmas_image77.png" loading="lazy" onclick="openModal(this.src)" alt="大小雪花">
-            <img src="christmas_image78.png" loading="lazy" onclick="openModal(this.src)" alt="大小雪花">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">大雪花定位</div>
-          <div class="xmas-card">
-            <img src="christmas_image79.png" loading="lazy" onclick="openModal(this.src)" alt="大雪花定位">
-            <img src="christmas_image80.png" loading="lazy" onclick="openModal(this.src)" alt="大雪花定位">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">雪花+圣诞树</div>
-          <div class="xmas-card">
-            <img src="christmas_image66.png" loading="lazy" onclick="openModal(this.src)" alt="雪花+圣诞树">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">雪花+格纹</div>
-          <div class="xmas-card">
-            <img src="christmas_image81.png" loading="lazy" onclick="openModal(this.src)" alt="雪花+格纹">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">雪花+费尔岛</div>
-          <div class="xmas-card">
-            <img src="christmas_image82.png" loading="lazy" onclick="openModal(this.src)" alt="雪花+费尔岛">
-            <img src="christmas_image83.png" loading="lazy" onclick="openModal(this.src)" alt="雪花+费尔岛">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">格纹</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">T恤</div>
-          <div class="xmas-card">
-            <img src="christmas_image84.png" loading="lazy" onclick="openModal(this.src)" alt="T恤">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">外套</div>
-          <div class="xmas-card">
-            <img src="christmas_image85.png" loading="lazy" onclick="openModal(this.src)" alt="外套">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">风衣</div>
-          <div class="xmas-card">
-            <img src="christmas_image86.png" loading="lazy" onclick="openModal(this.src)" alt="风衣">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">衬衣</div>
-          <div class="xmas-card">
-            <img src="christmas_image87.png" loading="lazy" onclick="openModal(this.src)" alt="衬衣">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">格纹+雪花</div>
-          <div class="xmas-card">
-            <img src="christmas_image88.png" loading="lazy" onclick="openModal(this.src)" alt="格纹+雪花">
-            <img src="christmas_image89.png" loading="lazy" onclick="openModal(this.src)" alt="格纹+雪花">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">AB色-图文结合</div>
-          <div class="xmas-card">
-            <img src="christmas_image54.png" loading="lazy" onclick="openModal(this.src)" alt="AB色-图文结合">
-            <img src="christmas_image10.png" loading="lazy" onclick="openModal(this.src)" alt="AB色-图文结合">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">菱形格</div>
-          <div class="xmas-card">
-            <img src="christmas_image90.png" loading="lazy" onclick="openModal(this.src)" alt="菱形格">
-            <img src="christmas_image91.png" loading="lazy" onclick="openModal(this.src)" alt="菱形格">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">费尔岛</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">双色</div>
-          <div class="xmas-card">
-            <img src="christmas_image92.png" loading="lazy" onclick="openModal(this.src)" alt="双色">
-            <img src="christmas_image93.png" loading="lazy" onclick="openModal(this.src)" alt="双色">
-            <img src="christmas_image94.png" loading="lazy" onclick="openModal(this.src)" alt="双色">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">红白绿配色</div>
-          <div class="xmas-card">
-            <img src="christmas_image95.png" loading="lazy" onclick="openModal(this.src)" alt="红白绿配色">
-            <img src="christmas_image96.png" loading="lazy" onclick="openModal(this.src)" alt="红白绿配色">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">费尔岛+各种圣诞元素</div>
-          <div class="xmas-card">
-            <img src="christmas_image97.png" loading="lazy" onclick="openModal(this.src)" alt="费尔岛+各种圣诞元素">
-            <img src="christmas_image98.png" loading="lazy" onclick="openModal(this.src)" alt="费尔岛+各种圣诞元素">
-            <img src="christmas_image99.png" loading="lazy" onclick="openModal(this.src)" alt="费尔岛+各种圣诞元素">
-            <img src="christmas_image100.png" loading="lazy" onclick="openModal(this.src)" alt="费尔岛+各种圣诞元素">
-            <img src="christmas_image101.png" loading="lazy" onclick="openModal(this.src)" alt="费尔岛+各种圣诞元素">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">插肩袖设计</div>
-          <div class="xmas-card">
-            <img src="christmas_image102.png" loading="lazy" onclick="openModal(this.src)" alt="插肩袖设计">
-            <img src="christmas_image103.png" loading="lazy" onclick="openModal(this.src)" alt="插肩袖设计">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="tab-content" id="xmas-aux">
-    <div class="element-section">
-      <div class="element-title">圣诞度假</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">圣诞老人+冲浪</div>
-          <div class="xmas-card">
-            <img src="christmas_image104.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人+冲浪">
-            <img src="christmas_image105.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人+冲浪">
-            <img src="christmas_image106.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人+冲浪">
-            <img src="christmas_image107.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人+冲浪">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">鹦鹉</div>
-          <div class="xmas-card">
-            <img src="christmas_image108.png" loading="lazy" onclick="openModal(this.src)" alt="鹦鹉">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">雪人</div>
-          <div class="xmas-card">
-            <img src="christmas_image109.png" loading="lazy" onclick="openModal(this.src)" alt="雪人">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">椰树</div>
-          <div class="xmas-card">
-            <img src="christmas_image110.png" loading="lazy" onclick="openModal(this.src)" alt="椰树">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">沙滩/饮料/跳舞/火烈鸟</div>
-          <div class="xmas-card">
-            <img src="christmas_image111.png" loading="lazy" onclick="openModal(this.src)" alt="沙滩/饮料/跳舞/火烈鸟">
-            <img src="christmas_image112.png" loading="lazy" onclick="openModal(this.src)" alt="沙滩/饮料/跳舞/火烈鸟">
-            <img src="christmas_image113.png" loading="lazy" onclick="openModal(this.src)" alt="沙滩/饮料/跳舞/火烈鸟">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">恐怖圣诞</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">骷髅</div>
-          <div class="xmas-card">
-            <img src="christmas_image99.png" loading="lazy" onclick="openModal(this.src)" alt="骷髅">
-            <img src="christmas_image114.png" loading="lazy" onclick="openModal(this.src)" alt="骷髅">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">雪人</div>
-          <div class="xmas-card">
-            <img src="christmas_image115.png" loading="lazy" onclick="openModal(this.src)" alt="雪人">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">姜饼人</div>
-          <div class="xmas-card">
-            <img src="christmas_image116.png" loading="lazy" onclick="openModal(this.src)" alt="姜饼人">
-            <img src="christmas_image117.png" loading="lazy" onclick="openModal(this.src)" alt="姜饼人">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">霓虹灯</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">圣诞老人</div>
-          <div class="xmas-card">
-            <img src="christmas_image118.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人">
-            <img src="christmas_image119.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人">
-            <img src="christmas_image120.png" loading="lazy" onclick="openModal(this.src)" alt="圣诞老人">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">姜饼人</div>
-          <div class="xmas-card">
-            <img src="christmas_image121.png" loading="lazy" onclick="openModal(this.src)" alt="姜饼人">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">灯带</div>
-          <div class="xmas-card">
-            <img src="christmas_image122.png" loading="lazy" onclick="openModal(this.src)" alt="灯带">
-            <img src="christmas_image123.png" loading="lazy" onclick="openModal(this.src)" alt="灯带">
-            <img src="christmas_image124.png" loading="lazy" onclick="openModal(this.src)" alt="灯带">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">霓虹灯+圣诞元素集合</div>
-          <div class="xmas-card">
-            <img src="christmas_image125.png" loading="lazy" onclick="openModal(this.src)" alt="霓虹灯+圣诞元素集合">
-            <img src="christmas_image126.png" loading="lazy" onclick="openModal(this.src)" alt="霓虹灯+圣诞元素集合">
-            <img src="christmas_image127.png" loading="lazy" onclick="openModal(this.src)" alt="霓虹灯+圣诞元素集合">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">麋鹿</div>
-          <div class="xmas-card">
-            <img src="christmas_image128.png" loading="lazy" onclick="openModal(this.src)" alt="麋鹿">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">搞怪图案</div>
-          <div class="xmas-card">
-            <img src="christmas_image129.png" loading="lazy" onclick="openModal(this.src)" alt="搞怪图案">
-            <img src="christmas_image130.png" loading="lazy" onclick="openModal(this.src)" alt="搞怪图案">
-            <img src="christmas_image131.png" loading="lazy" onclick="openModal(this.src)" alt="搞怪图案">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">运动（踢球，滑板）</div>
-          <div class="xmas-card">
-            <img src="christmas_image132.png" loading="lazy" onclick="openModal(this.src)" alt="运动（踢球，滑板）">
-            <img src="christmas_image133.png" loading="lazy" onclick="openModal(this.src)" alt="运动（踢球，滑板）">
-            <img src="christmas_image134.png" loading="lazy" onclick="openModal(this.src)" alt="运动（踢球，滑板）">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">费尔岛</div>
-          <div class="xmas-card">
-            <img src="christmas_image135.png" loading="lazy" onclick="openModal(this.src)" alt="费尔岛">
-            <img src="christmas_image136.png" loading="lazy" onclick="openModal(this.src)" alt="费尔岛">
-            <img src="christmas_image137.png" loading="lazy" onclick="openModal(this.src)" alt="费尔岛">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">数字年份</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">跨年</div>
-          <div class="xmas-card">
-            <img src="christmas_image138.png" loading="lazy" onclick="openModal(this.src)" alt="跨年">
-            <img src="christmas_image139.png" loading="lazy" onclick="openModal(this.src)" alt="跨年">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">轮船</div>
-          <div class="xmas-card">
-            <img src="christmas_image140.png" loading="lazy" onclick="openModal(this.src)" alt="轮船">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="element-section">
-      <div class="element-title">动物</div>
-      <div class="xmas-row">
-        <div class="xmas-item">
-          <div class="xmas-sub">狗</div>
-          <div class="xmas-card">
-            <img src="christmas_image141.png" loading="lazy" onclick="openModal(this.src)" alt="狗">
-            <img src="christmas_image142.png" loading="lazy" onclick="openModal(this.src)" alt="狗">
-            <img src="christmas_image143.png" loading="lazy" onclick="openModal(this.src)" alt="狗">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">浣熊</div>
-          <div class="xmas-card">
-            <img src="christmas_image144.png" loading="lazy" onclick="openModal(this.src)" alt="浣熊">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">猫咪</div>
-          <div class="xmas-card">
-            <img src="christmas_image145.png" loading="lazy" onclick="openModal(this.src)" alt="猫咪">
-            <img src="christmas_image146.png" loading="lazy" onclick="openModal(this.src)" alt="猫咪">
-            <img src="christmas_image147.png" loading="lazy" onclick="openModal(this.src)" alt="猫咪">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">熊</div>
-          <div class="xmas-card">
-            <img src="christmas_image148.png" loading="lazy" onclick="openModal(this.src)" alt="熊">
-            <img src="christmas_image149.png" loading="lazy" onclick="openModal(this.src)" alt="熊">
-            <img src="christmas_image150.png" loading="lazy" onclick="openModal(this.src)" alt="熊">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">树懒</div>
-          <div class="xmas-card">
-            <img src="christmas_image151.png" loading="lazy" onclick="openModal(this.src)" alt="树懒">
-            <img src="christmas_image152.png" loading="lazy" onclick="openModal(this.src)" alt="树懒">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">企鹅</div>
-          <div class="xmas-card">
-            <img src="christmas_image153.png" loading="lazy" onclick="openModal(this.src)" alt="企鹅">
-            <img src="christmas_image154.png" loading="lazy" onclick="openModal(this.src)" alt="企鹅">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">恐龙</div>
-          <div class="xmas-card">
-            <img src="christmas_image155.png" loading="lazy" onclick="openModal(this.src)" alt="恐龙">
-            <img src="christmas_image156.png" loading="lazy" onclick="openModal(this.src)" alt="恐龙">
-          </div>
-        </div>
-        <div class="xmas-item">
-          <div class="xmas-sub">鲨鱼</div>
-          <div class="xmas-card">
-            <img src="christmas_image157.png" loading="lazy" onclick="openModal(this.src)" alt="鲨鱼">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-</div>
 
 <!-- 8.6 同款提报 -->
 <div class="section" id="tongkuan">
@@ -3759,8 +2789,8 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     <div class="card">
       <p style="font-size:14px;color:#333;line-height:2;margin:0">常规店铺定制品上新全流程教学课程，请点击链接查看学习，避免踩坑。另外要说明的是，定制品店铺保证金为 1000 元，不需要额外申请开启阈值。</p>
       <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
-        <div class="pd-btn active" onclick="pdEntry(this,'image')">🖼 图片教程</div>
-        <div class="pd-btn" onclick="pdEntry(this,'video')">🎬 视频教程</div>
+        <div class="pd-btn active" onclick="pdEntry(this,'image')">📄 图片教程 <span class="pd-arrow">→</span></div>
+        <div class="pd-btn" onclick="pdEntry(this,'video')">🎬 视频教程 <span class="pd-arrow">→</span></div>
       </div>
     </div>
   </div>
@@ -3870,39 +2900,16 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
   <div class="element-section">
     <div class="element-title">体积与重量填写要求</div>
     <div class="card">
-      <p style="font-size:14px;color:#333;line-height:2"><b>填写要求：</b></p>
       <div style="background:#FFF5EB;border-left:4px solid #FB7701;padding:10px 16px;border-radius:6px;margin-top:8px">
-        <p style="font-size:14px;color:#333;line-height:2">1. 重量与商品实际重量的差异≤50g，填写的材积重量与商品实际材积重量的差异≤50g，请不要填写过小/过大（特别是JIT类商品！）。</p>
-        <p style="font-size:14px;color:#333;line-height:2">2. 商品材积重量具体计算公式为：<b>长(cm)×宽(cm)×高(cm)÷6000</b>，单位为kg。</p>
-        <p style="font-size:14px;color:#333;line-height:2">3. 体积/重量测量的参考示例和说明可在建品界面内查看。</p>
+        <p style="font-size:14px;color:#333;line-height:2">1. <b>体积重量查询链接：</b><a href="https://agentseller.temu.com/wms/stock-mgt/violation-message" target="_blank" rel="noopener" style="color:#FB7701;font-weight:600;text-decoration:none">点击查询体积重量 →</a></p>
+        <p style="font-size:14px;color:#333;line-height:2">2. <b>批量修改入口：</b>商品管理-商品列表-更多-批量修改商品信息-批量修改商品体积重量</p>
+        <p style="font-size:14px;color:#333;line-height:2">3. <b>违规申诉路径：</b>【账号资金】---【违规信息】----【去申诉】</p>
       </div>
 
-      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>包装须知：</b></p>
-      <div style="background:#FFF5EB;border-left:4px solid #FB7701;padding:10px 16px;border-radius:6px;margin-top:8px;display:flex;gap:18px;align-items:center">
-        <div style="flex:1 1 auto;min-width:0">
-          <p style="font-size:14px;color:#333;line-height:2">1. 确保该品为同一折叠形式，不要出现有些是展开的、有些是折叠好的，这非常影响长宽高的准确性。</p>
-          <p style="font-size:14px;color:#333;line-height:2">2. (软)包类，可挤压，平铺后仅测量商品实际长宽高，而不是包装袋长宽高。</p>
-        </div>
-        <div style="flex:0 0 auto;display:flex;align-items:center"><img src="compliance_meas_demo.jpeg" loading="lazy" onclick="openModal(this.src)" style="width:155.8px;max-width:155.8px;height:auto;border-radius:6px;cursor:zoom-in" alt="实物测量示意图"></div>
-      </div>
-
-      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>申诉相关：</b></p>
-      <div style="background:#FFF5EB;border-left:4px solid #FB7701;padding:10px 16px;border-radius:6px;margin-top:8px">
-        <p style="font-size:14px;color:#333;line-height:2">1. 若商家填写和仓库测量差别较大，后台收到违规赔付金，请在48h内及时申诉。</p>
-        <p style="font-size:14px;color:#333;line-height:2">2. 路径：【账号资金】---【违规信息】----【去申诉】。</p>
-        <p style="font-size:14px;color:#333;line-height:2">3. 违规信息一般会在公示期间，在消息中心每天发送提醒，公示时间为72h，商家要关注及时申诉。</p>
-      </div>
-
-      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px"><b>卖家测量Tips：</b></p>
-      <div style="background:#FFF5EB;border-left:4px solid #FB7701;padding:10px 16px;border-radius:6px;margin-top:8px">
-        <p style="font-size:14px;color:#333;line-height:2">1. 测量sku"包装后"的体积重量；</p>
-        <p style="font-size:14px;color:#333;line-height:2">2. 应小尽小：软包装量实物、测高度压紧量；</p>
-        <p style="font-size:14px;color:#333;line-height:2">3. 超过54cm：若不损坏商品，对折起来包装，运费更低。</p>
-      </div>
-
-      <p style="font-size:13px;color:#e74c3c;line-height:1.8;margin-top:12px">⚠️ <b>注意：</b>测量不准=支付违约金（每偏差50g=10元/单，JIT不封顶），详见"商品发布页面"的教程。</p>
+      <p style="font-size:14px;color:#333;line-height:2;margin-top:12px">软包装量实物、测高度压紧量，平铺后仅测量商品实际长宽高，而不是包装袋长宽高，体积/重量测量的参考示例和说明可在建品界面内查看。若商家填写和仓库测量差别较大，后台收到违规赔付金，请在48h内及时申诉。</p>
     </div>
   </div>
+
   <!-- 合规5: 服饰CPC合规（新增） -->
   <div class="element-section">
     <div class="element-title">服饰 CPC 合规 <span id="new-badge-seller-cpc" data-nv="10" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite">NEW</span></div>
@@ -4226,6 +3233,38 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     </div>
   </div>
 </div>
+
+<script>
+/* 近期资讯：默认展示前 3 条，其余通过「查看更多」展开 */
+(function () {
+  function initNewsCollapse() {
+    var news = document.getElementById('news');
+    if (!news) return;
+    news.querySelectorAll('.tab-content').forEach(function (tc) {
+      var items = Array.prototype.slice.call(tc.children).filter(function (el) {
+        return el.classList && el.classList.contains('element-section');
+      });
+      if (items.length <= 3) return;
+      items.slice(3).forEach(function (el) { el.classList.add('news-collapsed'); });
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'news-more-btn';
+      btn.innerHTML = '<span class="news-more-label">查看更多</span><span class="news-more-arrow">▾</span>';
+      btn.addEventListener('click', function () {
+        var expanded = tc.classList.toggle('news-expanded');
+        btn.querySelector('.news-more-label').textContent = expanded ? '收起' : '查看更多';
+        btn.querySelector('.news-more-arrow').textContent = expanded ? '▴' : '▾';
+      });
+      tc.appendChild(btn);
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNewsCollapse);
+  } else {
+    initNewsCollapse();
+  }
+})();
+</script>
 
 <!-- 网页底部冻结免责声明 -->
 <div class="site-foot" style="position:fixed;bottom:0;left:0;width:100%;height:var(--foot-h,32px);box-sizing:border-box;padding:0 24px;background:#f9f9f9;border-top:1px solid #eee;display:flex;align-items:center;justify-content:center;text-align:center;z-index:200">
@@ -4969,17 +4008,6 @@ function copyTitlePrompt() {
   copyText(text);
 }
 
-function copyVisualPrompt() {
-  var style = document.getElementById('visualType').value || '所选视觉风格';
-  var text = '任务：请参照' + style + '的视觉风格，将上传的商品图片转化为该风格的效果图\n' +
-    '核心要求：\n' +
-    '1. 必须严格按照给出的商品版型生成，严禁改为其他版型\n' +
-    '2. 需要呈现不同的背景场景、不同的动作姿态，避免雷同\n' +
-    '3. 衣服细节不可改变（拉链头颜色、口袋、印花图案等需完整保留）\n' +
-    '输出格式：宽高比3:4，宽>1340px，高>1785px，小于2M';
-  copyText(text);
-}
-
 function handleTitleImgUpload(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
@@ -5030,17 +4058,6 @@ function updateTitlePrompt() {
       warnDiv.innerHTML = '⚠️ <b>防晒资质提醒：</b>您选择了"无防晒资质"，公式已自动删除【功能特性】维度。请勿在标题中出现任何防晒相关表述，包括但不限于：UPF50+、UV Protection、Sun Protection、防晒、遮阳、防紫外线等。';
       box.appendChild(warnDiv);
     }
-  }
-}
-
-function updateVisualPrompt() {
-  var style = document.getElementById('visualType').value || '所选视觉风格';
-  var box = document.getElementById('visualPromptBox');
-  if (box) {
-    box.innerHTML = '<b>任务：</b>请参照' + style + '的视觉风格，将上传的商品图片转化为该风格的效果图<br>' +
-      '<b>核心要求：</b><br>1. 必须严格按照给出的商品版型生成，严禁改为其他版型<br>2. 需要呈现不同的背景场景、不同的动作姿态，避免雷同<br>3. 衣服细节不可改变（拉链头颜色、口袋、印花图案等需完整保留）<br>' +
-      '<b>输出格式：</b>宽高比3:4，宽>1340px，高>1785px，小于2M' +
-      '<button onclick="copyVisualPrompt()" style="position:absolute;top:8px;right:8px;padding:4px 12px;background:#FB7701;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px">复制提示词</button>';
   }
 }
 
@@ -6110,178 +5127,6 @@ function showDownloadHint() {
   setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
 }
 
-var onlineFormulas = {
-  'tshirt': ['节日','人群','图案/花色','领型','袖长','场景','风格','功能特性','季节','面料/材质','颜色','版型','细节','规格','热搜词'],
-  'hoodie': ['节日','品类','人群','领型','场景','风格','袖长','季节','功能特性','图案/花色','面料/材质','颜色','版型','细节','闭合','热搜词'],
-  'polo': ['节日','品类','人群','领型','门襟','图案/花色','场景','风格','功能特性','季节','袖长','面料/材质','颜色','版型','细节','规格','热搜词'],
-  'compression': ['节日','品类','人群','功能特性','场景','领型','袖长','季节','风格','面料/材质','颜色','图案/花色','版型','细节','规格','热搜词'],
-  'sunshirt': ['节日','品类','人群','场景','功能特性','领型','袖长','季节','风格','面料/材质','颜色','图案/花色','版型','细节','规格','热搜词'],
-  'suit': ['节日','品类','人群','规格','场景','季节','版型','风格','功能特性','图案/花色','面料/材质','颜色','细节特征','热搜词'],
-  'coat': ['节日','品类','人群','场景','风格','领型','版型','闭合方式','功能特性','季节','面料/材质','颜色','图案/花色','细节特征','规格','热搜词']
-};
-
-var kwOptions = {
-  '节日': [['万圣节','Halloween'],['圣诞节','Christmas'],['情人节','Valentine'],['感恩节','Thanksgiving'],['黑五','Black Friday'],['新年','New Year'],['啤酒节','Oktoberfest'],['母亲节','Mothers Day'],['父亲节','Fathers Day'],['复活节','Easter'],['亡灵节','Day of the Dead'],['开学季','Back to School'],['圣帕特里克节','St Patricks Day'],['独立日','Independence Day'],['狂欢节','Carnival'],['斋月/开斋节','Ramadan Eid'],['夏季狂欢','Summer'],['超级碗','Super Bowl'],['以上都不是','']],
-  '人群': [['男性','Mens'],['少年','Teen Boys'],['青年','Young Men'],['中老年','Big and Tall'],['运动人群','Athletic'],['户外人群','Outdoor'],['商务人群','Business'],['潮流人群','Streetwear'],['音乐爱好者','Music Lover'],['度假人群','Vacation'],['艺术创意','Creative'],['学生群体','Student'],['以上都不是','']],
-  '品类': [['T恤','T-Shirt'],['卫衣','Hoodie'],['POLO衫','Polo Shirt'],['文化衫','Tee'],['图形T恤','Graphic Tee'],['口袋T恤','Pocket Tee'],['防晒服','Sun Shirt'],['钓鱼服','Fishing Shirt'],['压缩衣','Compression Shirt'],['以上都不是','']],
-  '版型': [['修身','Slim Fit'],['宽松','Loose Fit'],['常规','Regular Fit'],['Oversized','Oversized'],['短款','Cropped'],['加长','Longline'],['压缩','Compression'],['落肩','Drop Shoulder'],['运动版型','Athletic Fit'],['以上都不是','']],
-  '面料/材质': [['棉','Cotton'],['纯棉','100% Cotton'],['棉混纺','Cotton Blend'],['聚酯纤维','Polyester'],['氨纶','Spandex'],['莫代尔','Modal'],['竹纤维','Bamboo Fiber'],['亚麻','Linen'],['冰丝','Ice Silk'],['有机棉','Organic Cotton'],['精梳棉','Combed Cotton'],['丝光棉','Mercerized Cotton'],['抓绒','Fleece'],['毛圈','French Terry'],['以上都不是','']],
-  '场景': [['休闲','Casual'],['日常','Daily'],['街头','Street'],['健身','Gym'],['锻炼','Workout'],['海滩','Beach'],['度假','Vacation'],['校园','School'],['派对','Party'],['办公','Office'],['运动','Sports'],['旅行','Travel'],['户外','Outdoor'],['嘻哈','Hip-hop'],['滑板','Skate'],['以上都不是','']],
-  '风格': [['时尚','Fashion'],['潮流','Trendy'],['经典','Classic'],['复古','Vintage'],['休闲','Casual'],['Y2K','Y2K'],['街头风','Streetwear'],['极简','Minimalist'],['基础','Basic'],['学院风','Preppy'],['夏威夷','Hawaiian'],['波西米亚','Bohemian'],['韩版','Korean Style'],['嘻哈','Hip-hop'],['美式','American Style'],['运动风','Sporty'],['以上都不是','']],
-  '功能特性': [['透气','Breathable'],['速干','Quick-Dry'],['弹力','Stretch'],['吸湿排汗','Moisture-wicking'],['冰凉','Cooling'],['防紫外线','UV Protection'],['抗菌','Antibacterial'],['轻薄','Lightweight'],['压缩','Compression'],['防风','Windproof'],['保暖','Thermal'],['防水','Waterproof'],['抗皱','Wrinkle Resistant'],['以上都不是','']],
-  '颜色': [['黑色','Black'],['白色','White'],['灰色','Gray'],['藏青','Navy Blue'],['浅蓝','Light Blue'],['绿色','Green'],['军绿','Army Green'],['红色','Red'],['酒红','Burgundy'],['橙色','Orange'],['黄色','Yellow'],['棕色','Brown'],['米色','Beige'],['卡其','Khaki'],['紫色','Purple'],['粉色','Pink'],['多色','Multicolor'],['以上都不是','']],
-  '图案/花色': [['纯色','Solid'],['印花','Print'],['条纹','Striped'],['花卉','Floral'],['图形','Graphic'],['撞色','Color-block'],['迷彩','Camo'],['扎染','Tie-dye'],['豹纹','Leopard'],['格纹','Plaid'],['字母','Letter'],['几何','Geometric'],['波点','Polka Dot'],['渐变','Gradient'],['拼接','Patchwork'],['心形','Heart'],['动物','Animal'],['抽象','Abstract'],['以上都不是','']],
-  '领型': [['圆领','Crew Neck'],['V领','V-Neck'],['连帽','Hooded'],['翻领','Polo Collar'],['立领','Stand Collar'],['Mock领','Mock Neck'],['高领','Turtleneck'],['船型领','Scoop Neck'],['亨利领','Henley'],['拉链领','Zip Neck'],['以上都不是','']],
-  '袖长': [['短袖','Short Sleeve'],['长袖','Long Sleeve'],['无袖','Sleeveless'],['七分袖','3/4 Sleeve'],['插肩袖','Raglan Sleeve'],['以上都不是','']],
-  '季节': [['夏季','Summer'],['春季','Spring'],['秋季','Autumn'],['冬季','Winter'],['四季','All Seasons'],['夏日必备','Summer Essential'],['以上都不是','']],
-  '门襟': [['单排扣','Single Breasted'],['双排扣','Double Breasted'],['拉链门襟','Zip Front'],['纽扣门襟','Button Front'],['以上都不是','']],
-  '闭合': [['套头','Pullover'],['拉链','Zip Up'],['纽扣','Button Up'],['以上都不是','']],
-  '细节': [['口袋','Pocket'],['撞色边线','Ringer Trim'],['撞色领','Contrast Collar'],['侧开叉','Side Slit'],['落肩','Drop Shoulder'],['弧形下摆','Curved Hem'],['以上都不是','']],
-  '规格': [['单件','1pc'],['2件装','2pcs'],['3件装','3pcs'],['5件装','5pcs'],['套装','Pack'],['多件装','Multi-pack'],['以上都不是','']],
-  '闭合方式': [['套头','Pullover'],['拉链','Zip Up'],['纽扣','Button Up'],['系带','Lace-up'],['魔术贴','Hook and Loop'],['以上都不是','']],
-  '细节特征': [['口袋','Pocket'],['撞色边线','Ringer Trim'],['撞色领','Contrast Collar'],['侧开叉','Side Slit'],['落肩','Drop Shoulder'],['弧形下摆','Curved Hem'],['罗纹袖口','Ribbed Cuff'],['下摆抽绳','Drawstring Hem'],['以上都不是','']],
-  '关键词': [['基础款','Basic'],['时尚百搭','Stylish'],['日常穿搭','Daily Wear'],['热门单品','Popular'],['以上都不是','']],
-  '热搜词': [['男士图案T恤','Mens Graphic Tees'],['男士卫衣','Mens Hoodies'],['男士POLO衫','Mens Polo Shirts'],['男士运动上衣','Mens Workout Shirts'],['男士防晒衬衫','Mens Sun Shirt'],['男士趣味T恤','Mens Novelty T-Shirt'],['男士休闲T恤','Mens Casual Tees'],['男士圆领卫衣','Mens Crewneck Sweatshirt'],['男士压缩衣','Mens Compression Shirt'],['男士钓鱼衬衫','Mens Fishing Shirt'],['男士街头潮流T恤','Mens Streetwear T-Shirt'],['男士酷炫图案T恤','Mens Cool Graphic Tee'],['男士宽松卫衣','Mens Oversized Hoodie'],['男士防紫外线衬衫','Mens UV Protection Shirt'],['以上都不是','']]
-};
-
-function updateOnlineTitle() {
-  var cat = document.getElementById('onlineTitleCat').value;
-  var dims = onlineFormulas[cat] || onlineFormulas['tshirt'];
-  var container = document.getElementById('onlineTitleInputs');
-  container.innerHTML = '';
-  var sunDiv = document.getElementById('sunProtectionOnline');
-  if (sunDiv) sunDiv.style.display = (cat === 'sunshirt') ? 'block' : 'none';
-
-  dims.forEach(function(dim) {
-    var div = document.createElement('div');
-    div.style.cssText = 'display:flex;align-items:center;gap:6px;min-width:0;max-width:100%;overflow:hidden';
-    var opts = kwOptions[dim] || [];
-    var selectHtml = '<select class="kw-select" data-dim="' + dim + '" style="flex:1;padding:6px 8px;border:1px solid #ddd;border-radius:4px;font-size:13px;min-width:0;max-width:100%" onchange="handleKwSelect(this)"><option value="">请选择</option>';
-    opts.forEach(function(opt) {
-      var label = opt[0] + (opt[1] ? ' (' + opt[1] + ')' : '');
-      selectHtml += '<option value="' + opt[1] + '" data-cn="' + opt[0] + '">' + label + '</option>';
-    });
-    selectHtml += '</select>';
-    var customHtml = '<input type="text" class="kw-custom" data-dim="' + dim + '" style="display:none;flex:1;padding:6px 8px;border:1px solid #ddd;border-radius:4px;font-size:13px" placeholder="请输入' + dim + '热搜词">';
-    div.innerHTML = '<label style="font-size:12px;color:#666;min-width:70px">' + dim + '</label>' + selectHtml + customHtml;
-    container.appendChild(div);
-  });
-}
-
-function handleKwSelect(sel) {
-  var dim = sel.getAttribute('data-dim');
-  var customInput = sel.parentElement.querySelector('.kw-custom');
-  if (sel.selectedIndex > 0 && sel.options[sel.selectedIndex].text.indexOf('以上都不是') >= 0) {
-    customInput.style.display = 'block';
-    customInput.placeholder = '请输入' + dim + '热搜词（非必填，留空则跳过此维度）';
-    customInput.focus();
-  } else {
-    customInput.style.display = 'none';
-    customInput.value = '';
-  }
-}
-
-function generateOnlineTitle() {
-  var selects = document.querySelectorAll('.kw-select');
-  var cat = document.getElementById('onlineTitleCat').value;
-  var hasSun = true;
-  var sunDiv = document.getElementById('sunProtectionOnline');
-  if (sunDiv && sunDiv.style.display === 'block') {
-    hasSun = document.getElementById('onlineHasSunProtection').value === 'yes';
-  }
-
-  var partsEn = [];
-  var partsCn = [];
-  var logicParts = [];
-  var pendingTranslation = [];
-
-  selects.forEach(function(sel) {
-    var dim = sel.getAttribute('data-dim');
-    if (dim === '功能特性' && !hasSun) return;
-
-    var val = sel.value;
-    var cn = sel.options[sel.selectedIndex].getAttribute('data-cn') || '';
-    var customInput = sel.parentElement.querySelector('.kw-custom');
-    
-    if (sel.selectedIndex > 0 && sel.options[sel.selectedIndex].text.indexOf('以上都不是') >= 0) {
-      if (customInput && customInput.value.trim()) {
-        var userInput = customInput.value.trim();
-        cn = userInput;
-        if (/[一-龥]/.test(userInput)) {
-          var translationMap = {
-            '万圣节': 'Halloween', '圣诞节': 'Christmas', '情人节': 'Valentine',
-            '男性': 'Mens', '少年': 'Teen Boys', '青年': 'Young Men',
-            '黑色': 'Black', '白色': 'White', '灰色': 'Gray', '红色': 'Red',
-            '蓝色': 'Blue', '绿色': 'Green', '黄色': 'Yellow', '紫色': 'Purple',
-            '粉色': 'Pink', '橙色': 'Orange', '棕色': 'Brown',
-            '短袖': 'Short Sleeve', '长袖': 'Long Sleeve', '无袖': 'Sleeveless',
-            '圆领': 'Crew Neck', 'V领': 'V-Neck', '连帽': 'Hooded', '翻领': 'Polo Collar',
-            '棉': 'Cotton', '聚酯纤维': 'Polyester', '亚麻': 'Linen', '氨纶': 'Spandex',
-            '夏季': 'Summer', '春季': 'Spring', '秋季': 'Autumn', '冬季': 'Winter',
-            '休闲': 'Casual', '时尚': 'Fashion', '潮流': 'Trendy', '经典': 'Classic',
-            '透气': 'Breathable', '速干': 'Quick-Dry', '弹力': 'Stretch',
-            '修身': 'Slim Fit', '宽松': 'Loose Fit', '常规': 'Regular Fit',
-            '印花': 'Print', '条纹': 'Striped', '格纹': 'Plaid', '迷彩': 'Camo',
-            '口袋': 'Pocket', '单件': '1pc', '2件装': '2pcs'
-          };
-          var translated = translationMap[userInput];
-          if (!translated) {
-            val = userInput;
-            pendingTranslation.push({index: partsEn.length, chinese: userInput});
-          } else {
-            val = translated;
-          }
-        } else {
-          val = userInput;
-        }
-      } else {
-        return;
-      }
-    }
-    
-    if (val) {
-      partsEn.push(val);
-      partsCn.push(cn || val);
-      logicParts.push(dim);
-    }
-  });
-
-  if (partsEn.length < 3) {
-    alert('请至少选择3个热搜词');
-    return;
-  }
-
-  var titleEn = partsEn.join(' ');
-  if (titleEn.length > 250) titleEn = titleEn.substring(0, 250);
-  
-  var breakdown = [];
-  for (var i = 0; i < logicParts.length; i++) {
-    breakdown.push(logicParts[i] + ': ' + (partsCn[i] || partsEn[i]));
-  }
-  var titleBreakdown = breakdown.join(' | ');
-
-  var translationNote = '';
-  if (pendingTranslation.length > 0) {
-    translationNote = '\n\n⚠️ 以下中文词汇未能自动翻译，请手动确认英文表述：' + 
-      pendingTranslation.map(function(t) { return t.chinese; }).join('、');
-  }
-
-  var result = document.getElementById('onlineTitleResult');
-  document.getElementById('onlineTitleEn').textContent = titleEn;
-  document.getElementById('onlineTitleBreakdown').textContent = titleBreakdown;
-  document.getElementById('onlineTitleCount').textContent = titleEn.length + ' 字符';
-  document.getElementById('onlineTitleLogic').textContent = '共选取 ' + logicParts.length + ' 个热搜词拼接' + (translationNote ? translationNote : '');
-  result.style.display = 'block';
-}
-
-function clearOnlineTitle() {
-  document.querySelectorAll('.kw-select').forEach(function(sel) { sel.value = ''; });
-  document.querySelectorAll('.kw-custom').forEach(function(input) { input.value = ''; input.style.display = 'none'; });
-  document.getElementById('onlineTitleResult').style.display = 'none';
-}
-
-// Initialize online title generator
-updateOnlineTitle();
 
 function copyHotPrompt() {
   var text = '任务：请将我上传的【印花元素图片】中的图案，精准替换/融合到另一张【纯色衣服图片】上\n' +
