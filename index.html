@@ -1790,6 +1790,20 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     </div>
   </div>
 
+  <!-- 版型1.2: 图案底版&视觉拓展直播PPT -->
+  <div class="element-section" id="pattern-print-base-ppt">
+    <div class="element-title">图案底版&amp;视觉拓展直播PPT</div>
+    <div class="card path-card">
+      <div class="meta">
+        <div class="label">直播课件</div>
+        <div class="path-note" style="color:#333">直播课件已整理成 PPT，点击下方链接即可在线查看。</div>
+        <div style="margin-top:12px">
+          <a href="https://bdl.cdnfe.com/upload_bdl/mens-printed/3e99677b-b277-4fa2-8484-2b9b77c2d267.pdf" target="_blank" rel="noopener" style="display:inline-block;padding:8px 20px;background:#FB7701;color:#fff;border-radius:6px;text-decoration:none;font-size:14px">📄 图案底版&amp;视觉拓展直播PPT →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <style>
   .bs-sex-label{font-size:13px;font-weight:600;color:#999;letter-spacing:.2px;margin:14px 0 6px;line-height:1.5}
   .bs-sex-label:first-child{margin-top:0}
@@ -2220,18 +2234,25 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
     <div class="tab-content active" id="tab-kids-boy">
       <div class="card" style="margin-bottom:16px">
-        <p style="font-size:14px;color:#333;line-height:2">先选择年龄段，再选择品类，即可查询该品类下全部部位与版型的完整详细尺码。</p>
+        <p style="font-size:14px;color:#333;line-height:2">先选择码段，再选择品类、肩型与版型，即可查看该品类的完整尺码表。</p>
+        <div style="margin-top:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:13px;color:#666;margin-right:4px">码段：</span>
+          <div id="kidsBoySegTabs" style="display:inline-flex;border:1px solid #FB7701;border-radius:8px;overflow:hidden">
+            <div class="mode-tab" onclick="setKidsSeg('boy',0)">初生儿 0-2Y</div>
+            <div class="mode-tab" onclick="setKidsSeg('boy',1)">婴童 0-8Y</div>
+            <div class="mode-tab" onclick="setKidsSeg('boy',2)">儿童 9-13Y</div>
+            <div class="mode-tab" onclick="setKidsSeg('boy',3)">青少年 13Y+</div>
+          </div>
+        </div>
         <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-          <span style="font-size:13px;color:#666;margin-right:4px">年龄段：</span>
-          <select id="kidsBoySeg" onchange="onKidsSegChange('boy')" style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;color:#333;min-width:160px">
-            <option value="">选择年龄段</option>
-            <option value="0">初生儿 (0-2Y)</option>
-            <option value="1">婴童 (0-8Y)</option>
-            <option value="2">儿童 (9-13Y)</option>
-            <option value="3">青少年 (13Y+)</option>
-          </select>
           <select id="kidsBoyCategory" onchange="onKidsCategoryChange('boy')" disabled style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#f5f5f5;color:#999;min-width:160px;cursor:not-allowed">
-            <option value="">请先选择年龄段</option>
+            <option value="">请先选择码段</option>
+          </select>
+          <select id="kidsBoyShoulder" onchange="onKidsShoulderChange('boy')" disabled style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#f5f5f5;color:#999;min-width:130px;cursor:not-allowed">
+            <option value="">请先选择品类</option>
+          </select>
+          <select id="kidsBoyFit" onchange="onKidsFitChange('boy')" disabled style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#f5f5f5;color:#999;flex:1;min-width:200px;cursor:not-allowed">
+            <option value="">请先选择品类</option>
           </select>
         </div>
         <div id="kidsBoyHint" style="display:none;margin-top:14px;padding:12px 16px;background:#FFF5EB;border-left:4px solid #FB7701;border-radius:6px;font-size:13px;color:#333;line-height:1.9"></div>
@@ -2241,18 +2262,25 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
     <div class="tab-content" id="tab-kids-girl">
       <div class="card" style="margin-bottom:16px">
-        <p style="font-size:14px;color:#333;line-height:2">先选择年龄段，再选择品类，即可查询该品类下全部部位与版型的完整详细尺码。</p>
+        <p style="font-size:14px;color:#333;line-height:2">先选择码段，再选择品类、肩型与版型，即可查看该品类的完整尺码表。</p>
+        <div style="margin-top:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:13px;color:#666;margin-right:4px">码段：</span>
+          <div id="kidsGirlSegTabs" style="display:inline-flex;border:1px solid #FB7701;border-radius:8px;overflow:hidden">
+            <div class="mode-tab" onclick="setKidsSeg('girl',0)">初生儿 0-2Y</div>
+            <div class="mode-tab" onclick="setKidsSeg('girl',1)">婴童 0-8Y</div>
+            <div class="mode-tab" onclick="setKidsSeg('girl',2)">儿童 9-13Y</div>
+            <div class="mode-tab" onclick="setKidsSeg('girl',3)">青少年 13Y+</div>
+          </div>
+        </div>
         <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-          <span style="font-size:13px;color:#666;margin-right:4px">年龄段：</span>
-          <select id="kidsGirlSeg" onchange="onKidsSegChange('girl')" style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;color:#333;min-width:160px">
-            <option value="">选择年龄段</option>
-            <option value="0">初生儿 (0-2Y)</option>
-            <option value="1">婴童 (0-8Y)</option>
-            <option value="2">儿童 (9-13Y)</option>
-            <option value="3">青少年 (13Y+)</option>
-          </select>
           <select id="kidsGirlCategory" onchange="onKidsCategoryChange('girl')" disabled style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#f5f5f5;color:#999;min-width:160px;cursor:not-allowed">
-            <option value="">请先选择年龄段</option>
+            <option value="">请先选择码段</option>
+          </select>
+          <select id="kidsGirlShoulder" onchange="onKidsShoulderChange('girl')" disabled style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#f5f5f5;color:#999;min-width:130px;cursor:not-allowed">
+            <option value="">请先选择品类</option>
+          </select>
+          <select id="kidsGirlFit" onchange="onKidsFitChange('girl')" disabled style="padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#f5f5f5;color:#999;flex:1;min-width:200px;cursor:not-allowed">
+            <option value="">请先选择品类</option>
           </select>
         </div>
         <div id="kidsGirlHint" style="display:none;margin-top:14px;padding:12px 16px;background:#FFF5EB;border-left:4px solid #FB7701;border-radius:6px;font-size:13px;color:#333;line-height:1.9"></div>
@@ -6053,17 +6081,18 @@ function queryFabricWeightKids() {
   res.innerHTML = '<div style="padding:12px 16px;background:#FFF5EB;border-radius:8px;color:#333;font-size:14px;line-height:1.9"><b>查询结果：</b><br>品类：<b>' + cat + '</b>｜面料：<b>' + name + '</b><br>克重底线：<b style="color:#FB7701;font-size:16px">' + val + '</b></div>';
 }
 
-// ===== 童装尺码查询 =====
+// ===== 童装尺码查询（与男装一致：码段在上，品类 → 肩型 → 版型）=====
 var kidsSegNames = ['初生儿','婴童','儿童','青少年'];
 var kidsSegLevels = {0:'0-2Y',1:'0-8Y',2:'9-13Y',3:'13Y+'};
-var kidsBoySeg = 0;
-var kidsGirlSeg = 0;
+var kidsBoySeg = null;
+var kidsGirlSeg = null;
 
-// 构建童装「部位」词表：同时出现在「外层键」与「内层键」的名字即为部位名
+function kIsArr(x){ return x && typeof x === 'object' && typeof x.length === 'number'; }
+function kidsSkipKey(k){ return k === '版型' || k === '部位' || k === '码数'; }
+
+// 童装「部位」词表：同时出现在「外层键」与「内层键」的名字即为部位名
 var kidsPartVocab = (function () {
   var outer = {}, inner = {}, vocab = {};
-  function isArr(x){ return x && typeof x === 'object' && typeof x.length === 'number'; }
-  var skip = {'版型':1,'部位':1,'码数':1};
   for (var g in sizeDataKids) {
     for (var s in sizeDataKids[g]) {
       var cats = sizeDataKids[g][s].cats || {};
@@ -6072,9 +6101,9 @@ var kidsPartVocab = (function () {
         if (!node || typeof node !== 'object') continue;
         for (var k1 in node) {
           var v1 = node[k1];
-          if (!v1 || typeof v1 !== 'object' || isArr(v1)) continue;
-          if (!skip[k1]) outer[k1] = 1;
-          for (var k2 in v1) { if (!skip[k2]) inner[k2] = 1; }
+          if (!v1 || typeof v1 !== 'object' || kIsArr(v1)) continue;
+          if (!kidsSkipKey(k1)) outer[k1] = 1;
+          for (var k2 in v1) { if (!kidsSkipKey(k2)) inner[k2] = 1; }
         }
       }
     }
@@ -6085,209 +6114,310 @@ var kidsPartVocab = (function () {
 
 function kidsGenderKey(g){ return g==='boy' ? '男童' : '女童'; }
 function kidsSegData(g){ return sizeDataKids[kidsGenderKey(g)] || {}; }
-function getKidsCatData(g, segIdx, cat) {
-  var seg = kidsSegData(g)[kidsSegNames[segIdx]];
-  if (!seg) return null;
+function kidsEl(g, suffix){
+  return document.getElementById((g==='boy' ? 'kidsBoy' : 'kidsGirl') + suffix);
+}
+function kidsSetDisabled(sel, disabled){
+  if (!sel) return;
+  sel.disabled = !!disabled;
+  sel.style.background = disabled ? '#f5f5f5' : '#fff';
+  sel.style.color = disabled ? '#999' : '#333';
+  sel.style.borderColor = '#ddd';
+  sel.style.cursor = disabled ? 'not-allowed' : 'pointer';
+}
+function kidsResetSelect(g, suffix, placeholder){
+  var sel = kidsEl(g, suffix);
+  if (!sel) return;
+  sel.innerHTML = '<option value="">' + placeholder + '</option>';
+  sel.value = '';
+  kidsSetDisabled(sel, true);
+}
+function kidsHint(g, text){
+  var hint = kidsEl(g, 'Hint');
+  if (!hint) return;
+  if (!text) { hint.style.display = 'none'; hint.textContent = ''; return; }
+  hint.style.display = 'block';
+  hint.textContent = text;
+}
+function kidsClearResult(g){
+  var res = kidsEl(g, 'Result');
+  if (res) { res.style.display = 'none'; res.innerHTML = ''; }
+}
+function kidsSegIdx(g){ return g === 'boy' ? kidsBoySeg : kidsGirlSeg; }
+function kidsCurSeg(g){
+  var idx = kidsSegIdx(g);
+  if (idx === null || idx === undefined) return null;
+  return kidsSegData(g)[kidsSegNames[idx]] || null;
+}
+function kidsCatNode(g, cat){
+  var seg = kidsCurSeg(g);
+  if (!seg || !cat) return null;
   return (seg.cats || {})[cat] || null;
 }
-// 该性别下全部品类（按年龄段首次出现顺序合并）
-function getKidsCategoryList(g) {
-  var data = kidsSegData(g), seen = {}, list = [];
-  for (var i=0;i<kidsSegNames.length;i++) {
-    var cats = (data[kidsSegNames[i]] || {}).cats || {};
-    for (var c in cats) { if (!seen[c]) { seen[c] = 1; list.push(c); } }
+
+// 是否为「部位 → 变体 → 数值」结构
+function kidsIsPartObj(o){
+  if (!o || typeof o !== 'object' || kIsArr(o)) return false;
+  var hasArr = false, hasObj = false;
+  for (var k in o){
+    if (kidsSkipKey(k)) continue;
+    if (kIsArr(o[k])) hasArr = true;
+    else if (o[k] && typeof o[k] === 'object') hasObj = true;
   }
-  return list;
+  return hasArr && !hasObj;
 }
-// 指定品类存在的全部年龄段下标
-function getKidsSegIdxs(g, cat) {
-  var data = kidsSegData(g), out = [];
-  for (var i=0;i<kidsSegNames.length;i++) {
-    var cats = (data[kidsSegNames[i]] || {}).cats || {};
-    if (Object.prototype.hasOwnProperty.call(cats, cat)) out.push(i);
+function kidsVariantsOf(obj, cat){
+  var out = [];
+  for (var k in obj){
+    if (kidsSkipKey(k)) continue;
+    if (!kIsArr(obj[k])) continue;
+    out.push({ name: (k === cat ? '—' : k), vals: obj[k] });
   }
   return out;
 }
-function kidsSegSelectEl(g){ return document.getElementById(g==='boy' ? 'kidsBoySeg' : 'kidsGirlSeg'); }
-function kidsCategorySelectEl(g){ return document.getElementById(g==='boy' ? 'kidsBoyCategory' : 'kidsGirlCategory'); }
-function kidsHintEl(g){ return document.getElementById(g==='boy' ? 'kidsBoyHint' : 'kidsGirlHint'); }
-function kidsResultEl(g){ return document.getElementById(g==='boy' ? 'kidsBoyResult' : 'kidsGirlResult'); }
+// 把单个品类节点解析成 [{name, variants:[{name, vals}]}]，兼容「品类名 → 部位 → 变体」等嵌套
+function kidsParseParts(node, cat){
+  var parts = [], containers = [];
+  if (!node || typeof node !== 'object') return parts;
+  for (var k in node){
+    if (kidsSkipKey(k)) continue;
+    var v = node[k];
+    if (kIsArr(v)) {
+      parts.push({ name: k, variants: [{ name: '—', vals: v }] });
+    } else if (!v || typeof v !== 'object') {
+      continue;
+    } else {
+      // 内层键是「部位」名（如 肩宽/胸围/衣长）时，该层是容器，需要再下钻一层
+      var hasPartKey = false;
+      for (var ik in v){ if (!kidsSkipKey(ik) && kidsPartVocab[ik]) { hasPartKey = true; break; } }
+      if (hasPartKey && kidsIsPartObj(v)) containers.push({ name: k, obj: v });
+      else parts.push({ name: k, variants: kidsVariantsOf(v, cat) });
+    }
+  }
+  if (containers.length){
+    for (var ci = 0; ci < containers.length; ci++){
+      var ct = containers[ci];
+      for (var k2 in ct.obj){
+        if (kidsSkipKey(k2)) continue;
+        var v2 = ct.obj[k2];
+        var label = (ct.name === cat ? k2 : ct.name + ' · ' + k2);
+        if (kIsArr(v2)) parts.push({ name: label, variants: [{ name: '—', vals: v2 }] });
+        else if (kidsIsPartObj(v2)) parts.push({ name: label, variants: kidsVariantsOf(v2, cat) });
+      }
+    }
+  }
+  return parts;
+}
+function kidsBasePartName(name){ return name.indexOf('· ') > -1 ? name.split('· ').pop() : name; }
+// 解析某个品类的肩型、版型维度
+// 版型名称归一：肩连袖/插肩袖 → 插肩袖；长袖/短袖 属袖长口径，不作为版型选项
+var kidsFitAlias = { '肩连袖/插肩袖': '插肩袖', '肩连袖/揸肩袖': '插肩袖' };
+function kidsFitName(name){
+  var t = String(name || '').replace(/\s+/g, ' ').trim();
+  return kidsFitAlias[t] || t;
+}
+function kidsIsSleeveLen(name){
+  var t = kidsFitName(name);
+  return /(长袖|短袖)$/.test(t);
+}
+function kidsDimensions(g, cat){
+  var parts = kidsParseParts(kidsCatNode(g, cat) || {}, cat);
+  var shoulders = [], fits = [], seenS = {}, seenF = {};
+  for (var i = 0; i < parts.length; i++){
+    var p = parts[i];
+    var isShoulder = /^肩/.test(kidsBasePartName(p.name));
+    // 只有存在多种变体的部位才参与肩型/版型选项（单变体多为度量说明，不作选项）
+    if (p.variants.length < 2) continue;
+    for (var j = 0; j < p.variants.length; j++){
+      var vn = p.variants[j].name;
+      if (vn === '—') continue;
+      if (isShoulder){
+        if (!seenS[vn]) { seenS[vn] = 1; shoulders.push(vn); }
+        continue;
+      }
+      if (kidsIsSleeveLen(vn)) continue;
+      var key = kidsFitName(vn);
+      if (!key || seenF[key]) continue;
+      seenF[key] = 1;
+      fits.push(key);
+    }
+  }
+  return { parts: parts, shoulders: shoulders, fits: fits };
+}
+// 为单个部位挑选变体：优先匹配所选肩型/版型，其次「常规」，最后取首个
+function kidsPickVariant(part, isShoulder, shoulder, fit){
+  var vs = part.variants;
+  if (isShoulder){
+    if (shoulder && shoulder !== '—'){
+      for (var i = 0; i < vs.length; i++){ if (vs[i].name === shoulder) return vs[i]; }
+    }
+  } else if (fit && fit !== '—'){
+    for (var k = 0; k < vs.length; k++){ if (kidsFitName(vs[k].name) === fit) return vs[k]; }
+  }
+  for (var j = 0; j < vs.length; j++){ if (vs[j].name === '常规') return vs[j]; }
+  return vs[0];
+}
 
-// 未选年龄段时：品类下拉不可用
-function resetKidsCategorySelect(g) {
-  var sel = kidsCategorySelectEl(g);
-  if (!sel) return;
-  sel.innerHTML = '<option value="">请先选择年龄段</option>';
-  sel.value = '';
-  sel.disabled = true;
-  sel.style.background = '#f5f5f5';
-  sel.style.color = '#999';
-  sel.style.borderColor = '#ddd';
-  sel.style.cursor = 'not-allowed';
-}
-// 选了年龄段：只列出该年龄段下存在的品类
-function fillKidsCategorySelect(g, idx) {
-  var sel = kidsCategorySelectEl(g);
-  if (!sel) return;
-  var cats = (kidsSegData(g)[kidsSegNames[idx]] || {}).cats || {};
-  var html = '<option value="">选择品类</option>';
-  for (var c in cats) { html += '<option value="'+c+'">'+c+'</option>'; }
-  sel.innerHTML = html;
-  sel.value = '';
-  sel.disabled = false;
-  sel.style.background = '#fff';
-  sel.style.color = '#333';
-  sel.style.borderColor = '#ddd';
-  sel.style.cursor = 'pointer';
-}
-// 同步年龄段下拉的选中项（-1/null 表示未选）
-function renderKidsSegTabs(g, activeIdx) {
-  var sel = kidsSegSelectEl(g);
-  if (!sel) return;
-  sel.value = (activeIdx === null || activeIdx === undefined || activeIdx < 0) ? '' : String(activeIdx);
-}
-// 先选年龄段 → 生成该年龄段的品类下拉 → 由用户再选品类出表
-function setKidsSeg(g, idx) {
+// 码段切换
+function setKidsSeg(g, idx){
   if (g === 'boy') kidsBoySeg = idx; else kidsGirlSeg = idx;
-  renderKidsSegTabs(g, idx);
-  var res = kidsResultEl(g);
-  if (res) { res.style.display = 'none'; res.innerHTML = ''; }
-  var hint = kidsHintEl(g);
-  // 重选回「选择年龄段」：清空品类并禁用
-  if (idx === null || idx === undefined || idx < 0) {
-    resetKidsCategorySelect(g);
-    if (hint) { hint.style.display = 'none'; hint.textContent = ''; }
+  var tabsEl = kidsEl(g, 'SegTabs');
+  if (tabsEl){
+    var tabs = tabsEl.children;
+    for (var i = 0; i < tabs.length; i++){ tabs[i].className = (i === idx ? 'mode-tab active' : 'mode-tab'); }
+  }
+  kidsResetSelect(g, 'Shoulder', '请先选择品类');
+  kidsResetSelect(g, 'Fit', '请先选择版型');
+  kidsClearResult(g);
+  var catSel = kidsEl(g, 'Category');
+  if (!catSel) return;
+  if (idx === null || idx === undefined){
+    catSel.innerHTML = '<option value="">请先选择码段</option>';
+    catSel.value = '';
+    kidsSetDisabled(catSel, true);
     return;
   }
-  fillKidsCategorySelect(g, idx);
-  if (hint) {
-    hint.style.display = 'block';
-    hint.textContent = '已选择「' + kidsSegNames[idx] + '」年龄段，请再选择品类查看尺码。';
-  }
+  var cats = (kidsSegData(g)[kidsSegNames[idx]] || {}).cats || {};
+  var html = '<option value="">选择品类</option>';
+  for (var c in cats){ html += '<option value="' + c + '">' + c + '</option>'; }
+  catSel.innerHTML = html;
+  catSel.value = '';
+  kidsSetDisabled(catSel, false);
 }
-// 年龄段下拉切换
-function onKidsSegChange(g) {
-  var sel = kidsSegSelectEl(g);
-  var v = sel ? sel.value : '';
-  setKidsSeg(g, v === '' ? null : parseInt(v, 10));
-}
-function setKidsBoySeg(idx){ setKidsSeg('boy', idx); }
-function setKidsGirlSeg(idx){ setKidsSeg('girl', idx); }
 
-// 选品类后出表
-function onKidsCategoryChange(g) {
-  var sel = kidsCategorySelectEl(g);
-  var hint = kidsHintEl(g);
-  var res = kidsResultEl(g);
-  var cat = sel ? sel.value : '';
-  if (res) { res.style.display = 'none'; res.innerHTML = ''; }
-  if (!cat) {
-    var segIdx = g === 'boy' ? kidsBoySeg : kidsGirlSeg;
-    if (hint && segIdx !== null && segIdx !== undefined) {
-      hint.style.display = 'block';
-      hint.textContent = '已选择「' + kidsSegNames[segIdx] + '」年龄段，请再选择品类查看尺码。';
+// 品类切换：只准备下拉选项，等码段/品类/肩型/版型齐备后再出表
+function onKidsCategoryChange(g){
+  kidsResetSelect(g, 'Shoulder', '请先选择品类');
+  kidsResetSelect(g, 'Fit', '请先选择品类');
+  kidsClearResult(g);
+  var catSel = kidsEl(g, 'Category');
+  var cat = catSel ? catSel.value : '';
+  if (!cat) return;
+  var dims = kidsDimensions(g, cat);
+  var res = kidsEl(g, 'Result');
+  if (!dims.parts.length){
+    if (res){
+      res.style.display = 'block';
+      res.innerHTML = '<div style="padding:12px 16px;background:#FFF5EB;border-radius:8px;color:#333;font-size:14px;line-height:1.9">「' + cat + '」在<b>' + kidsSegNames[kidsSegIdx(g)] + '</b>码段暂无尺码数据，请切换其他码段查看。</div>';
     }
     return;
   }
-  if (hint) hint.style.display = 'none';
+  var shSel = kidsEl(g, 'Shoulder');
+  if (dims.shoulders.length > 1){
+    var sh = '<option value="">选择肩型</option>';
+    for (var i = 0; i < dims.shoulders.length; i++){ sh += '<option value="' + dims.shoulders[i] + '">' + dims.shoulders[i] + '</option>'; }
+    shSel.innerHTML = sh;
+    shSel.value = '';
+    kidsSetDisabled(shSel, false);
+    kidsResetSelect(g, 'Fit', '请先选择肩型');
+    return;
+  }
+  var onlyShoulder = dims.shoulders.length ? dims.shoulders[0] : '—';
+  shSel.innerHTML = '<option value="' + onlyShoulder + '">无需选择</option>';
+  shSel.value = onlyShoulder;
+  kidsSetDisabled(shSel, true);
+  fillKidsFitSelect(g, cat, dims);
+}
+
+// 肩型切换：重算版型选项，等版型选定后再出表
+function onKidsShoulderChange(g){
+  var catSel = kidsEl(g, 'Category');
+  var cat = catSel ? catSel.value : '';
+  if (!cat){ kidsClearResult(g); return; }
+  fillKidsFitSelect(g, cat, kidsDimensions(g, cat));
+}
+
+function fillKidsFitSelect(g, cat, dims){
+  var fitSel = kidsEl(g, 'Fit');
+  kidsClearResult(g);
+  if (dims.fits.length > 1){
+    var html = '<option value="">选择版型</option>';
+    for (var i = 0; i < dims.fits.length; i++){ html += '<option value="' + dims.fits[i] + '">' + dims.fits[i] + '</option>'; }
+    fitSel.innerHTML = html;
+    fitSel.value = '';
+    kidsSetDisabled(fitSel, false);
+    return;
+  }
+  var onlyFit = dims.fits.length ? dims.fits[0] : '—';
+  fitSel.innerHTML = '<option value="' + onlyFit + '">无需选择</option>';
+  fitSel.value = onlyFit;
+  kidsSetDisabled(fitSel, true);
   queryKids(g);
 }
 
-function queryKids(g) {
-  var isBoy = g === 'boy';
-  var catSel = document.getElementById(isBoy ? 'kidsBoyCategory' : 'kidsGirlCategory');
-  var res = document.getElementById(isBoy ? 'kidsBoyResult' : 'kidsGirlResult');
+function onKidsFitChange(g){
+  var fitSel = kidsEl(g, 'Fit');
+  if (!fitSel || !fitSel.value){ kidsClearResult(g); return; }
+  queryKids(g);
+}
+
+// 出表
+function queryKids(g){
+  var catSel = kidsEl(g, 'Category');
+  var res = kidsEl(g, 'Result');
   var cat = catSel ? catSel.value : '';
-  var segIdx = isBoy ? kidsBoySeg : kidsGirlSeg;
-  if (!cat || segIdx === null || segIdx === undefined) { if (res) { res.style.display='none'; } return; }
-  var seg = kidsSegData(g)[kidsSegNames[segIdx]] || { cols: [], cats: {} };
+  var segIdx = kidsSegIdx(g);
+  if (!cat || segIdx === null || segIdx === undefined){ kidsClearResult(g); return; }
+  var seg = kidsCurSeg(g) || { cols: [], cats: {} };
   var cols = seg.cols || [];
-  var parts = getKidsCatData(g, segIdx, cat) || {};
-  // 汇总该品类下全部部位/版型，整表展示
-  var groups = [];
-  function pushKidsRow(partName, verName, vals) {
-    if (!groups.length || groups[groups.length-1][0] !== partName) { groups.push([partName, []]); }
-    groups[groups.length-1][1].push([verName, vals]);
-  }
-  function isArr(x){ return x && typeof x === 'object' && typeof x.length === 'number'; }
-  for (var k in parts) {
-    if (k === '版型' || k === '部位' || k === '码数') continue;
-    var v = parts[k];
-    if (!v || typeof v !== 'object' || isArr(v)) continue;
-    var objKids = [], arrKids = [];
-    for (var k2 in v) {
-      if (k2 === '版型' || k2 === '部位' || k2 === '码数') continue;
-      if (isArr(v[k2])) arrKids.push(k2); else if (v[k2] && typeof v[k2] === 'object') objKids.push(k2);
-    }
-    var isContainer = false;
-    if (!objKids.length) {
-      for (var ci=0; ci<arrKids.length; ci++) { if (kidsPartVocab[arrKids[ci]]) { isContainer = true; break; } }
-    }
-    if (isContainer) {
-      // 形如「品类名 -> 部位 -> 数值」（该层为容器，内层才是部位）
-      for (var pi=0; pi<arrKids.length; pi++) { pushKidsRow(arrKids[pi], '—', v[arrKids[pi]]); }
-    } else if (objKids.length) {
-      for (var oi=0; oi<objKids.length; oi++) {
-        var vm = v[objKids[oi]];
-        for (var vn2 in vm) {
-          if (vn2 === '版型' || vn2 === '部位' || vn2 === '码数') continue;
-          var vv2 = vm[vn2];
-          if (!isArr(vv2)) continue;
-          pushKidsRow(k, objKids[oi], vv2);
-        }
-      }
-    } else if (arrKids.length) {
-      for (var ai=0; ai<arrKids.length; ai++) { pushKidsRow(k, arrKids[ai], v[arrKids[ai]]); }
-    }
-  }
-  if (!groups.length) {
+  var node = kidsCatNode(g, cat) || {};
+  var parts = kidsParseParts(node, cat);
+  if (!parts.length){
     res.style.display = 'block';
-    res.innerHTML = '<div style="padding:12px 16px;background:#FFF5EB;border-radius:8px;color:#333;font-size:14px;line-height:1.9">「' + cat + '」在<b>' + kidsSegNames[segIdx] + '</b>年龄段暂无尺码数据，请切换其他年龄段查看。</div>';
+    res.innerHTML = '<div style="padding:12px 16px;background:#FFF5EB;border-radius:8px;color:#333;font-size:14px;line-height:1.9">「' + cat + '」在<b>' + kidsSegNames[segIdx] + '</b>码段暂无尺码数据，请切换其他码段查看。</div>';
     return;
   }
-  var html = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:8px;overflow:hidden"><thead><tr style="background:#FB7701;color:#fff"><th style="padding:10px 12px;text-align:left;white-space:nowrap">部位</th><th style="padding:10px 12px;text-align:left;white-space:nowrap">版型</th>';
-  for (var i=0;i<cols.length;i++){ html += '<th style="padding:10px 12px;text-align:center;white-space:nowrap">'+cols[i]+'</th>'; }
+  var shSel = kidsEl(g, 'Shoulder'), fitSel = kidsEl(g, 'Fit');
+  var shoulder = shSel ? (shSel.value || '') : '';
+  var fit = fitSel ? (fitSel.value || '') : '';
+  // 肩型/版型尚未选择完整时不出表
+  if (shSel && !shSel.disabled && !shoulder){ kidsClearResult(g); return; }
+  if (fitSel && !fitSel.disabled && !fit){ kidsClearResult(g); return; }
+  shoulder = shoulder || '—';
+  fit = fit || '—';
+
+  var html = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:8px;overflow:hidden">';
+  html += '<thead><tr style="background:#FB7701;color:#fff"><th style="padding:10px 12px;text-align:left;white-space:nowrap">部位</th>';
+  for (var i = 0; i < cols.length; i++){
+    html += '<th style="padding:10px 12px;text-align:center;white-space:nowrap">' + cols[i] + '</th>';
+  }
   html += '</tr></thead><tbody>';
-  var rowidx = 0;
-  for (var gi=0; gi<groups.length; gi++) {
-    var partName = groups[gi][0], verRows = groups[gi][1];
-    for (var ri=0; ri<verRows.length; ri++) {
-      var bg = rowidx % 2 === 0 ? '#fff' : '#fafafa';
-      html += '<tr style="background:'+bg+'">';
-      if (ri === 0) {
-        html += '<td rowspan="'+verRows.length+'" style="padding:8px 12px;font-weight:600;white-space:nowrap;border-bottom:1px solid #eee;vertical-align:middle;background:'+(rowidx % 2 === 0 ? '#fff' : '#fafafa')+'">'+partName+'</td>';
-      }
-      html += '<td style="padding:8px 12px;white-space:nowrap;border-bottom:1px solid #eee;color:#666">'+verRows[ri][0]+'</td>';
-      var vals = verRows[ri][1];
-      for (var k=0;k<cols.length;k++){
-        var val = vals[k] === undefined ? '' : vals[k];
-        var cellStyle = 'padding:8px 12px;text-align:center;border-bottom:1px solid #eee';
-        if (val === '' || val === '/') { cellStyle += ';color:#ccc'; }
-        html += '<td style="'+cellStyle+'">'+val+'</td>';
-      }
-      html += '</tr>';
-      rowidx++;
+  var rowIdx = 0;
+  for (var pi = 0; pi < parts.length; pi++){
+    var part = parts[pi];
+    var isShoulder = /^肩/.test(kidsBasePartName(part.name));
+    var picked = kidsPickVariant(part, isShoulder, shoulder, fit);
+    var bg = rowIdx % 2 === 0 ? '#fff' : '#fafafa';
+    html += '<tr style="background:' + bg + '"><td style="padding:8px 12px;font-weight:600;white-space:nowrap;border-bottom:1px solid #eee">' + part.name + '</td>';
+    for (var k = 0; k < cols.length; k++){
+      var val = picked.vals[k] === undefined ? '' : picked.vals[k];
+      var cellStyle = 'padding:8px 12px;text-align:center;border-bottom:1px solid #eee';
+      if (val === '' || val === '/') { cellStyle += ';color:#ccc'; }
+      html += '<td style="' + cellStyle + '">' + val + '</td>';
     }
+    html += '</tr>';
+    rowIdx++;
   }
   html += '</tbody></table></div>';
-  var segLabel = kidsSegNames[g==='boy'?kidsBoySeg:kidsGirlSeg];  var genderLabel = g==='boy'?'男童':'女童';
-  html += '<p style="font-size:12px;color:#999;margin-top:8px">数据来源：'+genderLabel+segLabel+'尺码表（'+cat+'） | 共 '+groups.length+' 个部位 | 单位：CM</p>';
+  var conds = [];
+  if (shoulder && shoulder !== '—') conds.push('肩型：' + shoulder);
+  if (fit && fit !== '—') conds.push('版型：' + fit);
+  html += '<p style="font-size:12px;color:#999;margin-top:8px">数据来源：' + kidsGenderKey(g) + kidsSegNames[segIdx] + '尺码表（' + cat + '）'
+       + (conds.length ? '｜' + conds.join('｜') : '')
+       + '｜共 ' + parts.length + ' 个部位｜单位：CM</p>';
   res.style.display = 'block';
   res.innerHTML = html;
 }
-function queryKidsBoy(){ queryKids('boy'); }
-function queryKidsGirl(){ queryKids('girl'); }
 
-// 初始化童装查询：年龄段 tab 可先选，品类下拉待选定年龄段后才可用
-initKidsSizes();
+// 初始化：未选码段时品类不可用
 function initKidsSizes(){
   kidsBoySeg = null;
   kidsGirlSeg = null;
-  resetKidsCategorySelect('boy');
-  resetKidsCategorySelect('girl');
-  renderKidsSegTabs('boy', -1);
-  renderKidsSegTabs('girl', -1);
+  setKidsSeg('boy', null);
+  setKidsSeg('girl', null);
 }
+
+initKidsSizes();
 
 // Initialize size categories on page load
 initSizeCategories();
