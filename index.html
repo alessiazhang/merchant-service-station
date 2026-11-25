@@ -3010,6 +3010,16 @@ body.notice-open{ padding-top:calc(var(--notice-h, 0px) + 16px); }
       </div>
     </div>
   </div>
+  <!-- 课堂10: 店铺重复违规处理及违规次数规则详解（新增） -->
+  <div class="element-section">
+    <div class="element-title">店铺重复违规处理及违规次数规则详解 <span id="new-badge-seller-repeat-violation" data-nv="30" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;margin-left:6px">NEW</span></div>
+    <div class="card">
+      <p style="font-size:14px;color:#333;line-height:2;margin:0">讲解店铺重复违规的处理方式与违规次数的判定规则，点击链接查看课程详情。</p>
+      <div style="margin-top:12px">
+        <a class="pd-btn active" href="https://agentseller.temu.com/main/course/detail?courseId=21737351306" target="_blank" rel="noopener">🎬 查看课程 <span class="pd-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
   </div>
 
   <!-- 店铺合规 (原店铺合规板块全部内容) -->
@@ -4009,7 +4019,7 @@ function syncVisualCardBadge() {
 // 每次发布新内容：把 SITE_CONTENT_VERSION +1，并为该次新增内容的角标标记 data-nv=新版本号。
 // 页面打开即视为已阅读当前版本：早于已读基线的历史角标不再显示，仅在新版本发布时才重新亮起
 // 对应新增内容的 NEW 角标（其余角标保持隐藏），彻底避免"历史NEW长期累积/点了才消失"的问题。
-var SITE_CONTENT_VERSION = 29;
+var SITE_CONTENT_VERSION = 30;
 var SEEN_KEY = 'site-content-seen-version';
 function getSeenVersion() {
   try { return parseInt(localStorage.getItem(SEEN_KEY) || '0', 10) || 0; } catch(e) { return 0; }
