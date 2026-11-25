@@ -785,9 +785,51 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
   .logo-text{ font-size:clamp(10px, 3.2vw, 12.5px); letter-spacing:0; }
 }
 
+
+/* ===== 首页「本次更新」提示：固定在顶部，未点「我已知晓」前任何滚动位置都可见 ===== */
+#update-notice{
+  display:none; position:fixed; top:8px; left:var(--sb-w); right:0; z-index:300;
+  width:fit-content; min-width:min(1040px, calc(100% - var(--sb-w) - 32px)); max-width:min(1420px, calc(100% - var(--sb-w) - 32px));
+  margin:0 auto; padding:12px 34px;
+  background:linear-gradient(90deg,#FFF4E8,#FFFBF6);
+  border:1px solid #FFD7B0; border-radius:10px;
+  box-shadow:0 6px 20px rgba(251,119,1,.16);
+  align-items:center; gap:20px; flex-wrap:nowrap;
+}
+#update-notice .un-icon{ font-size:16px; line-height:1; flex:0 0 auto; }
+#update-notice .un-body{ flex:1 1 auto; min-width:0; display:flex; align-items:center; gap:12px; flex-wrap:nowrap; }
+#update-notice .un-title{
+  flex:0 0 auto; font-size:12px; font-weight:700; color:#fff; background:#FB7701;
+  padding:3px 10px; border-radius:999px; line-height:1.5; white-space:nowrap;
+}
+#update-notice .un-text{ font-size:14px; color:#5A3A18; line-height:1.6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#update-notice .un-btn{
+  flex:0 0 auto; margin-left:28px; padding:8px 24px; background:#FB7701; color:#fff; border:none;
+  border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap;
+}
+#update-notice .un-btn:hover{ background:#E86D00; }
+body.notice-open{ padding-top:calc(var(--notice-h, 0px) + 16px); }
+@media (max-width:1100px){
+  #update-notice{ flex-wrap:wrap; }
+  #update-notice .un-body{ flex:1 1 240px; }
+  #update-notice .un-text{ white-space:normal; overflow:visible; }
+}
+@media (max-width:900px){
+  #update-notice{ left:0; right:0; max-width:calc(100% - 20px); top:6px; }
+  body.notice-open .sidebar{ top:calc(var(--notice-h, 0px) + 12px); }
+}
 </style>
 </head>
 <body>
+<div id="update-notice" role="alert">
+  <span class="un-icon">🔔</span>
+  <div class="un-body">
+    <div class="un-title">本次更新</div>
+    <div class="un-text">11月的BSR同款提报和第四批爆款推荐款式已更新完成，请按照页面截至时间完成提报。</div>
+  </div>
+  <button type="button" class="un-btn" onclick="dismissUpdateNotice()">我已知晓</button>
+</div>
+
 
 <!-- Sidebar -->
 <div class="sidebar">
@@ -797,7 +839,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
   </div>
   <div class="nav">
     <a class="nav-item active" onclick="navTo('dashboard', event)"><span class="nav-icon">🏠</span><span>工作台</span></a>
-    <a class="nav-item" onclick="navTo('category', event)"><span class="nav-icon">📋</span><span>类目路径</span> <span id="new-badge-nav-category" data-nv="29" data-manual-seen="1" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
+    <a class="nav-item" onclick="navTo('category', event)"><span class="nav-icon">📋</span><span>类目路径</span> <span id="new-badge-nav-category" data-nv="29" data-manual-seen="1" data-dismiss-group="category" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('banmove', event)"><span class="nav-icon">🔄</span><span>底版平移</span></a>
     <a class="nav-item" onclick="navTo('scarcity', event)"><span class="nav-icon">⭐</span><span>版型分享 <span id="new-badge-nav-scarcity-lib" data-nv="27" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></span></a>
     <a class="nav-item" onclick="navTo('sizing', event)"><span class="nav-icon">📏</span><span>尺码信息</span></a>
@@ -805,7 +847,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     <a class="nav-item" onclick="navTo('visual', event)"><span class="nav-icon">🎨</span><span>视觉优化</span><span id="new-badge-nav-visual" data-nv="28" data-manual-seen="1" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('marketing', event)"><span class="nav-icon">📅</span><span>营销节点</span></a>
     <a class="nav-item" onclick="navTo('hotsale', event)"><span class="nav-icon">📈</span><span>印花趋势</span><span id="new-badge-nav-hotsale" data-nv="2" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
-    <a class="nav-item" onclick="navTo('tongkuan', event)"><span class="nav-icon">🔥</span><span>爆款推荐</span><span id="new-badge-nav-tongkuan" data-nv="29" data-manual-seen="1" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
+    <a class="nav-item" onclick="navTo('tongkuan', event)"><span class="nav-icon">🔥</span><span>爆款推荐</span><span id="new-badge-nav-tongkuan" data-nv="29" data-manual-seen="1" data-dismiss-group="tongkuan" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     <a class="nav-item" onclick="navTo('seller', event)"><span class="nav-icon">📚</span><span>卖家课堂</span><span id="new-badge-nav-seller" data-nv="24" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
     
     <a class="nav-item" onclick="navTo('news', event)"><span class="nav-icon">📰</span><span>近期资讯</span> <span id="new-badge-nav-news" data-nv="25" style="display:inline-block;margin-left:6px;padding:1px 8px;background:#FF4444;color:#fff;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;animation:pulse 1.5s infinite">NEW</span></a>
@@ -971,7 +1013,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
   <!-- 2. 类目指引 -->
 <div class="section" id="category">
-  <div class="section-title">类目路径 <span id="new-badge-category-title" data-nv="29" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+  <div class="section-title">类目路径</div>
   <p style="color:#666;margin-bottom:24px">以下为各类目的完整上新路径，上架时选择正确的类目路径才能对接。</p>
   <!-- 对接人查询工具 -->
   <div class="rl-box" id="recruit-lookup">
@@ -1063,7 +1105,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
     </table>
   </div>
   <div class="element-section">
-    <div class="element-title">风衣/夹克 <span id="new-badge-cat-zhang-coat" data-nv="29" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="element-title">风衣/夹克 <span id="new-badge-cat-zhang-coat" data-nv="29" data-manual-seen="1" data-dismiss-group="category" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
       <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 男装 > 男士外套 > 男士大衣</td></tr>
@@ -1115,7 +1157,7 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
     <div class="cat-sub-panel" id="cat-sub-male-big">
   <div class="element-section">
-    <div class="element-title">风衣/夹克 <span id="new-badge-cat-zhang-big-coat" data-nv="29" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+    <div class="element-title">风衣/夹克 <span id="new-badge-cat-zhang-big-coat" data-nv="29" data-manual-seen="1" data-dismiss-group="category" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
     <table class="cat-path-table">
       <tr><th>序号</th><th>类目路径</th></tr>
       <tr><td>1</td><td onclick="copyCatPath(this)">服装、鞋靴和珠宝饰品 > 男士时尚 > 大码男装 > 大码男士外套 > 大码男士大衣</td></tr>
@@ -2749,11 +2791,11 @@ img[alt$="微信二维码"] { cursor: zoom-in; }
 
 <!-- 8.6 同款提报 -->
 <div class="section" id="tongkuan">
-  <div class="section-title">同款提报 <span id="new-badge-tongkuan-title" data-nv="29" style="display:inline-block;padding:1px 8px;background:#FF4444;color:#fff;font-size:11px;border-radius:8px;font-weight:bold;animation:newBlink 1s infinite;">NEW</span></div>
+  <div class="section-title">同款提报</div>
 
   <!-- 点击跳转卡片 -->
   <div class="card" style="position:relative;background:linear-gradient(135deg,#FB7701,#FF9933);border:none;padding:28px 24px;text-align:center;cursor:pointer;transition:transform .2s;box-shadow:0 4px 12px rgba(251,119,1,.2)" onclick="openTongkuanPage(event)">
-    <span id="new-badge-tongkuan-page" data-nv="29" data-manual-seen="1" style="position:absolute;top:12px;right:14px;display:inline-block;padding:2px 10px;background:#fff;color:#FB7701;font-size:11px;border-radius:10px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.12);animation:newBlink 1s infinite">NEW</span>
+    <span id="new-badge-tongkuan-page" data-nv="29" data-manual-seen="1" data-card-badge="tongkuan-page" style="position:absolute;top:12px;right:14px;display:inline-block;padding:2px 10px;background:#fff;color:#FB7701;font-size:11px;border-radius:10px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.12);animation:newBlink 1s infinite">NEW</span>
     <h3 style="color:#fff;margin:0 0 10px;font-size:22px">🎯 BSR同款提报 &amp; 爆款推荐款式</h3>
     <p style="color:#fff;margin:0 0 18px;font-size:15px;opacity:0.95">页面内容已更新，点击进入同款提报页面，查看可绑定款式 →</p>
     <div style="display:inline-block;padding:10px 30px;background:#fff;color:#FB7701;border-radius:8px;font-size:15px;font-weight:700">立即查看 &amp; 申请</div>
@@ -3898,13 +3940,11 @@ function closeContactModal() {
 // 当前所在板块：用于判断是否真的「从某板块切走」
 var _curSection = 'dashboard';
 function navTo(id, evt) {
-  // 只有真正从该板块切走时才隐藏它的导航角标；从未进入过的板块角标不受影响
+  // 只有真正从该板块切走时，才把该板块的角标（导航 + 正文标题）整组置为已读
   var left = (_curSection && _curSection !== id) ? _curSection : null;
+  if (left) { markGroupSeen(left); }
   if (left === 'hotsale') { dismissNewBadge('new-badge-nav-hotsale','hotsale-nav-seen'); }
   if (left === 'seller') { dismissNewBadge('new-badge-seller-tool','seller-tool-seen'); }
-  if (left === 'tongkuan') { dismissNewBadge('new-badge-nav-tongkuan','tongkuan-nav-seen'); }
-  if (left === 'visual') { dismissNewBadge('new-badge-nav-visual','visual-nav-seen'); }
-  if (left === 'category') { dismissNewBadge('new-badge-nav-category','category-nav-seen'); }
   _curSection = id;
   document.getElementById(id).scrollIntoView({behavior:'auto'});
   document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
@@ -4079,25 +4119,70 @@ document.addEventListener('keydown', function(e){
   else if (e.key === 'Escape') { closeZoomSlide(); }
 });
 // 爆款推荐跳转卡片：点击进入即视为已读，角标永久消失
-function openTongkuanPage(evt) {
-  dismissNewBadge('new-badge-tongkuan-page', 'tongkuan-page-seen');
-  var url = 'https://alessiazhang.github.io/BSR/';
-  window.open(url, '_blank');
+// ===== NEW 角标「按板块已读」机制 =====
+// 正文标题与导航角标：进入该板块后再切走即消失（同一板块共用一把已读键）
+// 交互卡片角标：点击进入一次即消失
+// 键名带发版前缀，历史遗留的已读键不会误隐藏本次发版的角标
+var BADGE_KEY_PREFIX = 'badge-v29-';
+function badgeGroupKey(group) { return BADGE_KEY_PREFIX + 'seen-' + group; }
+function badgeCardKey(card) { return BADGE_KEY_PREFIX + 'card-' + card; }
+function markGroupSeen(group) {
+  try { localStorage.setItem(badgeGroupKey(group), '1'); } catch(e) {}
+  document.querySelectorAll('[data-dismiss-group="' + group + '"]').forEach(function(el) {
+    el.style.display = 'none';
+  });
 }
-// 卡片级 NEW 统一恢复：已点开过（有已读键）则加载时直接隐藏
-// 新增交互卡片角标时，只需把 [角标id, 已读键] 追加到 CARD_BADGES
-var CARD_BADGES = [
-  ['new-badge-tongkuan-page', 'tongkuan-page-seen']
-];
-function restoreCardBadges() {
-  CARD_BADGES.forEach(function(pair) {
+function markCardSeen(card) {
+  try { localStorage.setItem(badgeCardKey(card), '1'); } catch(e) {}
+  document.querySelectorAll('[data-card-badge="' + card + '"]').forEach(function(el) {
+    el.style.display = 'none';
+  });
+}
+// 加载时恢复：板块已读则隐藏该板块全部角标；卡片点开过则隐藏卡片角标
+function restoreBadges() {
+  document.querySelectorAll('[id^="new-badge-"]').forEach(function(el) {
+    var g = el.getAttribute('data-dismiss-group');
+    var c = el.getAttribute('data-card-badge');
     try {
-      if (localStorage.getItem(pair[1]) === '1') {
-        var el = document.getElementById(pair[0]);
-        if (el) { el.style.display = 'none'; }
-      }
+      if (c && localStorage.getItem(badgeCardKey(c)) === '1') { el.style.display = 'none'; return; }
+      if (g && localStorage.getItem(badgeGroupKey(g)) === '1') { el.style.display = 'none'; }
     } catch(e) {}
   });
+}
+// 首页「本次更新」提示条：首次进入显示，点「我已知晓」后不再出现（不影响 NEW 角标）
+var NOTICE_KEY = 'badge-v29-update-notice';
+function setNoticeHeight(el) {
+  var h = (el && el.style.display !== 'none') ? el.offsetHeight : 0;
+  document.documentElement.style.setProperty('--notice-h', h + 'px');
+}
+function dismissUpdateNotice() {
+  var el = document.getElementById('update-notice');
+  if (el) { el.style.display = 'none'; }
+  document.body.classList.remove('notice-open');
+  document.documentElement.style.setProperty('--notice-h', '0px');
+  try { localStorage.setItem(NOTICE_KEY, '1'); } catch(e) {}
+}
+function restoreUpdateNotice() {
+  var el = document.getElementById('update-notice');
+  if (!el) { return; }
+  var seen = false;
+  try { seen = localStorage.getItem(NOTICE_KEY) === '1'; } catch(e) {}
+  if (seen) { el.style.display = 'none'; return; }
+  el.style.display = 'flex';
+  setNoticeHeight(el);
+  document.body.classList.add('notice-open');
+}
+function refreshNoticeHeight() {
+  var el = document.getElementById('update-notice');
+  if (el && el.style.display !== 'none') { setNoticeHeight(el); }
+}
+window.addEventListener('resize', refreshNoticeHeight);
+window.addEventListener('load', refreshNoticeHeight);
+// 爆款推荐跳转卡片：点击进入一次即永久消失
+function openTongkuanPage(evt) {
+  markCardSeen('tongkuan-page');
+  var url = 'https://alessiazhang.github.io/BSR/';
+  window.open(url, '_blank');
 }
 
 function dismissDetailBadges(panelId) {
@@ -4119,23 +4204,10 @@ function dismissDetailBadges(panelId) {
       var toolBadge = document.getElementById('new-badge-seller-tool');
       if (toolBadge) toolBadge.style.display = 'none';
     }
-    // 卡片级 NEW：点开过即隐藏
-    restoreCardBadges();
-    // Check category nav badge independently
-    if (localStorage.getItem('category-nav-seen') === '1') {
-      var catBadge = document.getElementById('new-badge-nav-category');
-      if (catBadge) catBadge.style.display = 'none';
-    }
-    // Check hot-pick (爆款推荐) nav badge independently
-    if (localStorage.getItem('tongkuan-nav-seen') === '1') {
-      var tkBadge = document.getElementById('new-badge-nav-tongkuan');
-      if (tkBadge) tkBadge.style.display = 'none';
-    }
-    // Check visual section nav badge independently
-    if (localStorage.getItem('visual-nav-seen') === '1') {
-      var vsBadge = document.getElementById('new-badge-nav-visual');
-      if (vsBadge) vsBadge.style.display = 'none';
-    }
+    // 首页更新提示条
+    restoreUpdateNotice();
+    // 按板块/卡片恢复已读状态（正文标题 + 导航 + 交互卡片统一在这里判断）
+    restoreBadges();
     // Check hot-sale nav badge independently
     if (localStorage.getItem('hotsale-nav-seen') === '1') {
       var hsBadge = document.getElementById('new-badge-nav-hotsale');
